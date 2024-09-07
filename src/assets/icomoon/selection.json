@@ -1,0 +1,185 @@
+{
+    "IcoMoonType": "selection",
+    "icons": [
+        {
+            "icon": {
+                "paths": [
+                    "M704 640c-64 64-64 128-128 128s-128-64-192-128-128-128-128-192 64-64 128-128-128-256-192-256-192 192-192 192c0 128 131.5 387.5 256 512s384 256 512 256c0 0 192-128 192-192s-192-256-256-192z"
+                ],
+                "tags": [
+                    "phone",
+                    "telephone",
+                    "contact",
+                    "support",
+                    "call"
+                ],
+                "defaultCode": 59714,
+                "grid": 16,
+                "attrs": []
+            },
+            "attrs": [],
+            "properties": {
+                "ligatures": "phone, telephone",
+                "name": "phone",
+                "order": 8,
+                "id": 67,
+                "prevSize": 32,
+                "code": 59714
+            },
+            "setIdx": 0,
+            "setId": 1,
+            "iconIdx": 67
+        },
+        {
+            "icon": {
+                "paths": [
+                    "M576 706.612v-52.78c70.498-39.728 128-138.772 128-237.832 0-159.058 0-288-192-288s-192 128.942-192 288c0 99.060 57.502 198.104 128 237.832v52.78c-217.102 17.748-384 124.42-384 253.388h896c0-128.968-166.898-235.64-384-253.388z"
+                ],
+                "tags": [
+                    "user",
+                    "profile",
+                    "avatar",
+                    "person",
+                    "member"
+                ],
+                "grid": 16,
+                "attrs": []
+            },
+            "attrs": [],
+            "properties": {
+                "ligatures": "user, profile2",
+                "name": "user",
+                "order": 3,
+                "id": 114,
+                "prevSize": 32,
+                "code": 59648
+            },
+            "setIdx": 0,
+            "setId": 1,
+            "iconIdx": 114
+        },
+        {
+            "icon": {
+                "paths": [
+                    "M592 448h-16v-192c0-105.87-86.13-192-192-192h-128c-105.87 0-192 86.13-192 192v192h-16c-26.4 0-48 21.6-48 48v480c0 26.4 21.6 48 48 48h544c26.4 0 48-21.6 48-48v-480c0-26.4-21.6-48-48-48zM192 256c0-35.29 28.71-64 64-64h128c35.29 0 64 28.71 64 64v192h-256v-192z"
+                ],
+                "tags": [
+                    "lock",
+                    "secure",
+                    "private",
+                    "encrypted"
+                ],
+                "defaultCode": 59791,
+                "grid": 16,
+                "attrs": []
+            },
+            "attrs": [],
+            "properties": {
+                "ligatures": "lock, secure",
+                "name": "lock",
+                "order": 9,
+                "id": 144,
+                "prevSize": 32,
+                "code": 59791
+            },
+            "setIdx": 0,
+            "setId": 1,
+            "iconIdx": 144
+        },
+        {
+            "icon": {
+                "paths": [
+                    "M864 128l-480 480-224-224-160 160 384 384 640-640z"
+                ],
+                "tags": [
+                    "checkmark",
+                    "tick",
+                    "correct",
+                    "accept",
+                    "ok"
+                ],
+                "defaultCode": 59920,
+                "grid": 16,
+                "attrs": []
+            },
+            "attrs": [],
+            "properties": {
+                "ligatures": "checkmark, tick",
+                "name": "checkmark",
+                "order": 10,
+                "id": 273,
+                "prevSize": 32,
+                "code": 59920
+            },
+            "setIdx": 0,
+            "setId": 1,
+            "iconIdx": 273
+        },
+        {
+            "icon": {
+                "paths": [
+                    "M853.342 0h-682.656c-93.874 0-170.686 76.81-170.686 170.69v682.622c0 93.938 76.812 170.688 170.686 170.688h682.656c93.876 0 170.658-76.75 170.658-170.69v-682.62c0-93.88-76.782-170.69-170.658-170.69zM182.628 886.626l-77.256-77.254 256-256 29.256 29.254-208 304zM153.372 198.628l29.256-29.256 329.372 265.374 329.374-265.374 29.254 29.256-358.628 422.626-358.628-422.626zM841.374 886.626l-208-304 29.254-29.254 256 256-77.254 77.254z"
+                ],
+                "tags": [
+                    "mail",
+                    "contact",
+                    "support",
+                    "newsletter",
+                    "letter",
+                    "email",
+                    "envelop",
+                    "social"
+                ],
+                "defaultCode": 60037,
+                "grid": 16,
+                "attrs": []
+            },
+            "attrs": [],
+            "properties": {
+                "ligatures": "mail4, contact4",
+                "name": "mail3",
+                "order": 7,
+                "id": 390,
+                "prevSize": 32,
+                "code": 60037
+            },
+            "setIdx": 0,
+            "setId": 1,
+            "iconIdx": 390
+        }
+    ],
+    "height": 1024,
+    "metadata": {
+        "name": "icomoon"
+    },
+    "preferences": {
+        "showGlyphs": true,
+        "showQuickUse": true,
+        "showQuickUse2": true,
+        "showSVGs": true,
+        "fontPref": {
+            "prefix": "icon-",
+            "metadata": {
+                "fontFamily": "icomoon"
+            },
+            "metrics": {
+                "emSize": 1024,
+                "baseline": 6.25,
+                "whitespace": 50
+            },
+            "embed": false
+        },
+        "imagePref": {
+            "prefix": "icon-",
+            "png": true,
+            "useClassSelector": true,
+            "color": 0,
+            "bgColor": 16777215,
+            "classSelector": ".icon",
+            "name": "icomoon"
+        },
+        "historySize": 50,
+        "showCodes": true,
+        "gridSize": 16
+    }
+}

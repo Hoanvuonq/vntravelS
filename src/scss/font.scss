@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500;600&family=Roboto:ital,wght@0,300;1,300&display=swap');
+
+.bai-jamjuree {
+    font-family: 'Bai Jamjuree', sans-serif;
+}
+
+.level {
+    .text-title {
+        font-size: 1.5vw;
+        line-height: 1.5vw;
+        @media (max-width: 1024px) {
+            font-size: 6vw;
+            line-height: 8vw;
+        }
+    }
+}

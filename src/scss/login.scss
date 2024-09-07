@@ -1,0 +1,67 @@
+.bg-login {
+    width: 100%;
+    margin: 0 auto;
+    background-image: url(../assets/img/bg-login.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.container-login-form-btn {
+    position: relative;
+    overflow: hidden;
+    border-radius: 999px;
+    .login-form-bgbtn {
+        cursor: pointer;
+        position: absolute;
+        z-index: 1;
+        width: 340%;
+        height: 100%;
+        background: #514bf4;
+        background: -webkit-linear-gradient(right, #00dbde, #fc00ff, #00dbde, #fc00ff);
+        background: -o-linear-gradient(right, #00dbde, #fc00ff, #00dbde, #fc00ff);
+        background: -moz-linear-gradient(right, #00dbde, #fc00ff, #00dbde, #fc00ff);
+        background: linear-gradient(260deg, #00dbde, #fc00ff, #00dbde, #fc00ff);
+        top: 0;
+        left: -100%;
+        transition: all 0.4s;
+    }
+    .login-form-btn {
+        cursor: pointer;
+        position: relative;
+        z-index: 2;
+        font-family: Poppins;
+        font-weight: bold;
+        font-size: 1vw;
+        color: #fff;
+        line-height: 1.2;
+        text-transform: uppercase;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 20px;
+        width: 100%;
+        font-family: "Bai Jamjuree", sans-serif;
+    }
+    .wrap-login-form-btn:hover .login-form-bgbtn {
+        left: 0;
+    }
+}
+
+.transition-cus {
+    transition: transform 0.5s ease;
+}
+
+.alert {
+    cursor: pointer;
+}
+
+.title-alert {
+    transition: opacity 0.3s ease-in-out;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
