@@ -9,13 +9,13 @@ interface IBoxTotal {
 
 const BoxTotal = ({ title, content, img, isUnlocked, backgroundColor }: IBoxTotal) => {
     return (
-        <div className={`py-[1vw] xl:px-[1vw] px-[1.5vw] rounded-xl xl:w-2/4 w-full shadow-custom-5 bai-jamjuree box-total relative`} style={{ backgroundColor }}>
-            {!isUnlocked && <img src={images.Block} alt="Blocked" className="absolute top-[1vw] right-[1vw] w-[1vw]" />}
+        <div className={`py-[1vw] xl:px-[1vw] px-[1.5vw] rounded-xl w-full shadow-custom-5 bai-jamjuree box-total relative`} style={{ backgroundColor }}>
+            {!isUnlocked && <img src={images.Block} alt="Blocked" className="absolute xl:w-[1vw] w-[3vw] xl:top-[1vw] top-[3vw] xl:right-[1vw] right-[3vw]" />}
             <div className="all-center flex-col">
-                <img src={img} alt="Items total" className="scale-icon w-[5vw]" />
+                <img src={img} alt="Items total" className="scale-icon xl:w-[5vw] w-[20vw]" />
                 <div className="flex flex-col gap-[1vw]">
-                    <h1 className="text-2xl text-box font-semibold text-[#334155] uppercase">{title}</h1>
-                    <p className="text-xl text-box font-semibold pl-[0.3vw]">{content}</p>
+                    <h1 className="text-titleLevel text-[#334155] uppercase">{title}</h1>
+                    <p className="text-contentLevel pl-[0.3vw]">{content}</p>
                 </div>
             </div>
         </div>

@@ -12,6 +12,10 @@ interface AuthState {
         isFetching: boolean;
         error: boolean;
     };
+    userInfo: {
+        isFetching: boolean;
+        error: boolean;
+    };
 }
 
 const initialState: AuthState = {
@@ -23,6 +27,10 @@ const initialState: AuthState = {
         isTokenExpired: false,
     },
     logout: {
+        isFetching: false,
+        error: false,
+    },
+    userInfo: {
         isFetching: false,
         error: false,
     },
@@ -63,8 +71,32 @@ const authSlice = createSlice({
         tokenExpired: (state) => {
             state.login.isTokenExpired = true;
         },
+        getUserInfoStart: (state) => {
+            state.userInfo.isFetching = true;
+            state.userInfo.error = false;
+        },
+        getUserInfoSuccess: (state, action: PayloadAction<any>) => {
+            state.userInfo.isFetching = false;
+            state.login.currentUser = action.payload;
+            state.userInfo.error = false;
+        },
+        getUserInfoFailed: (state) => {
+            state.userInfo.isFetching = false;
+            state.userInfo.error = true;
+        },
     },
 });
 
-export const { loginStart, loginSuccess, loginFailed, logoutStart, logoutSuccess, logoutFailed, tokenExpired } = authSlice.actions;
+export const {
+    loginStart,
+    loginSuccess,
+    loginFailed,
+    logoutStart,
+    logoutSuccess,
+    logoutFailed,
+    tokenExpired,
+    getUserInfoStart,
+    getUserInfoSuccess,
+    getUserInfoFailed
+} = authSlice.actions;
 export default authSlice.reducer;

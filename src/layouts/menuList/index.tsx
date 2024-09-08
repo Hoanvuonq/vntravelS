@@ -6,6 +6,8 @@ import { closeMenuNavbar } from 'redux/slice/menuNavbarSlice';
 import { logOutUser } from '../../redux/reducer/apiRequest';
 import { images } from 'assets';
 import ToastProvider from 'hooks/useToastProvider';
+import { getUserInformationByToken } from 'redux/reducer/apiRequest';
+import { useEffect } from 'react';
 
 const listMenu = [
     { link: 'payment', title: 'Nạp tiền', isSearchParams: true },
@@ -18,6 +20,10 @@ const MenuList: React.FC = () => {
     const dispatch = useDispatch();
     const isOpen = useSelector((state: RootState) => state.menuNavbar.isOpen);
     const navigate = useNavigate();
+    const currentUser = useSelector((state: RootState) => state.auth.login.currentUser);
+    const username = currentUser?.username || 'Unknown User';
+    const phone = currentUser?.phone;
+    console.log('currentUser:', currentUser);
 
     const handleClose = () => {
         dispatch(closeMenuNavbar());
@@ -26,11 +32,14 @@ const MenuList: React.FC = () => {
     const handleLogout = async () => {
         try {
             await logOutUser(dispatch, navigate);
-            ToastProvider('success', 'Logged out successfully');
+            ToastProvider('success', 'Đã đăng xuất thành công');
         } catch (error) {
-            ToastProvider('error', 'Failed to logout');
+            ToastProvider('error', 'Không thể đăng xuất');
         }
     };
+    useEffect(() => {
+        getUserInformationByToken(dispatch);
+    }, [dispatch]);
 
     const MenuListNavbar = useMemo(() => {
         return listMenu.map(({ link, title, isSearchParams }, index) => (
@@ -41,19 +50,19 @@ const MenuList: React.FC = () => {
                 </li>
             </Link>
         ));
-    }, listMenu);
+    }, [listMenu]);
 
     return (
         <div>
             {isOpen && <div className="overlay !bg-transparent" onClick={handleClose}></div>}
             <div className={`menu border z-50 border-[#e5e9f2] shadow-custom-3 rounded-2xl w-[300px] bg-white !top-[86px] !right-2 ${isOpen ? 'menu-visible' : 'menu-hidden'}`}>
-                <Link to={'#'} className="cursor-pointer">
+                <Link to={'/profile'} className="cursor-pointer">
                     <div className="bg-[#f5f6fa] border border-[#e5e9f2] rounded-t-2xl">
                         <div className="p-5 flex items-center gap-4">
                             <img src={images.Avatar} alt="avatar" className="rounded-full border-4 border-orange" width={40} height={40} />
                             <div className="bai-jamjuree">
-                                <p className="font-semibold">Username</p>
-                                <p className="text-[#8094ae] text-xs">Username@gmail.com</p>
+                                <p className="font-semibold">{username}</p>
+                                <p className="text-[#8094ae] text-xs">{phone}</p>
                             </div>
                         </div>
                     </div>
@@ -61,7 +70,7 @@ const MenuList: React.FC = () => {
                 <ul className="text-base py-3 px-2">{MenuListNavbar}</ul>
                 <div className="text-base border-t border-[#e5e9f2]">
                     <div onClick={handleLogout}>
-                        <li className="flex gap-3 bai-jamjuree items-center text-[#474747] hover:text-[#000] py-3 px-7 hover:bg-[#f1f1f1] hover:rounded-b-2xl">
+                        <li className="flex gap-3 bai-jamjuree items-center text-[#474747] hover:text-[#000] py-3 px-7 hover:bg-[#f1f1f1] hover:rounded-b-2xl cursor-pointer">
                             <img src={images.IconLogOutt} alt="Sign Out" width={22} height={22} />
                             Đăng xuất
                         </li>

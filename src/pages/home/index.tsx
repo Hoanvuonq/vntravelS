@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import Carousel from 'components/carousel';
 import BoxTotal from 'components/boxItem';
 import { images } from 'assets';
+import TextTitle from 'components/textTitle';
 
 const totalLevel = [
     { title: 'VIP1', content: '20%', isUnlocked: true },
@@ -22,8 +23,8 @@ const Home = () => {
     return (
         <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw]">
             <div className="rounded-xl w-full h-full p-[1vw] flex flex-col gap-5 level">
-                <h1 className="font-bold bai-jamjuree pt-[1vw] text-title">Cấp Độ Thành Viên</h1>
-                <div className="xl:flex grid sm:grid-rows-2 grid-rows-4 grid-flow-col xl:gap-[1vw] gap-[2vw] w-full transition-1">{TotalLevelMemo}</div>
+                <TextTitle title="Cấp Độ Thành Viên" />
+                <div className="grid xl:grid-cols-6 grid-cols-2 xl:gap-[1vw] gap-[4vw] w-full transition-1">{TotalLevelMemo}</div>
             </div>
             <Carousel />
         </div>

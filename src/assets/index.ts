@@ -33,4 +33,13 @@ export const images: any = {
     Total2: require('./img/total-items2.png'),
     Total3: require('./img/total-items3.png'),
     Total4: require('./img/total-items4.png'),
+    Toogle: require('./img/toogle-menu.png'),
+    Trip1: require('./img/location-trip-01.png'),
+    Trip2: require('./img/location-trip-02.png'),
+    Trip3: require('./img/location-trip-03.jpg'),
+    Trip4: require('./img/location-trip-04.jpg'),
+    Trip5: require('./img/location-trip-05.png'),
+    Trip6: require('./img/location-trip-06.png'),
+    Trip7: require('./img/location-trip-07.png'),
+    Trip8: require('./img/location-trip-08.jpg'),
 };

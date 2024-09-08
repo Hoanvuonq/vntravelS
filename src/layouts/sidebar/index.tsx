@@ -39,7 +39,7 @@ const Sidebar: React.FC = () => {
         dispatch(toggleSidebar(false));
     };
 
-    const sidebarClass = `sidebar w-full max-w-[300px] bg-white border-r overflow-y-auto border-[#e5e9f2] bai-jamjuree shadow-custom-4 rounded-lg h-screen fixed z-30 ${
+    const sidebarClass = `sidebar w-full xl:max-w-[15.8vw] max-w-[76vw] bg-white border-r overflow-y-auto border-[#e5e9f2] bai-jamjuree shadow-custom-4 rounded-[0.5vw] h-screen fixed z-30 ${
         isMobile ? (isOpenSidebar ? 'sidebar-open' : 'sidebar-closed') : 'sidebar-open'
     }`;
 
@@ -83,13 +83,13 @@ const Sidebar: React.FC = () => {
         <>
             {isMobile && isOpenSidebar && <div className="overlay-sidebar active-overlay" />}
             <div ref={sidebarRef} className={sidebarClass}>
-                <div className="w-fulll all-center h-[90px]">
+                <div className="w-fulll all-center xl:h-[6vw] sm:h-[10vw] h-[20vw]">
                     <Link to={'#'}>
-                        <img src={images.logoTravelS} alt="Logo Travel" className="w-[8vw]" />
+                        <img src={images.logoTravelS} alt="Logo Travel" className="xl:w-[8vw] sm:w-[12vw] w-[24vw]" />
                     </Link>
                 </div>
                 <UserInfo />
-                <div className="p-4">
+                <div className="p-[0.5vw]">
                     <Link to={'/'} className="font-bold flex gap-4 items-center item-sidebar p-2 rounded-lg text-menu active-items ">
                         <img src={images.DashBoard} alt="Logo DashBoard" className="w-10" />
                         <p>Tổng quan</p>

@@ -5,12 +5,14 @@ interface ISpendingBox {
 }
 const SpendingBox = ({ title, money, img }: ISpendingBox) => {
     return (
-        <div className="bg-white py-3 xl:px-4 px-6 rounded-xl xl:w-2/4 w-full shadow-custom-5 bai-jamjuree box-total">
-            <h1 className="text-xl text-box font-semibold text-[#334155] uppercase">{title}</h1>
-            <div className="flex gap-2 justity-between items-center w-full">
-                <p className="text-2xl text-box font-semibold w-1/2">{money}</p>
-                <div className="container w-1/2 flex justify-end">
-                    <img src={img} alt="Items total" width={80} height={80} className="scale-icon" />
+        <div className="bg-white xl:py-[1.4vw] py-[2vw] xl:px-[1vw] sm:px-[1.4vw] px-[6vw] rounded-xl xl:w-[20vw] sm:w-[45.5vw] w-[46.6vw] shadow-custom-5 bai-jamjuree box-total">
+            <div className="flex flex-col justify-between h-full">
+                <h1 className="text-title text-[#334155] uppercase truncate mb-[0.2vw]">{title}</h1>
+                <div className="flex gap-2 justify-between items-center w-full">
+                    <p className="text-content flex-1 truncate">{money}</p>
+                    <div className="flex-shrink-0">
+                        <img src={img} alt="Items total" className="scale-icon xl:w-[5vw] sm:w-[10vw] w-[14vw]" />
+                    </div>
                 </div>
             </div>
         </div>

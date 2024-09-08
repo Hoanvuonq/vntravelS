@@ -9,7 +9,7 @@ const MainLayout = ({ children }: { children: ReactNode }) => {
                 <Sidebar />
                 <div className="w-full content-children ">
                     <Navbar />
-                    <div className="pl-6 pb-6 pr-4 w-full pt-24">{children}</div>
+                    <div className="pl-[1vw] pb-[1.5vw] pr-[1vw] w-full xl:pt-[6vw] pt-[17vw]">{children}</div>
                 </div>
                 <div className="overlay-sidebar" />
             </div>

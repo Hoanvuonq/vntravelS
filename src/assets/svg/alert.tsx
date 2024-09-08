@@ -2,11 +2,12 @@ import React from 'react';
 
 interface AlertSVGProps extends React.SVGProps<SVGSVGElement> {
     style?: React.CSSProperties;
+    className?: string;
 }
 
-export const AlertSVG: React.FC<AlertSVGProps> = ({ style, ...props }) => {
+export const AlertSVG: React.FC<AlertSVGProps> = ({ style, className, ...props }) => {
     return (
-        <svg width="1vw" height="1vw" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block', ...style }}>
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block', ...style }} className={className}>
             <path
                 fillRule="evenodd"
                 clipRule="evenodd"

@@ -1,7 +1,8 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { Dispatch } from '@reduxjs/toolkit';
 import { IUser } from './type';
-import { loginStart, loginSuccess, loginFailed, logoutStart, logoutFailed, logoutSuccess, tokenExpired } from '../../slice/authSlice';
+import { loginStart, loginSuccess, loginFailed, logoutStart, logoutFailed, logoutSuccess, tokenExpired, getUserInfoStart, getUserInfoSuccess, getUserInfoFailed } from '../../slice/authSlice';
+import { jwtDecode } from 'jwt-decode';
 
 interface LoginResponse {
     success: boolean;
@@ -34,49 +35,127 @@ export const loginUser = async (user: IUser, dispatch: Dispatch<any>): Promise<L
     }
 };
 
-export const logOutUser = (dispatch: Dispatch<any>, navigate: any) => {
+export const logOutUser = async (dispatch: Dispatch<any>, navigate: any) => {
     dispatch(logoutStart());
     try {
         localStorage.removeItem('accessToken');
-
         dispatch(logoutSuccess());
-        navigate('/');
+        navigate('/login');
+
+        axios
+            .post(
+                'http://localhost:1510/api/user/logout',
+                {},
+                {
+                    withCredentials: true,
+                },
+            )
+            .catch((error) => {
+                console.error('Failed to connect to logout API:', error);
+            });
     } catch (error: any) {
-        dispatch(logoutFailed());
-
+        console.error('Logout failed:', error);
+        let errorMessage = 'An error occurred during logout';
         if (error.response) {
-            console.error('Response data:', error.response.data);
+            errorMessage = error.response.data.message || errorMessage;
             console.error('Response status:', error.response.status);
-            console.error('Response headers:', error.response.headers);
+        } else if (error.request) {
+            console.error('No response received:', error.request);
         } else {
-            console.error('Error message:', error.message || error);
+            console.error('Error setting up request:', error.message);
         }
-
-        navigate('/');
+        dispatch(logoutFailed());
     }
 };
 
-export const axiosJWT = async (config: any, dispatch: Dispatch<any>) => {
+export const createAxiosJWT = (dispatch: Dispatch<any>): AxiosInstance => {
+    const axiosJWT = axios.create({
+        baseURL: 'http://localhost:1510/api/user',
+        withCredentials: true,
+    });
+
+    axiosJWT.interceptors.request.use(
+        async (config) => {
+            if (checkTokenExpiration()) {
+                const refreshSuccess = await refreshToken(dispatch);
+                if (!refreshSuccess) {
+                    dispatch(tokenExpired());
+                    window.location.href = '/login';
+                    return Promise.reject('Token expired');
+                }
+            }
+            const token = localStorage.getItem('accessToken');
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
+            return config;
+        },
+        (error) => Promise.reject(error),
+    );
+
+    axiosJWT.interceptors.response.use(
+        (response) => response,
+        async (error) => {
+            if (error.response?.status === 401) {
+                dispatch(tokenExpired());
+                window.location.href = '/login';
+            }
+            return Promise.reject(error);
+        },
+    );
+
+    return axiosJWT;
+};
+
+export const checkTokenExpiration = () => {
     const token = localStorage.getItem('accessToken');
     if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+        const decodedToken: any = jwtDecode(token);
+        return decodedToken.exp && decodedToken.exp * 1000 < Date.now();
     }
+    return false;
+};
+
+export const refreshToken = async (dispatch: Dispatch<any>) => {
     try {
-        const response = await axios(config);
-        return response;
-    } catch (error: any) {
-        if (error.response) {
-            console.error('Response data:', error.response.data);
-            console.error('Response status:', error.response.status);
-            console.error('Response headers:', error.response.headers);
+        const res = await axios.post('http://localhost:1510/api/user/refreshToken', {}, { withCredentials: true });
+        if (res.data && res.data.status) {
+            const { accessToken } = res.data.data;
+            localStorage.setItem('accessToken', accessToken);
+            dispatch(loginSuccess({ user: res.data.data, token: accessToken }));
+            return true;
+        }
+        return false;
+    } catch (error) {
+        console.error('Refresh token failed:', error);
+        dispatch(tokenExpired());
+        return false;
+    }
+};
+
+export const getUserInformationByToken = async (dispatch: Dispatch<any>) => {
+    dispatch(getUserInfoStart());
+    try {
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            throw new Error('No access token found');
+        }
+
+        const res = await axios.get('http://localhost:1510/api/user/userInfo', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Cache-Control': 'no-cache',
+                Pragma: 'no-cache',
+            },
+        });
+
+        if (res.data && res.data.status) {
+            dispatch(getUserInfoSuccess(res.data.data));
         } else {
-            console.error('Error message:', error.message || error);
+            dispatch(getUserInfoFailed());
         }
-        if (error.response?.status === 401) {
-            localStorage.removeItem('accessToken');
-            dispatch(tokenExpired());
-            window.location.href = '/';
-        }
-        throw error;
+    } catch (error) {
+        console.error('Get user information failed:', error);
+        dispatch(getUserInfoFailed());
     }
 };
