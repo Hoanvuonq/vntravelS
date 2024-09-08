@@ -33,6 +33,7 @@ const MenuList: React.FC = () => {
         try {
             await logOutUser(dispatch, navigate);
             ToastProvider('success', 'Đã đăng xuất thành công');
+            handleClose();
         } catch (error) {
             ToastProvider('error', 'Không thể đăng xuất');
         }
@@ -43,14 +44,14 @@ const MenuList: React.FC = () => {
 
     const MenuListNavbar = useMemo(() => {
         return listMenu.map(({ link, title, isSearchParams }, index) => (
-            <Link key={index} to={{ pathname: `/${link}`, search: isSearchParams ? `?tabPayment=${link}` : '' }}>
+            <Link key={index} to={{ pathname: `/${link}`, search: isSearchParams ? `?tabPayment=${link}` : '' }} onClick={handleClose}>
                 <li className="py-2 bai-jamjuree flex gap-3 items-center text-[#000] px-3 hover:bg-[#f1f1f1] rounded-lg font-medium">
                     <img src={images[`Menu${index + 1}`]} alt="icon menu" width={40} height={40} className="scale-icon" />
                     {title}
                 </li>
             </Link>
         ));
-    }, [listMenu]);
+    }, [listMenu, handleClose]);
 
     return (
         <div>

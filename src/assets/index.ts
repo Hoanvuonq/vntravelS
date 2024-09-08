@@ -42,4 +42,7 @@ export const images: any = {
     Trip6: require('./img/location-trip-06.png'),
     Trip7: require('./img/location-trip-07.png'),
     Trip8: require('./img/location-trip-08.jpg'),
+    Vietcombank: require('./img/vietcombank.png'),
+    qrCode: require('./img/qr-code.png'),
+    IconNote: require('./img/icon-note.png'),
 };

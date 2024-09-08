@@ -126,3 +126,46 @@
         line-height: 4vw;
     }
 }
+
+.bank-card {
+    font-family: "Quicksand", sans-serif;
+    color: #fff;
+    .vietcombank {
+        font-size: 1.6vw;
+        line-height: 1vw;
+        @media (max-width: 1024px) {
+            font-size: 5vw;
+        }
+    }
+    .bank-name {
+        font-weight: 700;
+        font-size: 1vw;
+        line-height: 1vw;
+        font-style: normal;
+        letter-spacing: 3px;
+        @media (max-width: 1024px) {
+            font-size: 3vw;
+            line-height: 3vw;
+        }
+    }
+    .bank-number {
+        font-weight: 700;
+        font-size: 2vw;
+        line-height: 1vw;
+        font-style: normal;
+        letter-spacing: 3px;
+        @media (max-width: 1024px) {
+            font-size: 5vw;
+            line-height: 3vw;
+        }
+    }
+    .content-payment {
+        font-weight: 400;
+        font-size: 1vw;
+        line-height: 1vw;
+        @media (max-width: 1024px) {
+            font-size: 3vw;
+            line-height: 3vw;
+        }
+    }
+}

@@ -83,6 +83,10 @@ body {
     z-index: 20;
 }
 
+.shadow-custom-2 {
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
 .shadow-custom-3 {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
@@ -166,4 +170,43 @@ body {
     &:hover {
         background-position: bottom;
     }
+}
+
+.bank_box {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    // height: 255px;
+    border-radius: 24px;
+    box-shadow: 4px 6px 13px 0 rgba(0, 0, 0, 0.19);
+    background-image: linear-gradient(to bottom, #48eb5ed0 0%, #53da46f1 100%);
+    position: relative;
+    &::before {
+        content: url(../../src/assets/svg/bg-bank.svg);
+        position: absolute;
+        left: 50px;
+        top: 0;
+        z-index: 2;
+        pointer-events: none;
+        transition: transform 0.3s ease;
+        @media (max-width: 1024px) {
+            display: none;
+        }
+    }
+}
+
+.success {
+    color: #1adf31;
+    font-weight: 600;
+}
+
+.error {
+    color: #f70707;
+    font-weight: 600;
+}
+
+.warning {
+    color: #d4e20d;
+    font-weight: 600;
 }

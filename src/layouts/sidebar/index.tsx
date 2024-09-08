@@ -36,7 +36,9 @@ const Sidebar: React.FC = () => {
     };
 
     const handleMenuClick = () => {
-        dispatch(toggleSidebar(false));
+        if (isMobile) {
+            dispatch(toggleSidebar(false));
+        }
     };
 
     const sidebarClass = `sidebar w-full xl:max-w-[15.8vw] max-w-[76vw] bg-white border-r overflow-y-auto border-[#e5e9f2] bai-jamjuree shadow-custom-4 rounded-[0.5vw] h-screen fixed z-30 ${
@@ -90,7 +92,7 @@ const Sidebar: React.FC = () => {
                 </div>
                 <UserInfo />
                 <div className="p-[0.5vw]">
-                    <Link to={'/'} className="font-bold flex gap-4 items-center item-sidebar p-2 rounded-lg text-menu active-items ">
+                    <Link to={'/'} className="font-bold flex gap-4 items-center item-sidebar p-2 rounded-lg text-menu active-items" onClick={handleMenuClick}>
                         <img src={images.DashBoard} alt="Logo DashBoard" className="w-10" />
                         <p>Tổng quan</p>
                     </Link>
@@ -100,7 +102,9 @@ const Sidebar: React.FC = () => {
                     <div className="font-bold text-menu flex items-center justify-between item-sidebar-dropdown text-itemsMenu p-2 rounded-lg cursor-pointer">
                         <div className="flex gap-4 items-center">
                             <img src={images.evaluate} alt="Items Facebook" className="w-10" />
-                            <Link to={'/evaluate'}>Đánh giá</Link>
+                            <Link to={'/evaluate'} onClick={handleMenuClick}>
+                                Đánh giá
+                            </Link>
                         </div>
                     </div>
                     <div

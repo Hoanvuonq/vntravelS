@@ -7,6 +7,7 @@ import Home from './pages/home';
 import Evaluate from './pages/evaluate';
 import Profile from './layouts/profile';
 import ChangePassword from './layouts/changePassword';
+import Wallet from './layouts/wallet';
 
 const routes = createBrowserRouter([
     { path: '/login', element: <ProtectedLogin /> },
@@ -43,6 +44,15 @@ const routes = createBrowserRouter([
             </MainLayout>
         ),
     },
+    {
+        path: '/wallet',
+        element: (
+            <MainLayout>
+                <Wallet />
+            </MainLayout>
+        ),
+    },
+
     // {
     //     element: <ProtectedRoute />,
     //     children: [
