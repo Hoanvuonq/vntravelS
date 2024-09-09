@@ -79,8 +79,8 @@ const Login = () => {
                         <Input
                             icon="user"
                             type="text"
-                            Label="Tên / Số Điện Thoại"
-                            placeholder="TÊN / SỐ ĐIỆN THOẠI"
+                            Label="Ten / So Dien Thoai"
+                            placeholder="Ten / So Dien Thoai"
                             hasError={!!errors.username || !!errors.phone}
                             register={register}
                             name="username"
@@ -89,8 +89,8 @@ const Login = () => {
                         <Input
                             icon="lock"
                             type="password"
-                            Label="Mật khẩu"
-                            placeholder="MẬT KHẨU"
+                            Label="Mat Khau"
+                            placeholder="Mat Khau"
                             hasError={!!errors.password}
                             register={register}
                             name="password"

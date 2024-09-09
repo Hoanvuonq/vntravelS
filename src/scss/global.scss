@@ -10,6 +10,11 @@ body {
     justify-content: center;
     align-items: center;
 }
+.all-start{
+    display: flex;
+    justify-content: start;
+    align-items: start;
+}
 
 .input-log::placeholder {
     font-weight: bold;
@@ -210,3 +215,16 @@ body {
     color: #d4e20d;
     font-weight: 600;
 }
+
+@keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .animate-spin {
+    animation: spin 3s linear infinite;
+  }

@@ -12,8 +12,8 @@ import { useEffect } from 'react';
 const listMenu = [
     { link: 'payment', title: 'Nạp tiền', isSearchParams: true },
     { link: 'profile', title: 'Thông tin' },
-    { link: '/', title: 'Đổi mật khẩu' },
-    { link: '/', title: 'Chế dộ màu tối' },
+    { link: '', title: 'Đổi mật khẩu' },
+    { link: '', title: 'Chế dộ màu tối' },
 ];
 
 const MenuList: React.FC = () => {

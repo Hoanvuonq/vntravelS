@@ -45,4 +45,8 @@ export const images: any = {
     Vietcombank: require('./img/vietcombank.png'),
     qrCode: require('./img/qr-code.png'),
     IconNote: require('./img/icon-note.png'),
+    paymentSuccess: require('./img/payment-success.png'),
+    paymentError: require('./img/payment-error.png'),
+    paymentPending: require('./img/payment-pending.png'),
+    withdrawMoney: require('./img/withdraw-money.png'),
 };

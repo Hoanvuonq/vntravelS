@@ -1,0 +1,132 @@
+.progress {
+    --bs-progress-height: 0.75rem;
+    --bs-progress-font-size: 0.75rem;
+    --bs-progress-bg: #f1f0f2;
+    --bs-progress-border-radius: 3.125rem;
+    --bs-progress-box-shadow: var(--bs-box-shadow-inset);
+    --bs-progress-bar-color: #fff;
+    --bs-progress-bar-bg: #7367f0;
+    --bs-progress-bar-transition: width 0.6s ease;
+    display: flex;
+    height: var(--bs-progress-height);
+    overflow: hidden;
+    font-size: var(--bs-progress-font-size);
+    background-color: var(--bs-progress-bg);
+    border-radius: var(--bs-progress-border-radius);
+    .progress-bar {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: hidden;
+        color: var(--bs-progress-bar-color);
+        text-align: center;
+        white-space: nowrap;
+        transition: var(--bs-progress-bar-transition);
+        &:first-child {
+            border-top-left-radius: 3.125rem;
+            border-bottom-left-radius: 3.125rem;
+        }
+        &:last-child {
+            border-top-right-radius: 3.125rem;
+            border-bottom-right-radius: 3.125rem;
+        }
+    }
+}
+
+.facebook {
+    background-color: #0866ff;
+    animation: progressBarWidthFacebook 2s ease-out forwards;
+}
+
+.shopee {
+    background-color: #fd5621;
+    animation: progressBarWidthShopee 2s ease-out forwards;
+}
+
+.telegram {
+    background-color: #10b0e7;
+    animation: progressBarWidthTelegram 2s ease-out forwards;
+}
+
+.twitter {
+    background-color: #1b2325;
+    animation: progressBarWidthTwitter 2s ease-out forwards;
+}
+
+.tiktok {
+    background-color: #000;
+    animation: progressBarWidthTiktok 2s ease-out forwards;
+}
+
+.instagram {
+    background-color: #fe0092;
+    animation: progressBarWidthInstagram 2s ease-out forwards;
+}
+
+.google {
+    background-color: #4bb14f;
+    animation: progressBarWidthGoogle 2s ease-out forwards;
+}
+
+@keyframes progressBarWidthFacebook {
+    from {
+        width: 0;
+    }
+    to {
+        width: 90%;
+    }
+}
+
+@keyframes progressBarWidthShopee {
+    from {
+        width: 0;
+    }
+    to {
+        width: 20%;
+    }
+}
+
+@keyframes progressBarWidthTelegram {
+    from {
+        width: 0;
+    }
+    to {
+        width: 13%;
+    }
+}
+
+@keyframes progressBarWidthTwitter {
+    from {
+        width: 0;
+    }
+    to {
+        width: 19%;
+    }
+}
+
+@keyframes progressBarWidthTiktok {
+    from {
+        width: 0;
+    }
+    to {
+        width: 35%;
+    }
+}
+
+@keyframes progressBarWidthInstagram {
+    from {
+        width: 0;
+    }
+    to {
+        width: 33%;
+    }
+}
+
+@keyframes progressBarWidthGoogle {
+    from {
+        width: 0;
+    }
+    to {
+        width: 47%;
+    }
+}

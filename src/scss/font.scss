@@ -1,15 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500;600&family=Roboto:ital,wght@0,300;1,300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nerko+One&display=swap');
 
 
 .bai-jamjuree {
     font-family: 'Bai Jamjuree', sans-serif;
 }
 
+.nerko-one-regular {
+    font-family: "Nerko One", cursive;
+    font-weight: 400;
+}
+
 .text-poppins {
     font-family: 'Poppins', sans-serif;
 }
-
 
 .level {
     .text-title {
@@ -25,7 +30,7 @@
 .box-total {
     .text-title {
         font-size: 1.2vw;
-        line-height: 1.2vw;
+        line-height: 1.6vw;
         font-weight: 700;
         @media (max-width: 1024px) {
             font-size: 3vw;
@@ -166,6 +171,28 @@
         @media (max-width: 1024px) {
             font-size: 3vw;
             line-height: 3vw;
+        }
+    }
+}
+
+.wallet-item {
+    .text-title {
+        font-size: 1vw;
+        line-height: 1vw;
+        font-weight: 700;
+        @media (max-width: 1024px) {
+            font-size: 3.5vw;
+            line-height: 5vw;
+        }
+    }
+
+    .text-content {
+        font-size: 0.8vw;
+        line-height: 0.8vw;
+        color: #166be0;
+        @media (max-width: 1024px) {
+            font-size: 3vw;
+            line-height: 4vw;
         }
     }
 }

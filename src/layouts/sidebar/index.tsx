@@ -107,17 +107,14 @@ const Sidebar: React.FC = () => {
                             </Link>
                         </div>
                     </div>
-                    <div
-                        className={`font-bold text-menu flex items-center justify-between item-sidebar-dropdown text-itemsMenu p-2 rounded-lg cursor-pointer dropdown-toggle ${dropDown ? 'dropdown-active' : ''}`}
-                        onClick={toggleDropdown}
-                    >
+                    <div className="font-bold text-menu flex items-center justify-between item-sidebar-dropdown text-itemsMenu p-2 rounded-lg cursor-pointer">
                         <div className="flex gap-4 items-center">
-                            <img src={images.wallet} alt="Items Evaluate" className="w-10" />
-                            <p>Ví tiền</p>
+                            <img src={images.wallet} alt="Items Facebook" className="w-10" />
+                            <Link to={'/wallet'} onClick={handleMenuClick}>
+                                Ví tiền
+                            </Link>
                         </div>
-                        <img src={images.arrowDown} alt="arrow Down" className={`w-3 arrow ${dropDown ? 'rotate' : ''}`} />
                     </div>
-                    <ul className={`pl-6 menu-dropdown ${dropDown ? 'dropdown-active' : ''}`}>{MenuList}</ul>
                 </div>
             </div>
         </>

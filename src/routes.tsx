@@ -7,8 +7,8 @@ import Home from './pages/home';
 import Evaluate from './pages/evaluate';
 import Profile from './layouts/profile';
 import ChangePassword from './layouts/changePassword';
-import Wallet from './layouts/wallet';
-
+import Payment from './pages/payment';
+import Wallet from './pages/wallet';
 const routes = createBrowserRouter([
     { path: '/login', element: <ProtectedLogin /> },
     { path: '/register', element: <Register /> },
@@ -41,6 +41,14 @@ const routes = createBrowserRouter([
         element: (
             <MainLayout>
                 <ChangePassword />
+            </MainLayout>
+        ),
+    },
+    {
+        path: '/payment',
+        element: (
+            <MainLayout>
+                <Payment />
             </MainLayout>
         ),
     },
@@ -85,6 +93,14 @@ const routes = createBrowserRouter([
     //             element: (
     //                 <MainLayout>
     //                     <ChangePassword />
+    //                 </MainLayout>
+    //             ),
+    //         },
+    //         {
+    //             path: '/wallet',
+    //             element: (
+    //                 <MainLayout>
+    //                     <Wallet />
     //                 </MainLayout>
     //             ),
     //         },

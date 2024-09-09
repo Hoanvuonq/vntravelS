@@ -18,7 +18,10 @@ module.exports = {
         colorBorder: "#0ec6ec",
         bgNote: "#e5fbfd",
         titleTabs: "#677788",
-        colorVCB: "#007345"
+        colorVCB: "#007345",
+        success: "#1adf31",
+        error: "#f70707",
+        warning: "#d4e20d",
       },
 
       maxWidth: {
