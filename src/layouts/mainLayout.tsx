@@ -12,7 +12,7 @@ const MainLayout = ({ children }: { children: ReactNode }) => {
                     <Navbar />
                     <div className="pl-[1vw] pb-[1.5vw] pr-[1vw] w-full xl:pt-[6vw] pt-[17vw] xl:pb-[1.5vw] pb-[26vw]">{children}</div>
                 </div>
-                <div className="xl:hidden fixed bottom-0 w-full">
+                <div className="xl:hidden fixed z-10 bottom-0 w-full">
                     <Taskbar />
                 </div>
                 <div className="overlay-sidebar" />

@@ -20,7 +20,7 @@ const UserInfo = () => {
             <img src={images.Avatar} alt="avatar" className="rounded-full xl:w-[2vw] sm:w-[4vw] w-[10vw] xl:border-[0.2vw] border-[1vw] border-orange" />
             <div className="flex items-center xl:gap-[0.4vw] gap-[2vw] py-[0.5vw]">
                 <h1 className="text-username bai-jamjuree">{username}</h1>
-                <span>-</span>
+                <span className="text-username">-</span>
                 <p className="text-[#8094ae] text-level bai-jamjuree">Khách hàng</p>
             </div>
             <div className="flex xl:gap-[0.2vw] sm:gap-[0.4vw] gap-[1.6vw] items-center">

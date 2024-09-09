@@ -84,7 +84,7 @@
 // Navbar
 
 .header {
-    width: calc(100% - 320px);
+    width: calc(100% - 16.4vw);
     transition: transform 0.3s ease;
     @media (max-width: 1024px) {
         transition: transform 0.3s ease;
@@ -93,7 +93,7 @@
 }
 
 .content-children {
-    padding-left: 300px;
+    padding-left: 15.5vw;
     @media (max-width: 1024px) {
         transition: transform 0.3s ease;
         padding-left: 0;

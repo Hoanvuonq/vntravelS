@@ -49,4 +49,6 @@ export const images: any = {
     paymentError: require('./img/payment-error.png'),
     paymentPending: require('./img/payment-pending.png'),
     withdrawMoney: require('./img/withdraw-money.png'),
+    QrRef: require('./img/ref-qr.png'),
+    iconChat: require('./img/advise.png'),
 };

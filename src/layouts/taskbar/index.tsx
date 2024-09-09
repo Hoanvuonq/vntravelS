@@ -19,10 +19,10 @@ const Taskbar = () => {
     const location = useLocation();
 
     const taskbarItems = useMemo(() => {
-        return listTaskBar.map((item, index) => (
-            <Link key={index} to={item.link} className={`flex flex-col items-center justify-center w-1/4 ${location.pathname === item.link ? 'text-orange' : 'text-black'}`}>
-                <img src={item.images} alt={item.title} className="w-[10vw] h-[10vw] mb-1" />
-                <p className="text-[2.5vw] font-medium">{item.title}</p>
+        return listTaskBar.map(({ title, link, images }, index) => (
+            <Link key={index} to={link} className={`flex flex-col items-center justify-center w-1/4 ${location.pathname === link ? 'text-orange' : 'text-black'}`}>
+                <img src={images} alt={title} className="w-[10vw] h-[10vw] mb-1" />
+                <p className="text-[2.5vw] font-medium">{title}</p>
             </Link>
         ));
     }, [location.pathname]);

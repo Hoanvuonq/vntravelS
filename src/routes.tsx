@@ -5,7 +5,7 @@ import MainLayout from 'layouts/mainLayout';
 import Register from './pages/register';
 import Home from './pages/home';
 import Evaluate from './pages/evaluate';
-import Profile from './layouts/profile';
+import Profile from './pages/profile';
 import ChangePassword from './layouts/changePassword';
 import Payment from './pages/payment';
 import Wallet from './pages/wallet';

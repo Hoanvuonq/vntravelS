@@ -9,7 +9,7 @@ interface IBoxTotal {
 
 const BoxTotal = ({ title, content, img, isUnlocked, backgroundColor }: IBoxTotal) => {
     return (
-        <div className={`py-[1vw] xl:px-[1vw] px-[1.5vw] rounded-xl w-full shadow-custom-5 bai-jamjuree box-total relative`} style={{ backgroundColor }}>
+        <div className={`py-[1vw] xl:px-[1vw] px-[1.5vw] xl:rounded-[1vw] rounded-[2vw] w-full shadow-custom-5 bai-jamjuree box-total relative`} style={{ backgroundColor }}>
             {!isUnlocked && <img src={images.Block} alt="Blocked" className="absolute xl:w-[1vw] w-[3vw] xl:top-[1vw] top-[3vw] xl:right-[1vw] right-[3vw]" />}
             <div className="all-center flex-col">
                 <img src={img} alt="Items total" className="scale-icon xl:w-[5vw] w-[20vw]" />

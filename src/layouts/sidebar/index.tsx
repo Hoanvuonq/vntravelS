@@ -13,14 +13,9 @@ interface MenuItem {
     componentDetail: string;
 }
 
-const listMenu: MenuItem[] = [
-    { title: 'Tăng like bài viết FB', money: 12, link: '/like-post-fb', componentDetail: 'BuffLikePost' },
-    { title: 'Tăng share bài viết FB', money: 300, link: '/share-post-fb', componentDetail: 'SharePostFB' },
-    { title: 'Tăng Comment FB', money: 300, link: '/buff-comment-fb', componentDetail: 'BuffCommentFB' },
-    { title: 'Tăng like cho Bình luận', money: 60, link: '#', componentDetail: 'BuffLikeComment' },
-    { title: 'Tăng mắt LiveStream', money: 3, link: '/buff-view-livestream', componentDetail: 'BuffEyeLiveStream' },
-    { title: 'Tăng like, follow Fanpage', money: 35, link: '#', componentDetail: 'BuffLikePage' },
-    { title: 'Đánh giá Fanpage', money: 35, link: '#', componentDetail: 'ReviewPage' },
+const sidebarMenuItems = [
+    { title: 'Đánh giá', icon: images.evaluate, link: '/evaluate' },
+    { title: 'Ví tiền', icon: images.wallet, link: '/wallet' },
 ];
 
 const Sidebar: React.FC = () => {
@@ -31,10 +26,6 @@ const Sidebar: React.FC = () => {
     const sidebarRef = useRef<HTMLDivElement>(null);
     const location: Location = useLocation();
 
-    const toggleDropdown = () => {
-        setDropDown(!dropDown);
-    };
-
     const handleMenuClick = () => {
         if (isMobile) {
             dispatch(toggleSidebar(false));
@@ -44,19 +35,6 @@ const Sidebar: React.FC = () => {
     const sidebarClass = `sidebar w-full xl:max-w-[15.8vw] max-w-[76vw] bg-white border-r overflow-y-auto border-[#e5e9f2] bai-jamjuree shadow-custom-4 rounded-[0.5vw] h-screen fixed z-30 ${
         isMobile ? (isOpenSidebar ? 'sidebar-open' : 'sidebar-closed') : 'sidebar-open'
     }`;
-
-    const MenuList = useMemo(() => {
-        return listMenu.map(({ link, title, money }, index) => (
-            <li
-                key={index}
-                className={`py-2 cursor-pointer ${location.pathname === link ? 'text-orange' : 'text-gray-700'} hover:text-orange font-semibold flex items-center justify-between pr-4`}
-                onClick={handleMenuClick}
-            >
-                <Link to={link}>{title}</Link>
-                <p className="text-sm text-[#ff742f] font-bold">{money}đ</p>
-            </li>
-        ));
-    }, listMenu);
 
     useEffect(() => {
         const handleResize = () => {
@@ -85,36 +63,30 @@ const Sidebar: React.FC = () => {
         <>
             {isMobile && isOpenSidebar && <div className="overlay-sidebar active-overlay" />}
             <div ref={sidebarRef} className={sidebarClass}>
-                <div className="w-fulll all-center xl:h-[6vw] sm:h-[10vw] h-[20vw]">
+                <div className="w-fulll all-center xl:h-[6vw] sm:h-[10vw] h-[24vw]">
                     <Link to={'#'}>
-                        <img src={images.logoTravelS} alt="Logo Travel" className="xl:w-[8vw] sm:w-[12vw] w-[24vw]" />
+                        <img src={images.logoTravelS} alt="Logo Travel" className="xl:w-[8vw] sm:w-[12vw] w-[32vw]" />
                     </Link>
                 </div>
                 <UserInfo />
                 <div className="p-[0.5vw]">
-                    <Link to={'/'} className="font-bold flex gap-4 items-center item-sidebar p-2 rounded-lg text-menu active-items" onClick={handleMenuClick}>
-                        <img src={images.DashBoard} alt="Logo DashBoard" className="w-10" />
-                        <p>Tổng quan</p>
+                    <Link to={'/'} className="font-bold flex gap-[0.4vw] items-center item-sidebar xl:p-[0.5vw] p-[1.5vw] xl:rounded-[0.5vw] rounded-[2vw] text-menu active-items" onClick={handleMenuClick}>
+                        <img src={images.DashBoard} alt="Logo DashBoard" className="xl:w-[2.5vw] w-[10vw]" />
+                        <p className="text-overview">Tổng quan</p>
                     </Link>
                 </div>
-                <p className="py-2 px-3 font-bold text-lg">Danh Mục</p>
-                <div className="py-1 px-4">
-                    <div className="font-bold text-menu flex items-center justify-between item-sidebar-dropdown text-itemsMenu p-2 rounded-lg cursor-pointer">
-                        <div className="flex gap-4 items-center">
-                            <img src={images.evaluate} alt="Items Facebook" className="w-10" />
-                            <Link to={'/evaluate'} onClick={handleMenuClick}>
-                                Đánh giá
-                            </Link>
+                <p className="xl:py-[0.4vw] xl:px-[0.8vw] py-[2vw] px-[3vw] text-directory">Danh Mục</p>
+                <div className="py-[0.2vw] px-[1w]">
+                    {sidebarMenuItems.map((item, index) => (
+                        <div key={index} className="font-bold text-menu flex items-center justify-between item-sidebar-dropdown text-itemsMenu xl:p-[0.4vw] p-[1.5vw] xl:rounded-[0.5vw] rounded-[2vw] cursor-pointer">
+                            <div className="flex gap-[0.4vw] items-center">
+                                <img src={item.icon} alt={`Icon for ${item.title}`} className="xl:w-[2vw] w-[10vw]" />
+                                <Link to={item.link} className="text-item" onClick={handleMenuClick}>
+                                    {item.title}
+                                </Link>
+                            </div>
                         </div>
-                    </div>
-                    <div className="font-bold text-menu flex items-center justify-between item-sidebar-dropdown text-itemsMenu p-2 rounded-lg cursor-pointer">
-                        <div className="flex gap-4 items-center">
-                            <img src={images.wallet} alt="Items Facebook" className="w-10" />
-                            <Link to={'/wallet'} onClick={handleMenuClick}>
-                                Ví tiền
-                            </Link>
-                        </div>
-                    </div>
+                    ))}
                 </div>
             </div>
         </>

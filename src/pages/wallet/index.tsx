@@ -31,7 +31,7 @@ const Wallet = () => {
             </div>
             <div className="flex flex-col w-full">
                 <Chart />
-                <div className="bg-white w-full shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] all-center  xl:py-[1vw] py-[2vw] flex-col px-[2vw] xl:gap-[1vw] gap-[6vw] level">
+                <div className="bg-white w-full shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] all-center xl:py-[1vw] py-[8vw] flex-col px-[2vw] xl:gap-[1vw] gap-[6vw] level">
                     <div className="all-center w-full flex-col xl:gap-[1vw] gap-[3vw]">
                         <div className="w-full">
                             <TextTitle title="Phân Tích Thu Nhập" />
@@ -40,7 +40,7 @@ const Wallet = () => {
                             <div className="xl:block hidden">
                                 <BoxTotal title="Tổng Tài Sản" money="0" img={images[`Total4`]} />
                             </div>
-                            <div className="bg-white all-center flex-col xl:gap-[2vw] gap-[3vw] xl:w-[40vw] w-full shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:px-[1.5vw] px-[3vw] xl:py-[1.2vw] py-[5vw]">
+                            <div className="bg-white all-center flex-col xl:gap-[2vw] gap-[3vw] xl:w-[40vw] w-full shadow-custom-5 xl:rounded-[1vw] rounded-[3vw] xl:px-[1.5vw] px-[3vw] xl:py-[1.2vw] py-[5vw]">
                                 <div className="flex justify-between items-center w-full  wallet-item">
                                     <div className="flex flex-col xl:gap-[0.5vw] gap-[1vw] ">
                                         <p className="text-title">0</p>
@@ -56,9 +56,9 @@ const Wallet = () => {
                     </div>
                     <div className="flex justify-center gap-[2vw]">
                         <div className="xl:w-[20vw] w-auto"></div>
-                        <div className="bg-white all-start flex-col xl:gap-[1vw] gap-[3vw] xl:w-[40vw] w-full shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[2vw]">
+                        <div className="bg-white all-start flex-col xl:gap-[1vw] gap-[3vw] xl:w-[40vw] w-full shadow-custom-5 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[2vw]">
                             <div className="border-b-[0.2vw] pb-[1vw] border-[#E2E8F0] w-full">
-                                <h1>Thông Tin Chi Tiết Quỹ</h1>
+                                <h1 className="font-bold">Thông Tin Chi Tiết Quỹ</h1>
                             </div>
                             <div className="flex flex-col xl:gap-[1vw] gap-[5vw] w-full">
                                 {fundDetails.map(({ icon, title, link, description }, index) => (

@@ -196,3 +196,56 @@
         }
     }
 }
+
+.sidebar {
+    .text-directory {
+        font-size: 1vw;
+        line-height: 1.5vw;
+        font-weight: 700;
+        @media (max-width: 1024px) {
+            font-size: 4vw;
+            line-height: 5vw;
+        }
+    }
+    .text-overview {
+        font-size: 1vw;
+        line-height: 2vw;
+        font-weight: 700;
+        @media (max-width: 1024px) {
+            font-size: 4vw;
+            line-height: 5vw;
+        }
+    }
+
+    .text-item {
+        font-size: 0.9vw;
+        line-height: 1.5vw;
+        font-weight: 700;
+        @media (max-width: 1024px) {
+            font-size: 3.8vw;
+            line-height: 5vw;
+        }
+    }
+}
+
+.inputC {
+    .text-label {
+        font-size: 0.8vw;
+        line-height: 1vw;
+        font-weight: 700;
+        @media (max-width: 1024px) {
+            font-size: 3.5vw;
+            line-height: 5vw;
+        }
+    }
+}
+
+.text-contact {
+    font-size: 0.8vw;
+    line-height: 1vw;
+    font-weight: 700;
+    @media (max-width: 1024px) {
+        font-size: 3.5vw;
+        line-height: 5vw;
+    }
+}
