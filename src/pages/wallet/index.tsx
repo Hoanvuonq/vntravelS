@@ -19,7 +19,7 @@ const Wallet = () => {
                 icon: images.withdrawMoney,
                 title: 'Rút Tiền',
                 description: 'Rút Tiền Về Tài Khoản Ngân Hàng Của Bạn',
-                link: '/wallet/deposit',
+                link: '/withdraw-money',
             },
         ],
         [],
@@ -31,7 +31,7 @@ const Wallet = () => {
             </div>
             <div className="flex flex-col w-full">
                 <Chart />
-                <div className="bg-white w-full shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] all-center xl:py-[1vw] py-[8vw] flex-col px-[2vw] xl:gap-[1vw] gap-[6vw] level">
+                <div className="bg-white w-full shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] all-center xl:py-[1vw] py-[4vw] flex-col px-[2vw] xl:gap-[1vw] gap-[6vw] level">
                     <div className="all-center w-full flex-col xl:gap-[1vw] gap-[3vw]">
                         <div className="w-full">
                             <TextTitle title="Phân Tích Thu Nhập" />
@@ -54,7 +54,7 @@ const Wallet = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="flex justify-center gap-[2vw]">
+                    <div className="flex w-full justify-center gap-[2vw]">
                         <div className="xl:w-[20vw] w-auto"></div>
                         <div className="bg-white all-start flex-col xl:gap-[1vw] gap-[3vw] xl:w-[40vw] w-full shadow-custom-5 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[2vw]">
                             <div className="border-b-[0.2vw] pb-[1vw] border-[#E2E8F0] w-full">

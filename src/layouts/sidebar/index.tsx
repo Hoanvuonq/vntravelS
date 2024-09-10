@@ -6,13 +6,6 @@ import UserInfo from '../userInfo';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleSidebar } from 'redux/slice/sidebarSlice';
 
-interface MenuItem {
-    title: string;
-    money: number;
-    link: string;
-    componentDetail: string;
-}
-
 const sidebarMenuItems = [
     { title: 'Đánh giá', icon: images.evaluate, link: '/evaluate' },
     { title: 'Ví tiền', icon: images.wallet, link: '/wallet' },
@@ -21,10 +14,8 @@ const sidebarMenuItems = [
 const Sidebar: React.FC = () => {
     const dispatch = useDispatch();
     const [isMobile, setIsMobile] = useState(window.innerWidth < 1025);
-    const [dropDown, setDropDown] = useState(false);
     const isOpenSidebar = useSelector((state: RootState) => state.sidebar.isOpenSidebar);
     const sidebarRef = useRef<HTMLDivElement>(null);
-    const location: Location = useLocation();
 
     const handleMenuClick = () => {
         if (isMobile) {

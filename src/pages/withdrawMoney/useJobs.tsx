@@ -1,20 +1,20 @@
 import { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import PaymentDetail from './component/detail';
-import HistoryDetail from './component/history';
+import PaymentDetail from './components/detail';
+import HistoryDetail from './components/history';
 import { ITabs, TabType } from './type';
 import { isEqual } from 'lodash';
 
 const tabItems: ITabs[] = [
     {
         key: 'payment',
-        title: 'Nạp Tiền',
+        title: 'Rút Tiền',
         classActive: 'border-colorBorder text-[#147ed9]',
         classUnactive: 'border-[#b5b5c3] text-[#b5b5c3]',
     },
     {
         key: 'historyPayment',
-        title: 'Lịch Sử Nạp Tiền',
+        title: 'Lịch Sử Rút Tiền',
         classActive: 'border-colorBorder text-[#147ed9]',
         classUnactive: 'border-[#b5b5c3] text-[#b5b5c3]',
     },

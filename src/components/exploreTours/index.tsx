@@ -14,7 +14,7 @@ const ExploreTours = () => {
                     <img src={images[`Post${index + 1}`]} alt="Post List" className="object-cover shadow-custom-3 xl:w-[26vw] w-[50vw] xl:h-[16vw] h-[40vw] xl:rounded-[1vw] rounded-[2vw]" />
                     <p className="text-title">{title}</p>
                     <p className="text-content xl:block hidden">{truncateContent(content, 140)}</p>
-                    <p className="text-content xl:hidden block xl:px-[1vw] px-[2.5vw]">{truncateContent(content, 80)}</p>
+                    <p className="text-content xl:hidden block xl:px-[1vw] px-[2.5vw]">{truncateContent(content, 70)}</p>
                 </div>
             ))}
         </div>

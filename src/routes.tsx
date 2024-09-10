@@ -9,6 +9,9 @@ import Profile from './pages/profile';
 import ChangePassword from './layouts/changePassword';
 import Payment from './pages/payment';
 import Wallet from './pages/wallet';
+import Bank from 'pages/bank';
+import WithdrawMoney from './pages/withdrawMoney';
+
 const routes = createBrowserRouter([
     { path: '/login', element: <ProtectedLogin /> },
     { path: '/register', element: <Register /> },
@@ -57,6 +60,22 @@ const routes = createBrowserRouter([
         element: (
             <MainLayout>
                 <Wallet />
+            </MainLayout>
+        ),
+    },
+    {
+        path: '/bank',
+        element: (
+            <MainLayout>
+                <Bank />
+            </MainLayout>
+        ),
+    },
+    {
+        path: '/withdraw-money',
+        element: (
+            <MainLayout>
+                <WithdrawMoney />
             </MainLayout>
         ),
     },

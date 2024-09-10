@@ -22,7 +22,7 @@ const Home = () => {
 
     return (
         <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw]">
-            <div className="rounded-xl w-full h-full p-[1vw] flex flex-col gap-5 level">
+            <div className="rounded-xl w-full h-full p-[1vw] flex flex-col gap-5 ">
                 <TextTitle title="Cấp Độ Thành Viên" />
                 <div className="grid xl:grid-cols-6 grid-cols-2 xl:gap-[1vw] gap-[4vw] w-full transition-1">{TotalLevelMemo}</div>
             </div>
