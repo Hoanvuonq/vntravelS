@@ -54,6 +54,7 @@ const Navbar: React.FC = () => {
                 <button className="flex p-[0.5vw] hover:bg-[#e1c10014] rounded-xl cursor-pointer xl:hidden" onClick={handleToggleSidebar}>
                     <img src={images.Toogle} alt="Toogle Sidebar" width={20} height={20} />
                 </button>
+                <img src={images.logoTravelS} alt="Logo" className="xl:w-[10vw] w-[30vw] ml-[6vw] xl:hidden block" />
                 <div className="all-center">
                     <img src={images.NotificationIcon} alt="Notification Icon" className="mt-[0.2vw] xl:w-[2vw] sm:w-[4vw] w-[8vw] scale-icon" onClick={handleNotificationClick} />
                     <div className="flex items-center gap-1 cursor-pointer " onClick={handleToggleMenu}>

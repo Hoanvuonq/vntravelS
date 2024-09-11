@@ -99,10 +99,16 @@ const Profile = () => {
                     <TextTitle title="Thông Tin Cá Nhân" />
                 </div>
                 <div className="all-center flex-col xl:gap-[2vw] gap-[8vw] lg:px-[5vw] px-[1vw]">
-                    <div className="bg-editUser rounded-[2vw] xl:h-[8vw] h-[26vw] ">
+                    <div className="bg-editUser relative rounded-[2vw] xl:h-[8vw] h-[26vw] ">
                         <div className="all-center cursor-pointer xl:h-[14vw] h-[46vw]">
                             <img src={images.Avatar} alt="Avatar" className="rounded-full border-[0.3vw] border-orange xl:w-[6vw] w-[18vw] scale-icon" />
+                            <div className="absolute top-[1vw]  !text-white box-total">
+                                <p className="text-titleLevel">0987654321</p>
+                            </div>
                         </div>
+                    </div>
+                    <div className="pt-[1vw] box-total">
+                        <p className="text-titleLevel">Hoanvuonq</p>
                     </div>
                     <div className="flex justify-between w-full items-center">
                         <div className="flex items-center box-total">
@@ -130,13 +136,13 @@ const Profile = () => {
                             <div className="progress-bar xl:h-[0.5vw] h-[2vw] facebook" style={{ width: '90%' }}></div>
                         </div>
                     </div>
-                    <div className="flex flex-wrap xl:gap-[1vw] gap-[2vw] w-full">
+                    {/* <div className="flex flex-wrap xl:gap-[1vw] gap-[2vw] w-full">
                         {infomation.map(({ label, type, placeholder }, index) => (
                             <div key={index} className="w-full lg:p-[1vw] p-[2vw]">
                                 <Input Label={label} type={type} placeholder={placeholder} />
                             </div>
                         ))}
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className="bg-white all-start flex-col xl:gap-[1vw] gap-[3vw] xl:w-[40vw] w-full shadow-custom-5 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[2vw]">

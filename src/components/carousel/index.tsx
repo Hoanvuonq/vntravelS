@@ -1,6 +1,6 @@
 import React from 'react';
 import Slider from 'react-slick';
-    import { images } from 'assets';
+import { images } from 'assets';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { ListPost } from './postList';
@@ -51,7 +51,7 @@ const Carousel: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col gap-[3vw] py-[5vw] items-center">
+        <div className="flex flex-col gap-[3vw] py-[5vw] items-center xl:block hidden">
             <div className="slider-container w-full">
                 <div className="max-w-[100vw] m-auto w-full">
                     <Slider {...settings} className="all-center gap-[4vw]">

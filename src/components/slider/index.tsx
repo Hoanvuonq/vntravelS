@@ -43,21 +43,48 @@ const SliderComponent: React.FC = () => {
     }, []);
 
     const settings = {
-        speed: 500,
+        speed: 3000,
         slidesToShow: slidesToShow,
         centerMode: centerMode,
         centerPadding: centerMode ? '0' : '10%',
         slidesToScroll: 1,
         autoplay: true,
-        autoplaySpeed: 3000,
+        autoplaySpeed: 0, // Đặt thành 0 để chạy liên tục
         nextArrow: <NextArrow />,
         prevArrow: <PrevArrow />,
         infinite: true,
         cssEase: 'linear',
+        pauseOnHover: false,
     };
 
-    const tripImages = ['Trip1', 'Trip2', 'Trip3', 'Trip4', 'Trip5', 'Trip6', 'Trip7', 'Trip8'];
-
+    const tripImages = [
+        'Trip1',
+        'Trip2',
+        'Trip3',
+        'Trip4',
+        'Trip5',
+        'Trip6',
+        'Trip7',
+        'Trip8',
+        'Trip9',
+        'Trip10',
+        'Trip11',
+        'Trip12',
+        'Trip13',
+        'Trip14',
+        'Trip15',
+        'Trip16',
+        'Trip17',
+        'Trip18',
+        'Trip19',
+        'Trip20',
+        'Trip21',
+        'Trip22',
+        'Trip23',
+        'Trip24',
+        'Trip25',
+        'Trip26',
+    ];
     return (
         <div className="slider-container w-full overflow-hidden">
             <div className="w-full">
