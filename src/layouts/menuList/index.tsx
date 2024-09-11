@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
+import { RootState, AppDispatch } from 'redux/store';
 import { closeMenuNavbar } from 'redux/slice/menuNavbarSlice';
 import { logOutUser } from '../../redux/reducer/apiRequest';
 import { images } from 'assets';
@@ -17,7 +17,7 @@ const listMenu = [
 ];
 
 const MenuList: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const isOpen = useSelector((state: RootState) => state.menuNavbar.isOpen);
     const navigate = useNavigate();
     const currentUser = useSelector((state: RootState) => state.auth.login.currentUser);
@@ -39,7 +39,7 @@ const MenuList: React.FC = () => {
         }
     };
     useEffect(() => {
-        getUserInformationByToken(dispatch);
+        dispatch(getUserInformationByToken());
     }, [dispatch]);
 
     const MenuListNavbar = useMemo(() => {

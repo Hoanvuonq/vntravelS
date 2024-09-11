@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { UserInfo } from 'redux/reducer/apiRequest/type';
 
 interface AuthState {
     login: {
-        currentUser: any | null;
+        currentUser: UserInfo | null;
         isFetching: boolean;
         error: boolean;
         token: string | null;
@@ -13,6 +14,10 @@ interface AuthState {
         error: boolean;
     };
     userInfo: {
+        isFetching: boolean;
+        error: boolean;
+    };
+    updateInfo: {
         isFetching: boolean;
         error: boolean;
     };
@@ -34,6 +39,10 @@ const initialState: AuthState = {
         isFetching: false,
         error: false,
     },
+    updateInfo: {
+        isFetching: false,
+        error: false,
+    },
 };
 
 const authSlice = createSlice({
@@ -44,7 +53,7 @@ const authSlice = createSlice({
             state.login.isFetching = true;
             state.login.error = false;
         },
-        loginSuccess: (state, action: PayloadAction<{ user: any; token: string }>) => {
+        loginSuccess: (state, action: PayloadAction<{ user: UserInfo; token: string }>) => {
             state.login.isFetching = false;
             state.login.currentUser = action.payload.user;
             state.login.token = action.payload.token;
@@ -75,7 +84,7 @@ const authSlice = createSlice({
             state.userInfo.isFetching = true;
             state.userInfo.error = false;
         },
-        getUserInfoSuccess: (state, action: PayloadAction<any>) => {
+        getUserInfoSuccess: (state, action: PayloadAction<UserInfo>) => {
             state.userInfo.isFetching = false;
             state.login.currentUser = action.payload;
             state.userInfo.error = false;
@@ -83,6 +92,19 @@ const authSlice = createSlice({
         getUserInfoFailed: (state) => {
             state.userInfo.isFetching = false;
             state.userInfo.error = true;
+        },
+        updateUserInfoStart: (state) => {
+            state.updateInfo.isFetching = true;
+            state.updateInfo.error = false;
+        },
+        updateUserInfoSuccess: (state, action: PayloadAction<UserInfo>) => {
+            state.updateInfo.isFetching = false;
+            state.login.currentUser = action.payload;
+            state.updateInfo.error = false;
+        },
+        updateUserInfoFailed: (state) => {
+            state.updateInfo.isFetching = false;
+            state.updateInfo.error = true;
         },
     },
 });
@@ -97,6 +119,10 @@ export const {
     tokenExpired,
     getUserInfoStart,
     getUserInfoSuccess,
-    getUserInfoFailed
+    getUserInfoFailed,
+    updateUserInfoStart,
+    updateUserInfoSuccess,
+    updateUserInfoFailed,
 } = authSlice.actions;
+
 export default authSlice.reducer;

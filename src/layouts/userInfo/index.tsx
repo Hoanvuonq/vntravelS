@@ -2,17 +2,17 @@ import { images } from 'assets';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserInformationByToken } from 'redux/reducer/apiRequest';
 import { useEffect } from 'react';
-import { RootState } from 'redux/store';
+import { RootState, AppDispatch } from 'redux/store';
 
 const UserInfo = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const currentUser = useSelector((state: RootState) => state.auth.login.currentUser);
     const username = currentUser?.username || 'Unknown User';
     const balance = currentUser?.balance || 0;
     console.log('currentUser:', currentUser);
 
     useEffect(() => {
-        getUserInformationByToken(dispatch);
+        dispatch(getUserInformationByToken());
     }, [dispatch]);
 
     return (

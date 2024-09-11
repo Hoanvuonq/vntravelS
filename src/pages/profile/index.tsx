@@ -1,11 +1,11 @@
 import { images } from 'assets';
-import Input from 'components/input/inputProfile';
 import TextTitle from 'components/textTitle';
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
 import PopupTerms from 'layouts/popup/terms';
 import PopupRequest from 'layouts/popup/requets';
 import PopupAboutUs from 'layouts/popup/aboutUs';
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/store';
 
 interface IInfoItem {
     label: string;
@@ -27,24 +27,9 @@ interface FundDetail {
     popupType?: string;
 }
 
-const infomation: IInfoItem[] = [
-    {
-        label: 'Tên tài khoản',
-        type: 'text',
-        placeholder: 'Hoanvuonq',
-        disabled: 'disabled',
-    },
-    {
-        label: 'Số Điện Thoại',
-        type: 'email',
-        placeholder: '0987654321',
-        disabled: 'disabled',
-    },
-];
-
 const Profile = () => {
     const [hoveredItem, setHoveredItem] = useState<number | null>(null);
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const userVipLevel = useSelector((state: RootState) => state.auth.login.currentUser?.vipLevel) || 0;
     const [activePopup, setActivePopup] = useState<string | null>(null);
 
     const handleOpenPopup = (popupType: string) => {
@@ -112,8 +97,8 @@ const Profile = () => {
                     </div>
                     <div className="flex justify-between w-full items-center">
                         <div className="flex items-center box-total">
-                            <img src={images.Level1} alt="Level 1" className="xl:w-[4vw] w-[16vw]" />
-                            <p className="text-titleLevel">Vip 1</p>
+                            <img src={images[`Level${userVipLevel}`]} alt={`Level ${userVipLevel}`} className="xl:w-[4vw] w-[16vw]" />
+                            <p className="text-titleLevel">Vip {userVipLevel}</p>
                         </div>
                         <div className="flex items-center xl:gap-[0.5vw] gap-[1vw]">
                             {renderInfoButtons.map(({ img, alt }, index) => (

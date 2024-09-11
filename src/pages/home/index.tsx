@@ -1,29 +1,52 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Carousel from 'components/carousel';
 import BoxTotal from 'components/boxItem';
 import { images } from 'assets';
 import TextTitle from 'components/textTitle';
 import { ListPost } from 'components/carousel/postList';
+import { RootState, AppDispatch } from 'redux/store';
+import { getUserInformationByToken } from 'redux/reducer/apiRequest';
+interface VipLevelItem {
+    title: string;
+    content: string;
+    vipLevel: number;
+}
 
-const totalLevel = [
-    { title: 'VIP1', content: '20%', isUnlocked: true },
-    { title: 'VIP2', content: '20%', isUnlocked: false },
-    { title: 'VIP3', content: '25%', isUnlocked: false },
-    { title: 'VIP4', content: '30%', isUnlocked: false },
-    { title: 'VIP5', content: '35%', isUnlocked: false },
-    { title: 'VIP6', content: '40%', isUnlocked: false },
+const totalLevel: VipLevelItem[] = [
+    { title: 'VIP1', content: '20%', vipLevel: 1 },
+    { title: 'VIP2', content: '20%', vipLevel: 2 },
+    { title: 'VIP3', content: '25%', vipLevel: 3 },
+    { title: 'VIP4', content: '30%', vipLevel: 4 },
+    { title: 'VIP5', content: '35%', vipLevel: 5 },
+    { title: 'VIP6', content: '40%', vipLevel: 6 },
 ];
 
 const Home = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const userVipLevel = useSelector((state: RootState) => state.auth.login.currentUser?.vipLevel) || 0;
+
+    useEffect(() => {
+        dispatch(getUserInformationByToken());
+    }, [dispatch]);
+
     const truncateContent = (content: string, maxLength: number) => {
         if (content.length <= maxLength) return content;
         return content.slice(0, maxLength) + '...';
     };
+
     const TotalLevelMemo = useMemo(() => {
-        return totalLevel.map((item, index) => (
-            <BoxTotal title={item.title} content={item.content} img={images[`Level${index + 1}`]} key={index} isUnlocked={item.isUnlocked} backgroundColor={item.isUnlocked ? 'white' : '#e8e8e8'} />
+        return totalLevel.map((item) => (
+            <BoxTotal
+                title={item.title}
+                content={item.content}
+                img={images[`Level${item.vipLevel}`]}
+                key={item.vipLevel}
+                isUnlocked={userVipLevel === item.vipLevel}
+                backgroundColor={userVipLevel === item.vipLevel ? 'white' : '#e8e8e8'}
+            />
         ));
-    }, []);
+    }, [userVipLevel]);
 
     const PostListMemo = useMemo(() => {
         return ListPost.map(({ title, content }, index) => (
@@ -44,7 +67,7 @@ const Home = () => {
                 <div className="grid xl:grid-cols-6 grid-cols-2 xl:gap-[1vw] gap-[4vw] w-full transition-1">{TotalLevelMemo}</div>
             </div>
             <Carousel />
-            <div className="rounded-xl w-full h-full p-[1vw] flex flex-col gap-5 xl:hidden block">
+            <div className="rounded-xl w-full h-full p-[1vw] flex-col gap-5 xl:hidden flex">
                 <TextTitle title="Điểm Đến Hấp Dẫn" />
                 <div className="grid xl:grid-cols-3 grid-cols-1 xl:gap-[1vw] gap-[8vw] w-full transition-1">{PostListMemo}</div>
             </div>

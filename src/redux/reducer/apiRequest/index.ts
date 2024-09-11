@@ -1,8 +1,23 @@
 import axios, { AxiosInstance } from 'axios';
 import { Dispatch } from '@reduxjs/toolkit';
-import { IUser } from './type';
-import { loginStart, loginSuccess, loginFailed, logoutStart, logoutFailed, logoutSuccess, tokenExpired, getUserInfoStart, getUserInfoSuccess, getUserInfoFailed } from '../../slice/authSlice';
+import { IUser, UserInfo } from './type';
+import {
+    loginStart,
+    loginSuccess,
+    loginFailed,
+    logoutStart,
+    logoutFailed,
+    logoutSuccess,
+    tokenExpired,
+    getUserInfoStart,
+    getUserInfoSuccess,
+    getUserInfoFailed,
+    updateUserInfoStart,
+    updateUserInfoSuccess,
+    updateUserInfoFailed,
+} from '../../slice/authSlice';
 import { jwtDecode } from 'jwt-decode';
+import { AppDispatch } from 'redux/store';
 
 interface LoginResponse {
     success: boolean;
@@ -133,7 +148,7 @@ export const refreshToken = async (dispatch: Dispatch<any>) => {
     }
 };
 
-export const getUserInformationByToken = async (dispatch: Dispatch<any>) => {
+export const getUserInformationByToken = () => async (dispatch: AppDispatch) => {
     dispatch(getUserInfoStart());
     try {
         const token = localStorage.getItem('accessToken');
@@ -141,7 +156,7 @@ export const getUserInformationByToken = async (dispatch: Dispatch<any>) => {
             throw new Error('No access token found');
         }
 
-        const res = await axios.get('http://localhost:1510/api/user/userInfo', {
+        const res = await axios.get<{ status: boolean; data: UserInfo }>('http://localhost:1510/api/user/userInfo', {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Cache-Control': 'no-cache',
@@ -157,5 +172,33 @@ export const getUserInformationByToken = async (dispatch: Dispatch<any>) => {
     } catch (error) {
         console.error('Get user information failed:', error);
         dispatch(getUserInfoFailed());
+    }
+};
+
+export const updateUserInformation = (bankInfo: { bankAccount: string; bankName: string; bankNumber: string }) => async (dispatch: AppDispatch) => {
+    dispatch(updateUserInfoStart());
+    try {
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            throw new Error('No access token found');
+        }
+
+        const res = await axios.put<{ status: boolean; data: UserInfo }>('http://localhost:1510/api/user/updateInfo', bankInfo, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        if (res.data && res.data.status) {
+            dispatch(updateUserInfoSuccess(res.data.data));
+            return { success: true, message: 'User information updated successfully' };
+        } else {
+            dispatch(updateUserInfoFailed());
+            return { success: false, message: 'Failed to update user information' };
+        }
+    } catch (error: any) {
+        console.error('Update user information failed:', error);
+        dispatch(updateUserInfoFailed());
+        return { success: false, message: error.response?.data?.message || 'An error occurred during update' };
     }
 };

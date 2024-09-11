@@ -1,10 +1,10 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
-import { RootState } from 'redux/store';
-import { Link, useLocation, Location } from 'react-router-dom';
 import { images } from 'assets';
-import UserInfo from '../userInfo';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { toggleSidebar } from 'redux/slice/sidebarSlice';
+import { RootState } from 'redux/store';
+import UserInfo from '../userInfo';
 
 const sidebarMenuItems = [
     { title: 'Đánh giá', icon: images.evaluate, link: '/evaluate' },

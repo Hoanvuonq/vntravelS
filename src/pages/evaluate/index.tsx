@@ -1,25 +1,40 @@
-import SliderComponent from 'components/slider';
+import { useMemo, useState, useEffect } from 'react';
 import { images } from 'assets';
+import SliderComponent from 'components/slider';
 import SpendingBox from 'components/spendingBox';
 import Button from 'components/button';
-import { useMemo, useState } from 'react';
 import TextTitle from 'components/textTitle';
 import ExploreTours from 'components/exploreTours';
 import HistoryEvaluate from 'layouts/popup/historyEvaluate';
-
-const totalSpending = [
-    { title: 'Số Dư', money: '0' },
-    { title: 'Hoa Hồng ', money: '0' },
-    { title: 'Hành Trình', money: '0' },
-    { title: 'Tổng Hành Trình', money: '0' },
-];
+import { RootState, AppDispatch } from 'redux/store';
+import { getUserInformationByToken } from 'redux/reducer/apiRequest';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Evaluate = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const currentUser = useSelector((state: RootState) => state.auth.login.currentUser);
+    const balance = currentUser?.balance || 0;
+    const journeyComplete = currentUser?.journeyComplete || 0;
+    const [showHistoryPopup, setShowHistoryPopup] = useState(false);
+
+    useEffect(() => {
+        dispatch(getUserInformationByToken());
+    }, [dispatch]);
+
+    const totalSpending = useMemo(
+        () => [
+            { title: 'Số Dư', money: balance.toString() },
+            { title: 'Hoa Hồng ', money: '0' },
+            { title: 'Hành Trình', money: journeyComplete.toString() },
+            { title: 'Tổng Hành Trình', money: '0' },
+        ],
+        [balance, journeyComplete],
+    );
+
     const TotalSpendingMemo = useMemo(() => {
         return totalSpending.map((item, index) => <SpendingBox title={item.title} money={item.money} img={images[`Total${index + 1}`]} key={index} />);
-    }, totalSpending);
+    }, [totalSpending]);
 
-    const [showHistoryPopup, setShowHistoryPopup] = useState(false);
     return (
         <div className="flex flex-col xl:gap-[1vw] gap-[4vw]">
             <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw]">
