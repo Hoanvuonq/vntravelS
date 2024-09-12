@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UserInfo } from 'redux/reducer/apiRequest/type';
 
-interface AuthState {
+interface IAuthState {
     login: {
         currentUser: UserInfo | null;
         isFetching: boolean;
@@ -21,9 +21,16 @@ interface AuthState {
         isFetching: boolean;
         error: boolean;
     };
+    journey: {
+        isFetching: boolean;
+        error: boolean;
+        journeyCount: number;
+        maxJourneys: number;
+    };
+    user: UserInfo | null;
 }
 
-const initialState: AuthState = {
+const initialState: IAuthState = {
     login: {
         currentUser: null,
         isFetching: false,
@@ -43,6 +50,13 @@ const initialState: AuthState = {
         isFetching: false,
         error: false,
     },
+    journey: {
+        isFetching: false,
+        error: false,
+        journeyCount: 0,
+        maxJourneys: 0,
+    },
+    user: null,
 };
 
 const authSlice = createSlice({
@@ -106,6 +120,31 @@ const authSlice = createSlice({
             state.updateInfo.isFetching = false;
             state.updateInfo.error = true;
         },
+        sendJourneyStart: (state) => {
+            state.journey.isFetching = true;
+            state.journey.error = false;
+        },
+        sendJourneySuccess: (
+            state,
+            action: PayloadAction<{
+                newBalance: number;
+                profit: number;
+                journeyCount: number;
+                maxJourneys: number;
+            }>,
+        ) => {
+            state.journey.isFetching = false;
+            state.journey.error = false;
+            state.journey.journeyCount = action.payload.journeyCount;
+            state.journey.maxJourneys = action.payload.maxJourneys;
+            if (state.login.currentUser) {
+                state.login.currentUser.points = action.payload.newBalance;
+            }
+        },
+        sendJourneyFailed: (state) => {
+            state.journey.isFetching = false;
+            state.journey.error = true;
+        },
     },
 });
 
@@ -123,6 +162,9 @@ export const {
     updateUserInfoStart,
     updateUserInfoSuccess,
     updateUserInfoFailed,
+    sendJourneyStart,
+    sendJourneySuccess,
+    sendJourneyFailed,
 } = authSlice.actions;
 
 export default authSlice.reducer;

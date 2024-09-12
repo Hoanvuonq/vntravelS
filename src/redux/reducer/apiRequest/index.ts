@@ -15,6 +15,9 @@ import {
     updateUserInfoStart,
     updateUserInfoSuccess,
     updateUserInfoFailed,
+    sendJourneyStart,
+    sendJourneySuccess,
+    sendJourneyFailed,
 } from '../../slice/authSlice';
 import { jwtDecode } from 'jwt-decode';
 import { AppDispatch } from 'redux/store';
@@ -25,6 +28,20 @@ interface LoginResponse {
         accessToken: string;
     };
     message?: string;
+}
+
+interface ISendJourneyResponse {
+    newBalance: number;
+    journeyAmount: number;
+    profit: number;
+    journeyCount: number;
+    maxJourneys: number;
+}
+
+interface IJourneyPreviewResponse {
+    journeyAmount: number;
+    profit: number;
+    place: string;
 }
 
 export const loginUser = async (user: IUser, dispatch: Dispatch<any>): Promise<LoginResponse> => {
@@ -200,5 +217,57 @@ export const updateUserInformation = (bankInfo: { bankAccount: string; bankName:
         console.error('Update user information failed:', error);
         dispatch(updateUserInfoFailed());
         return { success: false, message: error.response?.data?.message || 'An error occurred during update' };
+    }
+};
+
+export const previewJourney = () => async (dispatch: AppDispatch) => {
+    try {
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            throw new Error('No access token found');
+        }
+
+        const res = await axios.get<{ status: boolean; data: IJourneyPreviewResponse; message: string }>('http://localhost:1510/api/user/previewJourney', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        if (res.data && res.data.status) {
+            return { success: true, data: res.data.data };
+        } else {
+            return { success: false, message: res.data.message || 'Failed to preview journey' };
+        }
+    } catch (error: any) {
+        console.error('Preview journey failed:', error);
+        return { success: false, message: error.response?.data?.message || 'An error occurred while previewing journey' };
+    }
+};
+
+export const sendJourney = (journeyData: { place: string; journeyAmount: number; profit: number }) => async (dispatch: AppDispatch) => {
+    dispatch(sendJourneyStart());
+    try {
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            throw new Error('No access token found');
+        }
+
+        const res = await axios.post<{ status: boolean; data: ISendJourneyResponse; message: string }>('http://localhost:1510/api/user/sendJourney', journeyData, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        if (res.data && res.data.status) {
+            dispatch(sendJourneySuccess(res.data.data));
+            return { success: true, message: res.data.message, data: res.data.data };
+        } else {
+            dispatch(sendJourneyFailed());
+            return { success: false, message: res.data.message || 'Failed to send journey' };
+        }
+    } catch (error: any) {
+        console.error('Send journey failed:', error);
+        dispatch(sendJourneyFailed());
+        return { success: false, message: error.response?.data?.message || 'An error occurred while sending journey' };
     }
 };

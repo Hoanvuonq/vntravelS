@@ -112,9 +112,9 @@ const HistoryEvaluate: React.FC<PopupProps> = ({ onClose }) => {
         return historyEvaluate.map(({ id, time, amount, status }, index) => {
             const tripInfo = backgroundMap.get(id) || tripData[0];
             return (
-                <div key={index} className="relative mb-[4vw] xl:rounded-[1vw] rounded-[3.5vw] overflow-hidden history-evaluate">
+                <div key={index} className="relative  mb-[4vw] xl:rounded-[1vw] rounded-[3.5vw] overflow-hidden history-evaluate">
                     <img src={tripInfo.backgroundImage} alt="Trip background" className="w-full xl:h-[14vw] object-cover" />
-                    <div className="absolute inset-0 bg-black bg-opacity-50 p-4 flex flex-col justify-between text-white">
+                    <div className="absolute inset-0 bg-black bg-opacity-50 p-[1vw] flex flex-col justify-between text-white">
                         <div className="flex justify-between items-start">
                             <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw]">
                                 <div className="flex items-center w-full justify-between">

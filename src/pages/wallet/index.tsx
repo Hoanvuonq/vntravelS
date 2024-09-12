@@ -1,12 +1,20 @@
+import { useState, useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from 'redux/store';
 import { images } from 'assets';
 import Chart from 'components/chart';
 import BoxTotal from 'components/boxTotal';
 import TextTitle from 'components/textTitle';
-import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { getUserInformationByToken } from 'redux/reducer/apiRequest';
 
 const Wallet = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const currentUser = useSelector((state: RootState) => state.auth.login.currentUser);
+    const balance = currentUser?.balance || 0;
+    const totalCommission = currentUser?.totalCommission || 0;
     const [hoveredItem, setHoveredItem] = useState<number | null>(null);
+
     const fundDetails = useMemo(
         () => [
             {
@@ -24,10 +32,14 @@ const Wallet = () => {
         ],
         [],
     );
+
+    useEffect(() => {
+        dispatch(getUserInformationByToken());
+    }, [dispatch]);
     return (
         <div className="w-full all-center flex-col px-[3vw] gap-[2vw]">
             <div className="xl:hidden block">
-                <BoxTotal title="Tổng Tài Sản" money="0" img={images[`Total4`]} />
+                <BoxTotal title="Tổng Tài Sản" money={balance.toFixed(2)} img={images[`Total4`]} />
             </div>
             <div className="flex flex-col w-full">
                 <Chart />
@@ -38,12 +50,12 @@ const Wallet = () => {
                         </div>
                         <div className="all-center gap-[2vw] w-full">
                             <div className="xl:block hidden">
-                                <BoxTotal title="Tổng Tài Sản" money="0" img={images[`Total4`]} />
+                                <BoxTotal title="Tổng Tài Sản" money={balance.toFixed(2)} img={images[`Total4`]} />
                             </div>
                             <div className="bg-white all-center flex-col xl:gap-[2vw] gap-[3vw] xl:w-[40vw] w-full shadow-custom-5 xl:rounded-[1vw] rounded-[3vw] xl:px-[1.5vw] px-[3vw] xl:py-[1.2vw] py-[5vw]">
                                 <div className="flex justify-between items-center w-full  wallet-item">
                                     <div className="flex flex-col xl:gap-[0.5vw] gap-[1vw] ">
-                                        <p className="text-title">0</p>
+                                        <p className="text-title">{totalCommission.toFixed(2)}</p>
                                         <p className="text-content">Thu Nhập Hoa Hồng</p>
                                     </div>
                                     <img src={images.Total1} alt="icon total" className="xl:w-[4vw] w-[14vw]" />

@@ -14,6 +14,15 @@ export interface IAxiosJWTInstance {
     }): Promise<any>;
 }
 
+export interface Journey {
+    amount: number;
+    commission: number;
+    place: string;
+    _id: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
 export interface UserInfo {
     information: {
         bankAccount: string | null;
@@ -34,6 +43,10 @@ export interface UserInfo {
     points: number;
     journeyComplete: number;
     admin: boolean;
+    totalJourneyEarnings: number;
+    totalCommission: number;
+    dailyProfit: number;
+    journeys: Journey[];
     createdAt: string;
     updatedAt: string;
     __v: number;

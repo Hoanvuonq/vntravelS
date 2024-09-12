@@ -1,11 +1,12 @@
+import { useEffect, useMemo, useState } from 'react';
 import { images } from 'assets';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from 'redux/store';
+import { getUserInformationByToken, previewJourney } from 'redux/reducer/apiRequest';
 import TextTitle from 'components/textTitle';
-import { useMemo, useState } from 'react';
 import PopupTerms from 'layouts/popup/terms';
 import PopupRequest from 'layouts/popup/requets';
 import PopupAboutUs from 'layouts/popup/aboutUs';
-import { useSelector } from 'react-redux';
-import { RootState } from 'redux/store';
 
 interface IInfoItem {
     label: string;
@@ -28,8 +29,12 @@ interface FundDetail {
 }
 
 const Profile = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const currentUser = useSelector((state: RootState) => state.auth.login.currentUser);
     const [hoveredItem, setHoveredItem] = useState<number | null>(null);
     const userVipLevel = useSelector((state: RootState) => state.auth.login.currentUser?.vipLevel) || 0;
+    const journeyComplete = currentUser?.journeyComplete || 0;
+    const journeys = currentUser?.journeys?.length || 0;
     const [activePopup, setActivePopup] = useState<string | null>(null);
 
     const handleOpenPopup = (popupType: string) => {
@@ -77,6 +82,11 @@ const Profile = () => {
         ],
         [],
     );
+
+    useEffect(() => {
+        dispatch(getUserInformationByToken());
+    }, [dispatch]);
+
     return (
         <div className="all-center xl:px-0 px-[1vw]">
             <div className="bg-white shadow-custom-3 rounded-[1vw] w-full h-full lg:p-[1vw] p-[1vw] flex flex-col gap-[1.5vw]">
@@ -112,22 +122,22 @@ const Profile = () => {
                         <div className="flex items-center xl:gap-[0.5vw] gap-[1vw] wallet-item">
                             <p className="text-title">Hành Trình Hôm Nay: </p>
                             <div className="flex items-center xl:gap-[0.5vw] gap-[1vw]">
-                                <p className="text-title">18</p>
+                                <p className="text-title">{journeys}</p>
                                 <p className="text-title">/</p>
-                                <p className="text-title">20</p>
+                                <p className="text-title">{journeyComplete}</p>
                             </div>
                         </div>
                         <div className="progress xl:w-full w-full xl:!h-[0.5vw] !h-[2vw]">
-                            <div className="progress-bar xl:h-[0.5vw] h-[2vw] facebook" style={{ width: '90%' }}></div>
+                            <div
+                                className="progress-bar xl:h-[0.5vw] h-[2vw] facebook"
+                                style={
+                                    {
+                                        '--progress-width': `${journeyComplete > 0 ? (journeys / journeyComplete) * 100 : 0}%`,
+                                    } as React.CSSProperties
+                                }
+                            ></div>
                         </div>
                     </div>
-                    {/* <div className="flex flex-wrap xl:gap-[1vw] gap-[2vw] w-full">
-                        {infomation.map(({ label, type, placeholder }, index) => (
-                            <div key={index} className="w-full lg:p-[1vw] p-[2vw]">
-                                <Input Label={label} type={type} placeholder={placeholder} />
-                            </div>
-                        ))}
-                    </div> */}
                 </div>
 
                 <div className="bg-white all-start flex-col xl:gap-[1vw] gap-[3vw] xl:w-[40vw] w-full shadow-custom-5 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[2vw]">

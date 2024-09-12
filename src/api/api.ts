@@ -1,47 +1,47 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 const client = axios.create({
     baseURL: `${process.env.REACT_APP_API_DEV}`,
 });
 
 class Api {
-    static async get(url: string, params = {}) {
-        const response = await client.get(url, {
+    static async get<T = any>(url: string, params = {}): Promise<AxiosResponse<T>> {
+        const response = await client.get<T>(url, {
             params,
-            headers: await this.getHeaders(),
+            headers: this.getHeaders(),
         });
         return response;
     }
 
-    static async post(url: string, data = {}, params = {}) {
-        const response = await client.post(url, data, {
+    static async post<T = any>(url: string, data = {}, params = {}): Promise<AxiosResponse<T>> {
+        const response = await client.post<T>(url, data, {
             params,
-            headers: await this.getHeaders(),
+            headers: this.getHeaders(),
         });
         return response;
     }
 
-    static async update(url: string, data = {}, params = {}) {
-        const response = await client.put(url, data, {
+    static async update<T = any>(url: string, data = {}, params = {}): Promise<AxiosResponse<T>> {
+        const response = await client.put<T>(url, data, {
             params,
-            headers: await this.getHeaders(),
+            headers: this.getHeaders(),
         });
         return response;
     }
 
-    static async delete(url: string, params = {}) {
-        const response = await client.delete(url, {
+    static async delete<T = any>(url: string, params = {}): Promise<AxiosResponse<T>> {
+        const response = await client.delete<T>(url, {
             params,
-            headers: await this.getHeaders(),
+            headers: this.getHeaders(),
         });
         return response;
     }
 
-    static async getHeaders(contentType = 'application/json; charset=utf-8') {
+    static getHeaders(contentType = 'application/json; charset=utf-8') {
         const headers: Record<string, string> = {
             'Content-Type': contentType,
         };
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('accessToken');
         if (token) {
             headers['Authorization'] = `Bearer ${token}`;
         }
