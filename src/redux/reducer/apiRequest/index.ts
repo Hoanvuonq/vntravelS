@@ -18,9 +18,13 @@ import {
     sendJourneyStart,
     sendJourneySuccess,
     sendJourneyFailed,
+    getUserJourneyHistoryStart,
+    getUserJourneyHistorySuccess,
+    getUserJourneyHistoryFailed,
 } from '../../slice/authSlice';
 import { jwtDecode } from 'jwt-decode';
 import { AppDispatch } from 'redux/store';
+import { updateUserBalance, addJourneyToHistory } from '../../slice/authSlice';
 
 interface LoginResponse {
     success: boolean;
@@ -44,6 +48,18 @@ interface IJourneyPreviewResponse {
     place: string;
 }
 
+interface IJourneyHistoryResponse {
+    status: boolean;
+    message: string;
+    data: Array<{
+        amount: number;
+        commission: number;
+        place: string;
+        _id: string;
+        createdAt: string;
+        updatedAt: string;
+    }>;
+}
 export const loginUser = async (user: IUser, dispatch: Dispatch<any>): Promise<LoginResponse> => {
     dispatch(loginStart());
     try {
@@ -259,7 +275,26 @@ export const sendJourney = (journeyData: { place: string; journeyAmount: number;
         });
 
         if (res.data && res.data.status) {
-            dispatch(sendJourneySuccess(res.data.data));
+            dispatch(
+                sendJourneySuccess({
+                    ...res.data.data,
+                    place: journeyData.place,
+                    journeyAmount: journeyData.journeyAmount,
+                }),
+            );
+
+            // Update user balance
+            dispatch(updateUserBalance(res.data.data.newBalance));
+
+            // Add journey to history
+            const newJourney = {
+                place: journeyData.place,
+                journeyAmount: journeyData.journeyAmount,
+                profit: res.data.data.profit,
+                createdAt: new Date().toISOString(),
+            };
+            dispatch(addJourneyToHistory(newJourney));
+
             return { success: true, message: res.data.message, data: res.data.data };
         } else {
             dispatch(sendJourneyFailed());
@@ -269,5 +304,41 @@ export const sendJourney = (journeyData: { place: string; journeyAmount: number;
         console.error('Send journey failed:', error);
         dispatch(sendJourneyFailed());
         return { success: false, message: error.response?.data?.message || 'An error occurred while sending journey' };
+    }
+};
+
+export const getUserJourneyHistory = () => async (dispatch: AppDispatch) => {
+    dispatch(getUserJourneyHistoryStart());
+    try {
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            throw new Error('No access token found');
+        }
+
+        const res = await axios.get<IJourneyHistoryResponse>('http://localhost:1510/api/user/journeyHistory', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Cache-Control': 'no-cache',
+                Pragma: 'no-cache',
+            },
+        });
+
+        if (res.data && res.data.status) {
+            const transformedData = res.data.data.map((journey) => ({
+                place: journey.place,
+                journeyAmount: journey.amount,
+                profit: journey.commission,
+                createdAt: journey.createdAt,
+            }));
+            dispatch(getUserJourneyHistorySuccess(transformedData));
+            return { success: true, data: transformedData };
+        } else {
+            dispatch(getUserJourneyHistoryFailed());
+            return { success: false, message: res.data.message || 'Failed to fetch journey history' };
+        }
+    } catch (error: any) {
+        console.error('Get journey history failed:', error);
+        dispatch(getUserJourneyHistoryFailed());
+        return { success: false, message: error.response?.data?.message || 'An error occurred while fetching journey history' };
     }
 };

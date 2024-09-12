@@ -1,44 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
-import { useMemo } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { images } from 'assets';
 import TextTitle from 'components/textTitle';
+import { getUserJourneyHistory } from '../../redux/reducer/apiRequest';
+import { RootState } from '../../redux/store';
 import { tripData, ITripData } from './dataListEvalute';
 
-interface HistoryEvaluate {
-    service: string;
-    id: string;
-    time: string;
-    contentPayment: string;
-    amount: number;
-    status: string;
+interface PopupProps {
+    onClose: () => void;
 }
 
-const historyEvaluate: HistoryEvaluate[] = [
-    {
-        service: '001',
-        id: '0101323',
-        time: '2024-09-10 21:01:11',
-        amount: 100000,
-        contentPayment: 'hoanvuonq',
-        status: 'success',
-    },
-    {
-        service: '002',
-        id: '0101311',
-        time: '2024-09-10 21:01:11',
-        amount: 100000,
-        contentPayment: 'hoanvuonq',
-        status: 'success',
-    },
-    {
-        service: '003',
-        id: '0122311',
-        time: '2024-09-10 21:01:11',
-        amount: 100000,
-        contentPayment: 'hoanvuonq',
-        status: 'success',
-    },
-];
+const getPlaceInfo = (placeId: string): ITripData | undefined => {
+    return tripData.find((trip) => trip.id === placeId);
+};
 
 const getStatusClassName = (status: string) => {
     switch (status) {
@@ -66,22 +40,19 @@ const getStatusBgColor = (status: string) => {
     }
 };
 
-const getRandomTrip = (): ITripData => {
-    const randomIndex = Math.floor(Math.random() * tripData.length);
-    return tripData[randomIndex];
-};
-
 const formatAmount = (amount: number) => {
     return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 };
 
-interface PopupProps {
-    onClose: () => void;
-}
-
 const HistoryEvaluate: React.FC<PopupProps> = ({ onClose }) => {
+    const dispatch = useDispatch();
     const popupRef = useRef<HTMLDivElement>(null);
-    const [backgroundMap, setBackgroundMap] = useState<Map<string, ITripData>>(new Map());
+    const journeyHistory = useSelector((state: RootState) => state.auth.journeyHistory);
+    const isLoadingJourneyHistory = useSelector((state: RootState) => state.auth.isLoadingJourneyHistory);
+
+    useEffect(() => {
+        dispatch(getUserJourneyHistory() as any);
+    }, [dispatch]);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -96,50 +67,41 @@ const HistoryEvaluate: React.FC<PopupProps> = ({ onClose }) => {
         };
     }, [onClose]);
 
-    useEffect(() => {
-        const newBackgroundMap = new Map(backgroundMap);
-        historyEvaluate.forEach((item) => {
-            if (!newBackgroundMap.has(item.id)) {
-                newBackgroundMap.set(item.id, getRandomTrip());
-            }
-        });
-        setBackgroundMap(newBackgroundMap);
-    }, []);
+    const hasData = Array.isArray(journeyHistory) && journeyHistory.length > 0;
 
-    const hasData = historyEvaluate.length > 0;
-
-    const HistoryEvaluateMemo = useMemo(() => {
-        return historyEvaluate.map(({ id, time, amount, status }, index) => {
-            const tripInfo = backgroundMap.get(id) || tripData[0];
-            return (
-                <div key={index} className="relative  mb-[4vw] xl:rounded-[1vw] rounded-[3.5vw] overflow-hidden history-evaluate">
-                    <img src={tripInfo.backgroundImage} alt="Trip background" className="w-full xl:h-[14vw] object-cover" />
-                    <div className="absolute inset-0 bg-black bg-opacity-50 p-[1vw] flex flex-col justify-between text-white">
-                        <div className="flex justify-between items-start">
-                            <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw]">
-                                <div className="flex items-center w-full justify-between">
-                                    <p className="text-time">{time}</p>
-                                    <div className={`${getStatusBgColor(status)} ${getStatusClassName(status)} xl:p-[0.5vw] p-[1vw] text-status`}>Đã Hoàn Thành</div>
-                                </div>
-                                <p className="text-place">{tripInfo.place}</p>
-                                <p className="font-bold">{formatAmount(amount)}</p>
-                            </div>
-                        </div>
-                        <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw] border-t-[0.1vw] border-[#e5e9f2] pt-[1vw]">
-                            <div className="flex justify-between items-end">
-                                <p className="text-sm">Số Tiền</p>
-                                <p className="font-bold">{formatAmount(amount)}</p>
-                            </div>
-                            <div className="flex justify-between items-end">
-                                <p className="text-sm">Tỷ Lệ</p>
-                                <p className="font-bold">6.62</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            );
-        });
-    }, [historyEvaluate]);
+    const HistoryEvaluateList =
+        Array.isArray(journeyHistory) && journeyHistory.length > 0
+            ? journeyHistory.map((journey, index) => {
+                  const placeInfo = getPlaceInfo(journey.place.replace('Trip', ''));
+                  return (
+                      <div key={index} className="relative mb-[4vw] xl:rounded-[1vw] rounded-[3.5vw] overflow-hidden history-evaluate">
+                          <img src={placeInfo?.backgroundImage || images.defaultImage} alt="Trip background" className="w-full xl:h-[14vw] object-cover" />
+                          <div className="absolute inset-0 bg-black bg-opacity-50 p-[1vw] flex flex-col justify-between text-white">
+                              <div className="flex justify-between items-start">
+                                  <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw]">
+                                      <div className="flex items-center w-full justify-between">
+                                          <p className="text-time">{new Date(journey.createdAt).toLocaleString()}</p>
+                                          <div className={`${getStatusBgColor('success')} ${getStatusClassName('success')} xl:p-[0.5vw] p-[1vw] text-status`}>Đã Hoàn Thành</div>
+                                      </div>
+                                      <p className="text-place">{placeInfo?.place || 'Unknown Place'}</p>
+                                      <p className="font-bold">{formatAmount(journey.journeyAmount)}</p>
+                                  </div>
+                              </div>
+                              <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw] border-t-[0.1vw] border-[#e5e9f2] pt-[1vw]">
+                                  <div className="flex justify-between items-end">
+                                      <p className="text-sm">Số Tiền</p>
+                                      <p className="font-bold">{formatAmount(journey.journeyAmount)}</p>
+                                  </div>
+                                  <div className="flex justify-between items-end">
+                                      <p className="text-sm">Lợi Nhuận</p>
+                                      <p className="font-bold">{formatAmount(journey.profit)}</p>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  );
+              })
+            : null;
 
     return (
         <>
@@ -149,15 +111,17 @@ const HistoryEvaluate: React.FC<PopupProps> = ({ onClose }) => {
                     <div className="border-b-[0.2vw] border-[#E2E8F0] w-full">
                         <div className="w-full all-center !justify-between xl:px-[2vw] px-[4vw] xl:py-[0.8vw] py-[4vw]">
                             <TextTitle title="Lịch Sử Đánh Giá Tour" />
-                            <button className=" text-gray-500 hover:text-gray-700 text-close" onClick={onClose}>
+                            <button className="text-gray-500 hover:text-gray-700 text-close" onClick={onClose}>
                                 X
                             </button>
                         </div>
                     </div>
                     <div className="w-full h-full bg-white rounded-2xl shadow-custom-5 p-[1.5vw] bai-jamjuree">
                         <div className="transaction overflow-y-auto max-h-[70vh]">
-                            {hasData ? (
-                                HistoryEvaluateMemo
+                            {isLoadingJourneyHistory ? (
+                                <div className="w-full all-center">Loading...</div>
+                            ) : hasData ? (
+                                HistoryEvaluateList
                             ) : (
                                 <div className="w-full all-center">
                                     <img src={images.NoData} alt="No Data" className="xl:w-[20vw] w-[50vw] xl:h-[20vw] h-[50vw]" />

@@ -25,7 +25,7 @@ const UserInfo = () => {
             </div>
             <div className="flex xl:gap-[0.2vw] sm:gap-[0.4vw] gap-[1.6vw] items-center">
                 <img src={images.Coin} alt="Coin" className="rounded-full xl:w-[1.2vw] sm:w-[2vw] w-[4vw]" />
-                <p className="font-medium text-balance text-[#c8982f] bai-jamjuree">{balance}</p>
+                <p className="font-medium text-balance text-[#c8982f] bai-jamjuree">{balance.toFixed(2)}</p>
             </div>
         </div>
     );

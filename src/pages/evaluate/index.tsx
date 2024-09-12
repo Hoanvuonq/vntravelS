@@ -19,11 +19,13 @@ interface IJourneyPreviewResponse {
 
 const Evaluate = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const currentUser = useSelector((state: RootState) => state.auth.login.currentUser);
-    const balance = currentUser?.balance || 0;
-    const totalCommission = currentUser?.totalCommission || 0;
-    const journeyComplete = currentUser?.journeyComplete || 0;
-    const journeys = currentUser?.journeys?.length || 0;
+    const { balance, totalCommission, journeyComplete, journeys } = useSelector((state: RootState) => ({
+        balance: state.auth.login.currentUser?.balance || 0,
+        totalCommission: state.auth.login.currentUser?.totalCommission || 0,
+        journeyComplete: state.auth.login.currentUser?.journeyComplete || 0,
+        journeys: state.auth.login.currentUser?.journeys?.length || 0,
+    }));
+
     const [showHistoryPopup, setShowHistoryPopup] = useState(false);
     const [showFomEvaluate, setShowFomEvaluate] = useState(false);
     const [previewData, setPreviewData] = useState<IJourneyPreviewResponse | null>(null);
@@ -31,8 +33,8 @@ const Evaluate = () => {
     const totalSpending = [
         { title: 'Số Dư', money: balance.toFixed(2) },
         { title: 'Hoa Hồng', money: totalCommission.toFixed(2) },
-        { title: 'Hành Trình', money: journeys.toString() },
-        { title: 'Tổng Hành Trình', money: journeyComplete.toString() },
+        { title: 'Hành Trình Hiện Tại', money: journeys.toString() },
+        { title: 'Tổng Hành Trình Đã Hoàn Thành', money: journeyComplete.toString() },
     ];
 
     const handlePreviewJourney = async () => {

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserInfo } from 'redux/reducer/apiRequest/type';
+import { UserInfo, Journey } from 'redux/reducer/apiRequest/type';
 
 interface IAuthState {
     login: {
@@ -28,6 +28,13 @@ interface IAuthState {
         maxJourneys: number;
     };
     user: UserInfo | null;
+    journeyHistory: Array<{
+        place: string;
+        journeyAmount: number;
+        profit: number;
+        createdAt: string;
+    }>;
+    isLoadingJourneyHistory: boolean;
 }
 
 const initialState: IAuthState = {
@@ -57,6 +64,8 @@ const initialState: IAuthState = {
         maxJourneys: 0,
     },
     user: null,
+    journeyHistory: [],
+    isLoadingJourneyHistory: false,
 };
 
 const authSlice = createSlice({
@@ -131,6 +140,8 @@ const authSlice = createSlice({
                 profit: number;
                 journeyCount: number;
                 maxJourneys: number;
+                place: string;
+                journeyAmount: number;
             }>,
         ) => {
             state.journey.isFetching = false;
@@ -138,12 +149,53 @@ const authSlice = createSlice({
             state.journey.journeyCount = action.payload.journeyCount;
             state.journey.maxJourneys = action.payload.maxJourneys;
             if (state.login.currentUser) {
-                state.login.currentUser.points = action.payload.newBalance;
+                state.login.currentUser.balance = action.payload.newBalance;
+                state.login.currentUser.totalCommission = (state.login.currentUser.totalCommission || 0) + action.payload.profit;
+                state.login.currentUser.journeyComplete = state.login.currentUser.journeyComplete || 0;
+
+                const newJourney: Journey = {
+                    amount: action.payload.journeyAmount,
+                    commission: action.payload.profit,
+                    place: action.payload.place,
+                    _id: Date.now().toString(),
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                };
+
+                if (state.login.currentUser.journeys) {
+                    state.login.currentUser.journeys.push(newJourney);
+                } else {
+                    state.login.currentUser.journeys = [newJourney];
+                }
             }
         },
+
         sendJourneyFailed: (state) => {
             state.journey.isFetching = false;
             state.journey.error = true;
+        },
+
+        getUserJourneyHistoryStart: (state) => {
+            state.isLoadingJourneyHistory = true;
+        },
+        getUserJourneyHistorySuccess: (state, action: PayloadAction<IAuthState['journeyHistory']>) => {
+            state.isLoadingJourneyHistory = false;
+            state.journeyHistory = action.payload;
+        },
+        getUserJourneyHistoryFailed: (state) => {
+            state.isLoadingJourneyHistory = false;
+        },
+        updateUserBalance: (state, action: PayloadAction<number>) => {
+            if (state.user) {
+                state.user.balance = action.payload;
+            }
+        },
+        addJourneyToHistory: (state, action: PayloadAction<any>) => {
+            if (state.journeyHistory) {
+                state.journeyHistory.unshift(action.payload);
+            } else {
+                state.journeyHistory = [action.payload];
+            }
         },
     },
 });
@@ -165,6 +217,11 @@ export const {
     sendJourneyStart,
     sendJourneySuccess,
     sendJourneyFailed,
+    getUserJourneyHistoryStart,
+    getUserJourneyHistorySuccess,
+    getUserJourneyHistoryFailed,
+    updateUserBalance,
+    addJourneyToHistory,
 } = authSlice.actions;
 
 export default authSlice.reducer;
