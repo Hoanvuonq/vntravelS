@@ -1,4 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
+import store from 'redux/store';
+import { IAuthState } from './type';
 
 const client = axios.create({
     baseURL: `${process.env.REACT_APP_API_DEV}`,
@@ -41,9 +43,10 @@ class Api {
         const headers: Record<string, string> = {
             'Content-Type': contentType,
         };
-        const token = localStorage.getItem('accessToken');
-        if (token) {
-            headers['Authorization'] = `Bearer ${token}`;
+        const state = store.getState();
+        const accessToken = state.auth.login.accessToken;
+        if (accessToken) {
+            headers['Authorization'] = `Bearer ${accessToken}`;
         }
         return headers;
     }

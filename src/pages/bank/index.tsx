@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import TextTitle from 'components/textTitle';
 import Input from 'components/input/inputProfile';
 import Button from 'components/button';
 import ToastProvider from 'hooks/useToastProvider';
-import { updateUserInformation } from 'redux/reducer/apiRequest';
-import { RootState, AppDispatch } from 'redux/store';
+import { updateUserInformation } from 'api/user';
+import { RootState } from 'redux/store';
+import { useUserInfo } from 'hooks/useUserInfo';
 
 interface IBankInfo {
     label: string;
@@ -36,7 +37,6 @@ const BankInfo: IBankInfo[] = [
 ];
 
 const Bank = () => {
-    const dispatch = useDispatch<AppDispatch>();
     const currentUser = useSelector((state: RootState) => state.auth.login.currentUser);
     const [bankData, setBankData] = useState({
         bankAccount: '',
@@ -44,13 +44,15 @@ const Bank = () => {
         bankNumber: '',
     });
     const [isUpdated, setIsUpdated] = useState(false);
+    const { refetchUserInfo } = useUserInfo();
+
     useEffect(() => {
         if (currentUser && currentUser.information) {
             const { bankAccount, bankName, bankNumber } = currentUser.information;
             setBankData({
-                bankAccount: currentUser.information.bankAccount || '',
-                bankName: currentUser.information.bankName || '',
-                bankNumber: currentUser.information.bankNumber || '',
+                bankAccount: bankAccount || '',
+                bankName: bankName || '',
+                bankNumber: bankNumber || '',
             });
 
             setIsUpdated(Boolean(bankAccount && bankName && bankNumber));
@@ -67,12 +69,13 @@ const Bank = () => {
     const handleSubmit = async () => {
         if (!isUpdated && !Object.values(bankData).some((value) => value === '')) {
             try {
-                const result = await dispatch(updateUserInformation(bankData));
+                const result = await updateUserInformation(bankData);
                 if (result.success) {
                     ToastProvider('success', 'Đã cập nhật thông tin ngân hàng');
                     setIsUpdated(true);
+                    refetchUserInfo();
                 } else {
-                    ToastProvider('error', 'Cập nhật thất bại');
+                    ToastProvider('error', result.message || 'Cập nhật thất bại');
                 }
             } catch (error) {
                 console.error('Error updating bank information:', error);
@@ -82,6 +85,7 @@ const Bank = () => {
     };
 
     const isFormFilled = !Object.values(bankData).some((value) => value === '');
+
     return (
         <div className="bg-white all-center flex-col xl:gap-[2vw] gap-[4vw] shadow-custom-5 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw]">
             <div className="w-full px-[2vw]">

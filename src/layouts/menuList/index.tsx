@@ -6,8 +6,7 @@ import { closeMenuNavbar } from 'redux/slice/menuNavbarSlice';
 import { logOutUser } from '../../redux/reducer/apiRequest';
 import { images } from 'assets';
 import ToastProvider from 'hooks/useToastProvider';
-import { getUserInformationByToken } from 'redux/reducer/apiRequest';
-import { useEffect } from 'react';
+import { useUserInfo } from 'hooks/useUserInfo';
 
 const listMenu = [
     { link: 'payment', title: 'Nạp tiền', isSearchParams: true },
@@ -37,9 +36,8 @@ const MenuList: React.FC = () => {
             ToastProvider('error', 'Không thể đăng xuất');
         }
     };
-    useEffect(() => {
-        dispatch(getUserInformationByToken());
-    }, [dispatch]);
+
+    useUserInfo();
 
     const MenuListNavbar = useMemo(() => {
         return listMenu.map(({ link, title, isSearchParams }, index) => (

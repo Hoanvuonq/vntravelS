@@ -6,7 +6,8 @@ import Chart from 'components/chart';
 import BoxTotal from 'components/boxTotal';
 import TextTitle from 'components/textTitle';
 import { Link } from 'react-router-dom';
-import { getUserInformationByToken } from 'redux/reducer/apiRequest';
+import ToastProvider from 'hooks/useToastProvider';
+import { useUserInfo } from 'hooks/useUserInfo';
 
 const Wallet = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -33,9 +34,7 @@ const Wallet = () => {
         [],
     );
 
-    useEffect(() => {
-        dispatch(getUserInformationByToken());
-    }, [dispatch]);
+    useUserInfo();
     return (
         <div className="w-full all-center flex-col px-[3vw] gap-[2vw]">
             <div className="xl:hidden block">

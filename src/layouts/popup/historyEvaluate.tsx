@@ -1,14 +1,20 @@
-import React, { useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useRef, useState } from 'react';
+import { Rating } from '@material-tailwind/react';
+import { getUserJourneyHistory } from 'api/journey';
 import { images } from 'assets';
 import TextTitle from 'components/textTitle';
-import { getUserJourneyHistory } from '../../redux/reducer/apiRequest';
-import { RootState } from '../../redux/store';
-import { tripData, ITripData } from './dataListEvalute';
-import { Rating } from '@material-tailwind/react';
+import { ITripData, tripData } from './dataListEvalute';
 
 interface PopupProps {
     onClose: () => void;
+}
+
+interface IJourney {
+    place: string;
+    journeyAmount: number;
+    profit: number;
+    rating: number;
+    createdAt: string;
 }
 
 const getPlaceInfo = (placeId: string): ITripData | undefined => {
@@ -46,14 +52,29 @@ const formatAmount = (amount: number) => {
 };
 
 const HistoryEvaluate: React.FC<PopupProps> = ({ onClose }) => {
-    const dispatch = useDispatch();
     const popupRef = useRef<HTMLDivElement>(null);
-    const journeyHistory = useSelector((state: RootState) => state.auth.journeyHistory);
-    const isLoadingJourneyHistory = useSelector((state: RootState) => state.auth.isLoadingJourneyHistory);
+    const [journeyHistory, setJourneyHistory] = useState<IJourney[]>([]);
+    const [isLoadingJourneyHistory, setIsLoadingJourneyHistory] = useState(true);
 
     useEffect(() => {
-        dispatch(getUserJourneyHistory() as any);
-    }, [dispatch]);
+        const fetchJourneyHistory = async () => {
+            setIsLoadingJourneyHistory(true);
+            try {
+                const result = await getUserJourneyHistory();
+                if (result.success && result.data) {
+                    setJourneyHistory(result.data);
+                } else {
+                    console.error('Failed to fetch journey history:', result.message);
+                }
+            } catch (error) {
+                console.error('Error fetching journey history:', error);
+            } finally {
+                setIsLoadingJourneyHistory(false);
+            }
+        };
+
+        fetchJourneyHistory();
+    }, []);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -68,45 +89,42 @@ const HistoryEvaluate: React.FC<PopupProps> = ({ onClose }) => {
         };
     }, [onClose]);
 
-    const hasData = Array.isArray(journeyHistory) && journeyHistory.length > 0;
+    const hasData = journeyHistory.length > 0;
 
-    const HistoryEvaluateList =
-        Array.isArray(journeyHistory) && journeyHistory.length > 0
-            ? journeyHistory.map((journey, index) => {
-                  const placeInfo = getPlaceInfo(journey.place.replace('Trip', ''));
-                  return (
-                      <div key={index} className="relative mb-[4vw] xl:rounded-[1vw] rounded-[3.5vw] overflow-hidden  history-evaluate">
-                          <img src={placeInfo?.backgroundImage || images.defaultImage} alt="Trip background" className="w-full xl:h-[14vw] object-cover" />
-                          <div className="absolute inset-0 bg-black bg-opacity-50 xl:p-[1vw] p-[3vw] flex flex-col justify-between text-white">
-                              <div className="flex justify-between items-start">
-                                  <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw]">
-                                      <div className="flex items-center w-full justify-between">
-                                          <p className="text-time">{new Date(journey.createdAt).toLocaleString()}</p>
-                                          <div className={`${getStatusBgColor('success')} ${getStatusClassName('success')} xl:p-[0.5vw] p-[1vw] text-status`}>Đã Hoàn Thành</div>
-                                      </div>
-                                      <p className="text-place">{placeInfo?.place || 'Unknown Place'}</p>
-                                      <div className="w-full flex items-center justify-between">
-                                          <p className="text-title">{formatAmount(journey.journeyAmount)}</p>
-                                          <Rating value={Number(journey.rating) || 0} readonly {...({} as any)} className="rating-history" />
-                                      </div>
-                                  </div>
-                              </div>
+    const HistoryEvaluateList = journeyHistory.map((journey, index) => {
+        const placeInfo = getPlaceInfo(journey.place.replace('Trip', ''));
+        return (
+            <div key={index} className="relative mb-[4vw] xl:rounded-[1vw] rounded-[3.5vw] overflow-hidden  history-evaluate">
+                <img src={placeInfo?.backgroundImage || images.defaultImage} alt="Trip background" className="w-full xl:h-[14vw] object-cover" />
+                <div className="absolute inset-0 bg-black bg-opacity-50 xl:p-[1vw] p-[3vw] flex flex-col justify-between text-white">
+                    <div className="flex justify-between items-start">
+                        <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw]">
+                            <div className="flex items-center w-full justify-between">
+                                <p className="text-time">{new Date(journey.createdAt).toLocaleString()}</p>
+                                <div className={`${getStatusBgColor('success')} ${getStatusClassName('success')} xl:p-[0.5vw] p-[1vw] text-status`}>Đã Hoàn Thành</div>
+                            </div>
+                            <p className="text-place">{placeInfo?.place || 'Unknown Place'}</p>
+                            <div className="w-full flex items-center justify-between">
+                                <p className="text-title">{formatAmount(journey.journeyAmount)}</p>
+                                <Rating value={Number(journey.rating) || 0} readonly {...({} as any)} className="rating-history" />
+                            </div>
+                        </div>
+                    </div>
 
-                              <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw] border-t-[0.1vw] border-[#e5e9f2] pt-[1vw]">
-                                  <div className="flex justify-between items-end">
-                                      <p className="text-title">Số Tiền</p>
-                                      <p className="text-title">{formatAmount(journey.journeyAmount)}</p>
-                                  </div>
-                                  <div className="flex justify-between items-end">
-                                      <p className="text-title">Lợi Nhuận</p>
-                                      <p className="text-title">{formatAmount(journey.profit)}</p>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  );
-              })
-            : null;
+                    <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw] border-t-[0.1vw] border-[#e5e9f2] pt-[1vw]">
+                        <div className="flex justify-between items-end">
+                            <p className="text-title">Số Tiền</p>
+                            <p className="text-title">{formatAmount(journey.journeyAmount)}</p>
+                        </div>
+                        <div className="flex justify-between items-end">
+                            <p className="text-title">Lợi Nhuận</p>
+                            <p className="text-title">{formatAmount(journey.profit)}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    });
 
     return (
         <>

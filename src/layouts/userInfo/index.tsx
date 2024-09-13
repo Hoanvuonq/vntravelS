@@ -1,18 +1,29 @@
+import { useEffect } from 'react';
 import { images } from 'assets';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserInformationByToken } from 'redux/reducer/apiRequest';
-import { useEffect } from 'react';
+import { getUserInformationByToken } from 'api/user';
 import { RootState, AppDispatch } from 'redux/store';
+import { setUserInfo } from 'redux/slice/authSlice';
+import ToastProvider from 'hooks/useToastProvider';
 
 const UserInfo = () => {
     const dispatch = useDispatch<AppDispatch>();
     const currentUser = useSelector((state: RootState) => state.auth.login.currentUser);
     const username = currentUser?.username || 'Unknown User';
     const balance = currentUser?.balance || 0;
-    // console.log('currentUser:', currentUser);
 
     useEffect(() => {
-        dispatch(getUserInformationByToken());
+        const fetchUserInfo = async () => {
+            try {
+                const userInfo = await getUserInformationByToken();
+                dispatch(setUserInfo(userInfo));
+            } catch (error) {
+                console.error('Failed to fetch user information:', error);
+                ToastProvider('error', 'Không thể lấy thông tin người dùng');
+            }
+        };
+
+        fetchUserInfo();
     }, [dispatch]);
 
     return (

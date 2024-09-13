@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from 'redux/store';
-import { getUserInformationByToken, previewJourney } from 'redux/reducer/apiRequest';
+import { previewJourney } from 'api/journey';
+import { getUserInformationByToken } from 'api/user';
+import { setUserInfo } from 'redux/slice/authSlice';
 import Button from 'components/button';
 import FomEvaluate from './fomEvaluate';
 import { images } from 'assets';
@@ -11,6 +13,7 @@ import TextTitle from 'components/textTitle';
 import ExploreTours from 'components/exploreTours';
 import HistoryEvaluate from 'layouts/popup/historyEvaluate';
 import ToastProvider from 'hooks/useToastProvider';
+import { useUserInfo } from 'hooks/useUserInfo';
 
 interface IJourneyPreviewResponse {
     journeyAmount: number;
@@ -21,7 +24,6 @@ interface IJourneyPreviewResponse {
 }
 
 const Evaluate = () => {
-    const dispatch = useDispatch<AppDispatch>();
     const { balance, totalCommission, journeyComplete, journeys } = useSelector((state: RootState) => ({
         balance: state.auth.login.currentUser?.balance || 0,
         totalCommission: state.auth.login.currentUser?.totalCommission || 0,
@@ -33,16 +35,18 @@ const Evaluate = () => {
     const [showFomEvaluate, setShowFomEvaluate] = useState(false);
     const [previewData, setPreviewData] = useState<IJourneyPreviewResponse | null>(null);
 
+    const { refetchUserInfo } = useUserInfo(); // Sử dụng custom hook
+
     const totalSpending = [
         { title: 'Số Dư', money: balance.toFixed(2) },
         { title: 'Hoa Hồng', money: totalCommission.toFixed(2) },
-        { title: 'Hành Trình Hiện Tại', money: journeys.toString() },
-        { title: 'Tổng Hành Trình Đã Hoàn Thành', money: journeyComplete.toString() },
+        { title: 'Hành Trình', money: journeys.toString() },
+        { title: 'Tổng Hành Trình', money: journeyComplete.toString() },
     ];
 
     const handlePreviewJourney = async () => {
         try {
-            const result = await dispatch(previewJourney());
+            const result = await previewJourney();
             if (result.success && result.data) {
                 if (balance < 100.0) {
                     ToastProvider('warning', 'Số dư của bạn phải ít nhất là 100,00 để gửi một chuyến đi');
@@ -52,7 +56,7 @@ const Evaluate = () => {
                 }
             } else {
                 console.error('Failed to preview journey:', result.message);
-                ToastProvider('error', result.message);
+                ToastProvider('error', result.message || 'Failed to preview journey');
             }
         } catch (error) {
             console.error('Error previewing journey:', error);
@@ -61,8 +65,19 @@ const Evaluate = () => {
     };
 
     useEffect(() => {
-        dispatch(getUserInformationByToken());
-    }, [dispatch]);
+        const fetchUserInfo = async () => {
+            try {
+                const userInfo = await getUserInformationByToken();
+                refetchUserInfo();
+            } catch (error) {
+                console.error('Failed to fetch user information:', error);
+                ToastProvider('error', 'Không thể lấy thông tin người dùng');
+            }
+        };
+
+        fetchUserInfo();
+    }, [refetchUserInfo]);
+
     return (
         <div className="flex flex-col xl:gap-[1vw] gap-[4vw]">
             <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw]">

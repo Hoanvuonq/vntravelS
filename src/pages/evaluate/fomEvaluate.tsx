@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from 'redux/store';
-import { sendJourney } from 'redux/reducer/apiRequest';
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/store';
+import { sendJourney } from 'api/journey';
 import Button from 'components/button';
 import { images } from 'assets';
 import { tripData, ITripData } from 'layouts/popup/dataListEvalute';
 import ToastProvider from 'hooks/useToastProvider';
 import { Rating } from '@material-tailwind/react';
+import { useUserInfo } from 'hooks/useUserInfo';
 
 interface IPopupProps {
     onClose: () => void;
@@ -21,13 +22,13 @@ interface IPopupProps {
 
 const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
     const popupRef = useRef<HTMLDivElement>(null);
-    const dispatch = useDispatch<AppDispatch>();
-    const { journey, login } = useSelector((state: RootState) => state.auth);
+    const { userInfo } = useSelector((state: RootState) => state.auth);
     const [randomTrip, setRandomTrip] = useState<ITripData | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [rating, setRating] = useState(previewData.rating);
-
-    const userBalance = login.currentUser?.balance || 0;
+    const [isSending, setIsSending] = useState(false);
+    const { refetchUserInfo } = useUserInfo();
+    const userBalance = userInfo?.balance || 0;
 
     const handleRatingChange = (value: number) => {
         setRating(value);
@@ -35,7 +36,6 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
     };
 
     const handleSendJourney = async () => {
-        // console.log('handleSendJourney called');
         if (!randomTrip) {
             setError('No trip selected');
             return;
@@ -46,35 +46,38 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
             return;
         }
 
+        setIsSending(true);
+
         try {
             const backgroundImageKey = Object.keys(images).find((key) => images[key] === randomTrip.backgroundImage);
 
             if (!backgroundImageKey) {
                 setError('Invalid trip image');
+                setIsSending(false);
                 return;
             }
 
-            console.log('Dispatching sendJourney with:', {
+            console.log('Sending journey with:', {
                 place: backgroundImageKey,
                 journeyAmount: previewData.journeyAmount,
                 profit: previewData.profit,
                 createdAt: previewData.createdAt,
-                rating: previewData.rating,
+                rating: rating,
             });
-            console.log('Sending rating:', rating);
-            const result = await dispatch(
-                sendJourney({
-                    place: backgroundImageKey,
-                    journeyAmount: previewData.journeyAmount,
-                    profit: previewData.profit,
-                    createdAt: previewData.createdAt,
-                    rating: rating,
-                }),
-            );
+
+            const result = await sendJourney({
+                place: backgroundImageKey,
+                journeyAmount: previewData.journeyAmount,
+                profit: previewData.profit,
+                createdAt: previewData.createdAt,
+                rating: rating,
+            });
+
             console.log('sendJourney result:', result);
 
             if (result.success) {
                 ToastProvider('success', 'Gửi hành trình thành công');
+                refetchUserInfo();
                 onClose();
             } else {
                 console.error('Failed to send journey:', result.message);
@@ -83,6 +86,8 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
         } catch (error) {
             console.error('Error sending journey:', error);
             setError('An error occurred while sending journey');
+        } finally {
+            setIsSending(false);
         }
     };
 
@@ -118,10 +123,9 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
     }, [previewData]);
 
     useEffect(() => {
-        console.log('journey.isFetching:', journey.isFetching);
         console.log('randomTrip:', randomTrip);
         console.log('userBalance:', userBalance);
-    }, [journey.isFetching, randomTrip, userBalance]);
+    }, [randomTrip, userBalance]);
 
     return (
         <>
@@ -157,7 +161,7 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
                         )}
                         <Rating value={rating} onChange={handleRatingChange} size="xl" readonly={false} {...({} as any)} className="rating" />
                         <div className="w-full all-center m-auto gap-[2vw] xl:max-w-[16vw] max-w-[80vw]">
-                            <Button title="GỬI HÀNH TRÌNH" onClick={handleSendJourney} disabled={journey.isFetching || !randomTrip || userBalance < 100.0} />
+                            <Button title="GỬI HÀNH TRÌNH" onClick={handleSendJourney} disabled={isSending || !randomTrip || userBalance < 100.0} />
                         </div>
                         {error && <p className="text-red-500 text-center mt-2">{error}</p>}
                     </div>

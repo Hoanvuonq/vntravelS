@@ -1,12 +1,12 @@
-import { useEffect, useMemo, useState } from 'react';
 import { images } from 'assets';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from 'redux/store';
-import { getUserInformationByToken, previewJourney } from 'redux/reducer/apiRequest';
 import TextTitle from 'components/textTitle';
-import PopupTerms from 'layouts/popup/terms';
-import PopupRequest from 'layouts/popup/requets';
+import { useUserInfo } from 'hooks/useUserInfo';
 import PopupAboutUs from 'layouts/popup/aboutUs';
+import PopupRequest from 'layouts/popup/requets';
+import PopupTerms from 'layouts/popup/terms';
+import { useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/store';
 
 interface IInfoItem {
     label: string;
@@ -29,7 +29,6 @@ interface FundDetail {
 }
 
 const Profile = () => {
-    const dispatch = useDispatch<AppDispatch>();
     const currentUser = useSelector((state: RootState) => state.auth.login.currentUser);
     const [hoveredItem, setHoveredItem] = useState<number | null>(null);
     const userVipLevel = useSelector((state: RootState) => state.auth.login.currentUser?.vipLevel) || 0;
@@ -83,9 +82,7 @@ const Profile = () => {
         [],
     );
 
-    useEffect(() => {
-        dispatch(getUserInformationByToken());
-    }, [dispatch]);
+    useUserInfo();
 
     return (
         <div className="all-center xl:px-0 px-[1vw]">

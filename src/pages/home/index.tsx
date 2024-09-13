@@ -1,12 +1,13 @@
-import { useMemo, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import Carousel from 'components/carousel';
-import BoxTotal from 'components/boxItem';
 import { images } from 'assets';
-import TextTitle from 'components/textTitle';
+import BoxTotal from 'components/boxItem';
+import Carousel from 'components/carousel';
 import { ListPost } from 'components/carousel/postList';
-import { RootState, AppDispatch } from 'redux/store';
-import { getUserInformationByToken } from 'redux/reducer/apiRequest';
+import TextTitle from 'components/textTitle';
+import { useUserInfo } from 'hooks/useUserInfo';
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/store';
+
 interface VipLevelItem {
     title: string;
     content: string;
@@ -23,12 +24,9 @@ const totalLevel: VipLevelItem[] = [
 ];
 
 const Home = () => {
-    const dispatch = useDispatch<AppDispatch>();
     const userVipLevel = useSelector((state: RootState) => state.auth.login.currentUser?.vipLevel) || 0;
 
-    useEffect(() => {
-        dispatch(getUserInformationByToken());
-    }, [dispatch]);
+    useUserInfo();
 
     const truncateContent = (content: string, maxLength: number) => {
         if (content.length <= maxLength) return content;
@@ -62,7 +60,7 @@ const Home = () => {
 
     return (
         <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw]">
-            <div className="rounded-xl w-full h-full p-[1vw] flex flex-col gap-5 ">
+            <div className="rounded-xl w-full h-full p-[1vw] flex flex-col gap-5 level">
                 <TextTitle title="Cấp Độ Thành Viên" />
                 <div className="grid xl:grid-cols-6 grid-cols-2 xl:gap-[1vw] gap-[4vw] w-full transition-1">{TotalLevelMemo}</div>
             </div>
