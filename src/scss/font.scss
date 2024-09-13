@@ -349,6 +349,16 @@
             line-height: 5vw;
         }
     }
+
+    .text-title {
+        font-size: 0.8vw;
+        line-height: 1.2vw;
+        @media (max-width: 1024px) {
+            font-size: 4vw;
+            line-height: 5vw;
+        }
+    }
+    
 }
 
 .destination {

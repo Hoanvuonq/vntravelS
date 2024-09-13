@@ -9,7 +9,7 @@ const UserInfo = () => {
     const currentUser = useSelector((state: RootState) => state.auth.login.currentUser);
     const username = currentUser?.username || 'Unknown User';
     const balance = currentUser?.balance || 0;
-    console.log('currentUser:', currentUser);
+    // console.log('currentUser:', currentUser);
 
     useEffect(() => {
         dispatch(getUserInformationByToken());

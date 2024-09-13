@@ -21,6 +21,7 @@ export interface Journey {
     _id: string;
     createdAt: string;
     updatedAt: string;
+    rating?: number;
 }
 
 export interface UserInfo {

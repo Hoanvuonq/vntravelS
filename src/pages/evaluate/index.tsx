@@ -10,11 +10,14 @@ import SpendingBox from 'components/spendingBox';
 import TextTitle from 'components/textTitle';
 import ExploreTours from 'components/exploreTours';
 import HistoryEvaluate from 'layouts/popup/historyEvaluate';
+import ToastProvider from 'hooks/useToastProvider';
 
 interface IJourneyPreviewResponse {
     journeyAmount: number;
     profit: number;
     place: string;
+    createdAt: string;
+    rating: number;
 }
 
 const Evaluate = () => {
@@ -41,13 +44,19 @@ const Evaluate = () => {
         try {
             const result = await dispatch(previewJourney());
             if (result.success && result.data) {
-                setPreviewData(result.data);
-                setShowFomEvaluate(true);
+                if (balance < 100.0) {
+                    ToastProvider('warning', 'Số dư của bạn phải ít nhất là 100,00 để gửi một chuyến đi');
+                } else {
+                    setPreviewData({ ...result.data, createdAt: new Date().toISOString() });
+                    setShowFomEvaluate(true);
+                }
             } else {
                 console.error('Failed to preview journey:', result.message);
+                ToastProvider('error', result.message);
             }
         } catch (error) {
             console.error('Error previewing journey:', error);
+            ToastProvider('error', 'An error occurred while previewing journey');
         }
     };
 

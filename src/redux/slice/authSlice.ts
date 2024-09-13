@@ -33,6 +33,7 @@ interface IAuthState {
         journeyAmount: number;
         profit: number;
         createdAt: string;
+        rating: number;
     }>;
     isLoadingJourneyHistory: boolean;
 }
@@ -142,6 +143,7 @@ const authSlice = createSlice({
                 maxJourneys: number;
                 place: string;
                 journeyAmount: number;
+                rating: number;
             }>,
         ) => {
             state.journey.isFetching = false;
@@ -157,6 +159,7 @@ const authSlice = createSlice({
                     amount: action.payload.journeyAmount,
                     commission: action.payload.profit,
                     place: action.payload.place,
+                    rating: action.payload.rating,
                     _id: Date.now().toString(),
                     createdAt: new Date().toISOString(),
                     updatedAt: new Date().toISOString(),
@@ -190,7 +193,16 @@ const authSlice = createSlice({
                 state.user.balance = action.payload;
             }
         },
-        addJourneyToHistory: (state, action: PayloadAction<any>) => {
+        addJourneyToHistory: (
+            state,
+            action: PayloadAction<{
+                place: string;
+                journeyAmount: number;
+                profit: number;
+                createdAt: string;
+                rating: number;
+            }>,
+        ) => {
             if (state.journeyHistory) {
                 state.journeyHistory.unshift(action.payload);
             } else {

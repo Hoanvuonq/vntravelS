@@ -5,6 +5,7 @@ import TextTitle from 'components/textTitle';
 import { getUserJourneyHistory } from '../../redux/reducer/apiRequest';
 import { RootState } from '../../redux/store';
 import { tripData, ITripData } from './dataListEvalute';
+import { Rating } from '@material-tailwind/react';
 
 interface PopupProps {
     onClose: () => void;
@@ -74,9 +75,9 @@ const HistoryEvaluate: React.FC<PopupProps> = ({ onClose }) => {
             ? journeyHistory.map((journey, index) => {
                   const placeInfo = getPlaceInfo(journey.place.replace('Trip', ''));
                   return (
-                      <div key={index} className="relative mb-[4vw] xl:rounded-[1vw] rounded-[3.5vw] overflow-hidden history-evaluate">
+                      <div key={index} className="relative mb-[4vw] xl:rounded-[1vw] rounded-[3.5vw] overflow-hidden  history-evaluate">
                           <img src={placeInfo?.backgroundImage || images.defaultImage} alt="Trip background" className="w-full xl:h-[14vw] object-cover" />
-                          <div className="absolute inset-0 bg-black bg-opacity-50 p-[1vw] flex flex-col justify-between text-white">
+                          <div className="absolute inset-0 bg-black bg-opacity-50 xl:p-[1vw] p-[3vw] flex flex-col justify-between text-white">
                               <div className="flex justify-between items-start">
                                   <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw]">
                                       <div className="flex items-center w-full justify-between">
@@ -84,17 +85,21 @@ const HistoryEvaluate: React.FC<PopupProps> = ({ onClose }) => {
                                           <div className={`${getStatusBgColor('success')} ${getStatusClassName('success')} xl:p-[0.5vw] p-[1vw] text-status`}>Đã Hoàn Thành</div>
                                       </div>
                                       <p className="text-place">{placeInfo?.place || 'Unknown Place'}</p>
-                                      <p className="font-bold">{formatAmount(journey.journeyAmount)}</p>
+                                      <div className="w-full flex items-center justify-between">
+                                          <p className="text-title">{formatAmount(journey.journeyAmount)}</p>
+                                          <Rating value={Number(journey.rating) || 0} readonly {...({} as any)} className="rating-history" />
+                                      </div>
                                   </div>
                               </div>
+
                               <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw] border-t-[0.1vw] border-[#e5e9f2] pt-[1vw]">
                                   <div className="flex justify-between items-end">
-                                      <p className="text-sm">Số Tiền</p>
-                                      <p className="font-bold">{formatAmount(journey.journeyAmount)}</p>
+                                      <p className="text-title">Số Tiền</p>
+                                      <p className="text-title">{formatAmount(journey.journeyAmount)}</p>
                                   </div>
                                   <div className="flex justify-between items-end">
-                                      <p className="text-sm">Lợi Nhuận</p>
-                                      <p className="font-bold">{formatAmount(journey.profit)}</p>
+                                      <p className="text-title">Lợi Nhuận</p>
+                                      <p className="text-title">{formatAmount(journey.profit)}</p>
                                   </div>
                               </div>
                           </div>
@@ -117,7 +122,7 @@ const HistoryEvaluate: React.FC<PopupProps> = ({ onClose }) => {
                         </div>
                     </div>
                     <div className="w-full h-full bg-white rounded-2xl shadow-custom-5 p-[1.5vw] bai-jamjuree">
-                        <div className="transaction overflow-y-auto max-h-[70vh]">
+                        <div className="transaction overflow-y-auto max-h-[70vh] custom-scrollbar">
                             {isLoadingJourneyHistory ? (
                                 <div className="w-full all-center">Loading...</div>
                             ) : hasData ? (

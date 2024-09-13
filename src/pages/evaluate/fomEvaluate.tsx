@@ -6,6 +6,7 @@ import Button from 'components/button';
 import { images } from 'assets';
 import { tripData, ITripData } from 'layouts/popup/dataListEvalute';
 import ToastProvider from 'hooks/useToastProvider';
+import { Rating } from '@material-tailwind/react';
 
 interface IPopupProps {
     onClose: () => void;
@@ -13,6 +14,8 @@ interface IPopupProps {
         journeyAmount: number;
         profit: number;
         place: string;
+        createdAt: string;
+        rating: number;
     };
 }
 
@@ -22,22 +25,17 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
     const { journey, login } = useSelector((state: RootState) => state.auth);
     const [randomTrip, setRandomTrip] = useState<ITripData | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [rating, setRating] = useState(previewData.rating);
 
     const userBalance = login.currentUser?.balance || 0;
 
-    useEffect(() => {
-        const newRandomTrip = getRandomTrip();
-        setRandomTrip(newRandomTrip);
-    }, []);
-
-    useEffect(() => {
-        console.log('journey.isFetching:', journey.isFetching);
-        console.log('randomTrip:', randomTrip);
-        console.log('userBalance:', userBalance);
-    }, [journey.isFetching, randomTrip, userBalance]);
+    const handleRatingChange = (value: number) => {
+        setRating(value);
+        console.log('New rating:', value);
+    };
 
     const handleSendJourney = async () => {
-        console.log('handleSendJourney called');
+        // console.log('handleSendJourney called');
         if (!randomTrip) {
             setError('No trip selected');
             return;
@@ -60,16 +58,21 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
                 place: backgroundImageKey,
                 journeyAmount: previewData.journeyAmount,
                 profit: previewData.profit,
+                createdAt: previewData.createdAt,
+                rating: previewData.rating,
             });
-
+            console.log('Sending rating:', rating);
             const result = await dispatch(
                 sendJourney({
                     place: backgroundImageKey,
                     journeyAmount: previewData.journeyAmount,
                     profit: previewData.profit,
+                    createdAt: previewData.createdAt,
+                    rating: rating,
                 }),
             );
             console.log('sendJourney result:', result);
+
             if (result.success) {
                 ToastProvider('success', 'Gửi hành trình thành công');
                 onClose();
@@ -105,39 +108,54 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
         };
     }, [onClose]);
 
+    useEffect(() => {
+        const newRandomTrip = getRandomTrip();
+        setRandomTrip(newRandomTrip);
+    }, []);
+
+    useEffect(() => {
+        console.log('Preview Data:', previewData);
+    }, [previewData]);
+
+    useEffect(() => {
+        console.log('journey.isFetching:', journey.isFetching);
+        console.log('randomTrip:', randomTrip);
+        console.log('userBalance:', userBalance);
+    }, [journey.isFetching, randomTrip, userBalance]);
+
     return (
         <>
             <div className="overlay-sidebar active-overlay" />
             <div className="fixed inset-0 flex items-center justify-center z-30">
-                <div ref={popupRef} className="bg-white xl:w-[30vw] w-[96vw] xl:h-[25vw] h-[90vw] xl:rounded-[1vw] rounded-[2vw] shadow-custom-4 bai-jamjuree flex flex-col">
-                    <div className="flex flex-col h-full p-[1vw]">
+                <div ref={popupRef} className="bg-white xl:w-[30vw] w-[96vw] xl:h-[30vw] h-[100vw] xl:rounded-[1vw] rounded-[2vw] shadow-custom-4 bai-jamjuree flex flex-col">
+                    <div className="flex flex-col h-full xl:p-[1vw] p-[3vw] xl:gap-[1vw] gap-[2vw] form-evaluate">
                         {randomTrip && (
                             <div className="relative xl:rounded-[1vw] rounded-[3.5vw] history-evaluate">
                                 <img src={randomTrip.backgroundImage} alt="Trip background" className="w-full xl:h-[19vw] h-[70vw] object-cover xl:rounded-[1vw] rounded-[2vw]" />
-                                <div className="absolute inset-0 bg-black xl:!rounded-[1vw] !rounded-[2vw] bg-opacity-50 p-4 flex flex-col justify-between text-white">
+                                <div className="absolute inset-0 bg-black xl:!rounded-[1vw] !rounded-[2vw] bg-opacity-50 xl:p-[1vw] p-[3vw] flex flex-col justify-between text-white">
                                     <div className="flex justify-between items-start">
                                         <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw]">
                                             <div className="flex items-center w-full justify-between">
-                                                <p className="text-time">2024-09-10 21:01:11</p>
+                                                <p className="text-time">{new Date(previewData.createdAt).toLocaleString()}</p>
                                             </div>
-                                            <p className="text-place">{randomTrip.place}</p>
-                                            <p className="font-bold">{formatAmount(previewData.journeyAmount)}</p>
+                                            <p className="text-place">{randomTrip?.place}</p>
+                                            <p className="text-title">{formatAmount(previewData.journeyAmount)}</p>
                                         </div>
                                     </div>
                                     <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw] border-t-[0.1vw] border-[#e5e9f2] pt-[1vw]">
                                         <div className="flex justify-between items-end">
-                                            <p className="text-sm">Số Tiền</p>
-                                            <p className="font-bold">{formatAmount(previewData.journeyAmount)}</p>
+                                            <p className="text-title">Số Tiền</p>
+                                            <p className="text-title">{formatAmount(previewData.journeyAmount)}</p>
                                         </div>
                                         <div className="flex justify-between items-end">
-                                            <p className="text-sm">Lợi Nhuận</p>
-                                            <p className="font-bold">{formatAmount(previewData.profit)}</p>
+                                            <p className="text-title">Lợi Nhuận</p>
+                                            <p className="text-title">{formatAmount(previewData.profit)}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         )}
-
+                        <Rating value={rating} onChange={handleRatingChange} size="xl" readonly={false} {...({} as any)} className="rating" />
                         <div className="w-full all-center m-auto gap-[2vw] xl:max-w-[16vw] max-w-[80vw]">
                             <Button title="GỬI HÀNH TRÌNH" onClick={handleSendJourney} disabled={journey.isFetching || !randomTrip || userBalance < 100.0} />
                         </div>

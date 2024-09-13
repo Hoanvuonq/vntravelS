@@ -23,7 +23,6 @@ const MenuList: React.FC = () => {
     const currentUser = useSelector((state: RootState) => state.auth.login.currentUser);
     const username = currentUser?.username || 'Unknown User';
     const phone = currentUser?.phone;
-    console.log('currentUser:', currentUser);
 
     const handleClose = () => {
         dispatch(closeMenuNavbar());

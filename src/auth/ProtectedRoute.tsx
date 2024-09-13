@@ -2,7 +2,6 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 const isAuthenticated = (): boolean => {
     const accessToken = localStorage.getItem('accessToken');
-    console.log('Token in isAuthenticated:', accessToken);
     return !!accessToken;
 };
 

@@ -40,12 +40,14 @@ interface ISendJourneyResponse {
     profit: number;
     journeyCount: number;
     maxJourneys: number;
+    rating: number;
 }
 
 interface IJourneyPreviewResponse {
     journeyAmount: number;
     profit: number;
     place: string;
+    rating: number;
 }
 
 interface IJourneyHistoryResponse {
@@ -55,6 +57,7 @@ interface IJourneyHistoryResponse {
         amount: number;
         commission: number;
         place: string;
+        rating: number;
         _id: string;
         createdAt: string;
         updatedAt: string;
@@ -63,7 +66,11 @@ interface IJourneyHistoryResponse {
 export const loginUser = async (user: IUser, dispatch: Dispatch<any>): Promise<LoginResponse> => {
     dispatch(loginStart());
     try {
-        const res = await axios.post('http://localhost:1510/api/user/login', user);
+        const loginData = {
+            ...user,
+            loginTime: new Date().toISOString(),
+        };
+        const res = await axios.post('http://localhost:1510/api/user/login', loginData);
         console.log('API Response:', res.data);
 
         if (res.data && res.data.status) {
@@ -82,7 +89,6 @@ export const loginUser = async (user: IUser, dispatch: Dispatch<any>): Promise<L
         return { success: false, message: error.message };
     }
 };
-
 export const logOutUser = async (dispatch: Dispatch<any>, navigate: any) => {
     dispatch(logoutStart());
     try {
@@ -260,7 +266,7 @@ export const previewJourney = () => async (dispatch: AppDispatch) => {
     }
 };
 
-export const sendJourney = (journeyData: { place: string; journeyAmount: number; profit: number }) => async (dispatch: AppDispatch) => {
+export const sendJourney = (journeyData: { place: string; journeyAmount: number; profit: number; createdAt: string; rating: number }) => async (dispatch: AppDispatch) => {
     dispatch(sendJourneyStart());
     try {
         const token = localStorage.getItem('accessToken');
@@ -280,18 +286,19 @@ export const sendJourney = (journeyData: { place: string; journeyAmount: number;
                     ...res.data.data,
                     place: journeyData.place,
                     journeyAmount: journeyData.journeyAmount,
+                    rating: res.data.data.rating,
                 }),
             );
 
             // Update user balance
             dispatch(updateUserBalance(res.data.data.newBalance));
 
-            // Add journey to history
             const newJourney = {
                 place: journeyData.place,
                 journeyAmount: journeyData.journeyAmount,
                 profit: res.data.data.profit,
                 createdAt: new Date().toISOString(),
+                rating: res.data.data.rating,
             };
             dispatch(addJourneyToHistory(newJourney));
 
@@ -328,7 +335,9 @@ export const getUserJourneyHistory = () => async (dispatch: AppDispatch) => {
                 place: journey.place,
                 journeyAmount: journey.amount,
                 profit: journey.commission,
+                rating: journey.rating,
                 createdAt: journey.createdAt,
+                ating: journey.rating,
             }));
             dispatch(getUserJourneyHistorySuccess(transformedData));
             return { success: true, data: transformedData };
