@@ -20,7 +20,8 @@
       "paths": {
           "@components/*": ["./components/*"],
           "@assets/*": ["./assets/*"]
-      }
+      },
+      "types": ["node"]
   },
   "include": ["src", "src/**/*.ts"]
 }

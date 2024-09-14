@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import TextTitle from 'components/textTitle';
 import Input from 'components/input/inputProfile';
 import Button from 'components/button';
 import ToastProvider from 'hooks/useToastProvider';
 import { updateUserInformation } from 'api/user';
-import { RootState } from 'redux/store';
-import { useUserInfo } from 'hooks/useUserInfo';
+import { useUserInfo } from 'hooks/UserContext';
 
 interface IBankInfo {
     label: string;
@@ -37,18 +35,17 @@ const BankInfo: IBankInfo[] = [
 ];
 
 const Bank = () => {
-    const currentUser = useSelector((state: RootState) => state.auth.login.currentUser);
+    const { userInfo, fetchUserInfo } = useUserInfo();
     const [bankData, setBankData] = useState({
         bankAccount: '',
         bankName: '',
         bankNumber: '',
     });
     const [isUpdated, setIsUpdated] = useState(false);
-    const { refetchUserInfo } = useUserInfo();
 
     useEffect(() => {
-        if (currentUser && currentUser.information) {
-            const { bankAccount, bankName, bankNumber } = currentUser.information;
+        if (userInfo && userInfo.information) {
+            const { bankAccount, bankName, bankNumber } = userInfo.information;
             setBankData({
                 bankAccount: bankAccount || '',
                 bankName: bankName || '',
@@ -57,7 +54,7 @@ const Bank = () => {
 
             setIsUpdated(Boolean(bankAccount && bankName && bankNumber));
         }
-    }, [currentUser]);
+    }, [userInfo]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!isUpdated) {
@@ -73,7 +70,7 @@ const Bank = () => {
                 if (result.success) {
                     ToastProvider('success', 'Đã cập nhật thông tin ngân hàng');
                     setIsUpdated(true);
-                    refetchUserInfo();
+                    fetchUserInfo();
                 } else {
                     ToastProvider('error', result.message || 'Cập nhật thất bại');
                 }

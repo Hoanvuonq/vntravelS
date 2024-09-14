@@ -3,10 +3,8 @@ import BoxTotal from 'components/boxItem';
 import Carousel from 'components/carousel';
 import { ListPost } from 'components/carousel/postList';
 import TextTitle from 'components/textTitle';
-import { useUserInfo } from 'hooks/useUserInfo';
+import { useUserInfo } from 'hooks/UserContext';
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from 'redux/store';
 
 interface VipLevelItem {
     title: string;
@@ -24,9 +22,8 @@ const totalLevel: VipLevelItem[] = [
 ];
 
 const Home = () => {
-    const userVipLevel = useSelector((state: RootState) => state.auth.login.currentUser?.vipLevel) || 0;
-
-    useUserInfo();
+    const { userInfo } = useUserInfo();
+    const userVipLevel = userInfo?.vipLevel || 0;
 
     const truncateContent = (content: string, maxLength: number) => {
         if (content.length <= maxLength) return content;

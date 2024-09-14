@@ -1,19 +1,15 @@
-import { useState, useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from 'redux/store';
+import { useState, useMemo } from 'react';
 import { images } from 'assets';
 import Chart from 'components/chart';
 import BoxTotal from 'components/boxTotal';
 import TextTitle from 'components/textTitle';
 import { Link } from 'react-router-dom';
-import ToastProvider from 'hooks/useToastProvider';
-import { useUserInfo } from 'hooks/useUserInfo';
+import { useUserInfo } from 'hooks/UserContext';
 
 const Wallet = () => {
-    const dispatch = useDispatch<AppDispatch>();
-    const currentUser = useSelector((state: RootState) => state.auth.login.currentUser);
-    const balance = currentUser?.balance || 0;
-    const totalCommission = currentUser?.totalCommission || 0;
+    const { userInfo } = useUserInfo();
+    const balance = userInfo?.balance || 0;
+    const totalCommission = userInfo?.totalCommission || 0;
     const [hoveredItem, setHoveredItem] = useState<number | null>(null);
 
     const fundDetails = useMemo(
@@ -34,7 +30,6 @@ const Wallet = () => {
         [],
     );
 
-    useUserInfo();
     return (
         <div className="w-full all-center flex-col px-[3vw] gap-[2vw]">
             <div className="xl:hidden block">

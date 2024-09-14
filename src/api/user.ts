@@ -1,7 +1,28 @@
 import Api from './api';
+import CryptoJS from 'crypto-js';
 import { IApiResponse, IUsers, IUserInfo, IBankInfo } from './type';
 
 const url = '/user';
+
+const SECRET_KEY = process.env.REACT_APP_ENCRYPTION_KEY || '';
+
+if (!SECRET_KEY) {
+    console.error('REACT_APP_ENCRYPTION_KEY is not set in the environment');
+}
+
+const decryptData = (encryptedData: string): any => {
+    try {
+        const bytes = CryptoJS.AES.decrypt(encryptedData, SECRET_KEY);
+        const decryptedText = bytes.toString(CryptoJS.enc.Utf8);
+        if (!decryptedText) {
+            throw new Error('Decryption resulted in empty string');
+        }
+        return JSON.parse(decryptedText);
+    } catch (error) {
+        console.error('Decryption error:', error);
+        throw new Error('Failed to decrypt user data');
+    }
+};
 
 export const registerUser = async (user: IUsers): Promise<IApiResponse> => {
     const reqUrl = `${url}/register`;
@@ -17,9 +38,10 @@ export const registerUser = async (user: IUsers): Promise<IApiResponse> => {
 export const getUserInformationByToken = async (): Promise<IUserInfo> => {
     const reqUrl = `${url}/userInfo`;
     try {
-        const res = await Api.get<{ status: boolean; data: IUserInfo }>(reqUrl);
+        const res = await Api.get<{ status: boolean; data: { encryptedData: string } }>(reqUrl);
         if (res.data && res.data.status) {
-            return res.data.data;
+            const decryptedData = decryptData(res.data.data.encryptedData);
+            return decryptedData;
         } else {
             throw new Error('Failed to fetch user information');
         }

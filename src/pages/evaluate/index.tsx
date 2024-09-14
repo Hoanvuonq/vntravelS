@@ -1,9 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from 'redux/store';
 import { previewJourney } from 'api/journey';
-import { getUserInformationByToken } from 'api/user';
-import { setUserInfo } from 'redux/slice/authSlice';
 import Button from 'components/button';
 import FomEvaluate from './fomEvaluate';
 import { images } from 'assets';
@@ -13,7 +9,7 @@ import TextTitle from 'components/textTitle';
 import ExploreTours from 'components/exploreTours';
 import HistoryEvaluate from 'layouts/popup/historyEvaluate';
 import ToastProvider from 'hooks/useToastProvider';
-import { useUserInfo } from 'hooks/useUserInfo';
+import { useUserInfo } from 'hooks/UserContext';
 
 interface IJourneyPreviewResponse {
     journeyAmount: number;
@@ -24,18 +20,15 @@ interface IJourneyPreviewResponse {
 }
 
 const Evaluate = () => {
-    const { balance, totalCommission, journeyComplete, journeys } = useSelector((state: RootState) => ({
-        balance: state.auth.login.currentUser?.balance || 0,
-        totalCommission: state.auth.login.currentUser?.totalCommission || 0,
-        journeyComplete: state.auth.login.currentUser?.journeyComplete || 0,
-        journeys: state.auth.login.currentUser?.journeys?.length || 0,
-    }));
-
+    const { userInfo, fetchUserInfo } = useUserInfo();
     const [showHistoryPopup, setShowHistoryPopup] = useState(false);
     const [showFomEvaluate, setShowFomEvaluate] = useState(false);
     const [previewData, setPreviewData] = useState<IJourneyPreviewResponse | null>(null);
 
-    const { refetchUserInfo } = useUserInfo(); // Sử dụng custom hook
+    const balance = userInfo?.balance || 0;
+    const totalCommission = userInfo?.totalCommission || 0;
+    const journeyComplete = userInfo?.journeyComplete || 0;
+    const journeys = userInfo?.journeys?.length || 0;
 
     const totalSpending = [
         { title: 'Số Dư', money: balance.toFixed(2) },
@@ -65,18 +58,8 @@ const Evaluate = () => {
     };
 
     useEffect(() => {
-        const fetchUserInfo = async () => {
-            try {
-                const userInfo = await getUserInformationByToken();
-                refetchUserInfo();
-            } catch (error) {
-                console.error('Failed to fetch user information:', error);
-                ToastProvider('error', 'Không thể lấy thông tin người dùng');
-            }
-        };
-
         fetchUserInfo();
-    }, [refetchUserInfo]);
+    }, [fetchUserInfo]);
 
     return (
         <div className="flex flex-col xl:gap-[1vw] gap-[4vw]">

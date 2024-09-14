@@ -6,7 +6,7 @@ import { closeMenuNavbar } from 'redux/slice/menuNavbarSlice';
 import { logOutUser } from '../../redux/reducer/apiRequest';
 import { images } from 'assets';
 import ToastProvider from 'hooks/useToastProvider';
-import { useUserInfo } from 'hooks/useUserInfo';
+import { useUserInfo } from 'hooks/UserContext';
 
 const listMenu = [
     { link: 'payment', title: 'Nạp tiền', isSearchParams: true },
@@ -19,9 +19,9 @@ const MenuList: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const isOpen = useSelector((state: RootState) => state.menuNavbar.isOpen);
     const navigate = useNavigate();
-    const currentUser = useSelector((state: RootState) => state.auth.login.currentUser);
-    const username = currentUser?.username || 'Unknown User';
-    const phone = currentUser?.phone;
+    const { userInfo, fetchUserInfo } = useUserInfo();
+    const username = userInfo?.username || 'Unknown User';
+    const phone = userInfo?.phone;
 
     const handleClose = () => {
         dispatch(closeMenuNavbar());
@@ -32,12 +32,11 @@ const MenuList: React.FC = () => {
             await logOutUser(dispatch, navigate);
             ToastProvider('success', 'Đã đăng xuất thành công');
             handleClose();
+            fetchUserInfo();
         } catch (error) {
             ToastProvider('error', 'Không thể đăng xuất');
         }
     };
-
-    useUserInfo();
 
     const MenuListNavbar = useMemo(() => {
         return listMenu.map(({ link, title, isSearchParams }, index) => (

@@ -1,19 +1,10 @@
 import { images } from 'assets';
 import TextTitle from 'components/textTitle';
-import { useUserInfo } from 'hooks/useUserInfo';
+import { useUserInfo } from 'hooks/UserContext';
 import PopupAboutUs from 'layouts/popup/aboutUs';
 import PopupRequest from 'layouts/popup/requets';
 import PopupTerms from 'layouts/popup/terms';
 import { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from 'redux/store';
-
-interface IInfoItem {
-    label: string;
-    type: string;
-    placeholder: string;
-    disabled: string;
-}
 
 interface IInfoButton {
     img: string;
@@ -29,11 +20,11 @@ interface FundDetail {
 }
 
 const Profile = () => {
-    const currentUser = useSelector((state: RootState) => state.auth.login.currentUser);
+    const { userInfo } = useUserInfo();
     const [hoveredItem, setHoveredItem] = useState<number | null>(null);
-    const userVipLevel = useSelector((state: RootState) => state.auth.login.currentUser?.vipLevel) || 0;
-    const journeyComplete = currentUser?.journeyComplete || 0;
-    const journeys = currentUser?.journeys?.length || 0;
+    const userVipLevel = userInfo?.vipLevel || 0;
+    const journeyComplete = userInfo?.journeyComplete || 0;
+    const journeys = userInfo?.journeys?.length || 0;
     const [activePopup, setActivePopup] = useState<string | null>(null);
 
     const handleOpenPopup = (popupType: string) => {
@@ -82,8 +73,6 @@ const Profile = () => {
         [],
     );
 
-    useUserInfo();
-
     return (
         <div className="all-center xl:px-0 px-[1vw]">
             <div className="bg-white shadow-custom-3 rounded-[1vw] w-full h-full lg:p-[1vw] p-[1vw] flex flex-col gap-[1.5vw]">
@@ -95,12 +84,12 @@ const Profile = () => {
                         <div className="all-center cursor-pointer xl:h-[14vw] h-[46vw]">
                             <img src={images.Avatar} alt="Avatar" className="rounded-full border-[0.3vw] border-orange xl:w-[6vw] w-[18vw] scale-icon" />
                             <div className="absolute top-[1vw]  !text-white box-total">
-                                <p className="text-titleLevel">0987654321</p>
+                                <p className="text-titleLevel">{userInfo?.phone || '0987654321'}</p>
                             </div>
                         </div>
                     </div>
                     <div className="pt-[1vw] box-total">
-                        <p className="text-titleLevel">Hoanvuonq</p>
+                        <p className="text-titleLevel">{userInfo?.username || 'Hoanvuonq'}</p>
                     </div>
                     <div className="flex justify-between w-full items-center">
                         <div className="flex items-center box-total">

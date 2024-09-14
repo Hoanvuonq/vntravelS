@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from 'redux/store';
 import { sendJourney } from 'api/journey';
 import Button from 'components/button';
 import { images } from 'assets';
 import { tripData, ITripData } from 'layouts/popup/dataListEvalute';
 import ToastProvider from 'hooks/useToastProvider';
 import { Rating } from '@material-tailwind/react';
-import { useUserInfo } from 'hooks/useUserInfo';
+import { useUserInfo } from 'hooks/UserContext';
 
 interface IPopupProps {
     onClose: () => void;
@@ -22,12 +20,11 @@ interface IPopupProps {
 
 const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
     const popupRef = useRef<HTMLDivElement>(null);
-    const { userInfo } = useSelector((state: RootState) => state.auth);
+    const { userInfo, fetchUserInfo, isLoading } = useUserInfo();
     const [randomTrip, setRandomTrip] = useState<ITripData | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [rating, setRating] = useState(previewData.rating);
     const [isSending, setIsSending] = useState(false);
-    const { refetchUserInfo } = useUserInfo();
     const userBalance = userInfo?.balance || 0;
 
     const handleRatingChange = (value: number) => {
@@ -77,7 +74,7 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
 
             if (result.success) {
                 ToastProvider('success', 'Gửi hành trình thành công');
-                refetchUserInfo();
+                fetchUserInfo();
                 onClose();
             } else {
                 console.error('Failed to send journey:', result.message);
@@ -126,6 +123,10 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
         console.log('randomTrip:', randomTrip);
         console.log('userBalance:', userBalance);
     }, [randomTrip, userBalance]);
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <>
