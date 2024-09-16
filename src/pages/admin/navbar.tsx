@@ -1,10 +1,12 @@
-import { useState, useEffect, useRef } from 'react';
 import { images } from 'assets';
-import MenuList from 'layouts/menuList';
-import { RootState } from 'redux/store';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { toggleMenuNavbar } from 'redux/slice/menuNavbarSlice';
 import { toggleSidebar } from 'redux/slice/sidebarSlice';
+import { logOutAdmin } from 'redux/reducer/apiRequest';
+import ToastProvider from 'hooks/useToastProvider';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { AppDispatch } from 'redux/store';
 
 const useClickOutside = (ref: React.RefObject<HTMLDivElement>, callback: () => void) => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -22,9 +24,8 @@ const useClickOutside = (ref: React.RefObject<HTMLDivElement>, callback: () => v
 };
 
 const Navbar: React.FC = () => {
-    const dispatch = useDispatch();
-    const isOpen = useSelector((state: RootState) => state.menuNavbar.isOpen);
-    const isOpenSidebar = useSelector((state: RootState) => state.sidebar.isOpenSidebar);
+    const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
 
     const [showNotification, setShowNotification] = useState(false);
     const notificationRef = useRef<HTMLDivElement>(null);
@@ -45,6 +46,15 @@ const Navbar: React.FC = () => {
         setShowNotification(false);
     };
 
+    const handleLogout = async () => {
+        try {
+            await logOutAdmin(dispatch, navigate);
+            ToastProvider('success', 'Đã đăng xuất thành công');
+        } catch (error) {
+            ToastProvider('error', 'Không thể đăng xuất');
+        }
+    };
+
     useClickOutside(notificationRef, closeNotification);
 
     return (
@@ -57,11 +67,10 @@ const Navbar: React.FC = () => {
                 <div className="all-center">
                     <img src={images.NotificationIcon} alt="Notification Icon" className="mt-[0.2vw] xl:w-[2vw] sm:w-[4vw] w-[8vw] scale-icon" onClick={handleNotificationClick} />
                     <div className="flex items-center gap-1 cursor-pointer " onClick={handleToggleMenu}>
-                        <img src={images.Avatar} alt="avatar" className="rounded-full xl:border-[0.2vw] border-[1vw] xl:w-[2vw] sm:w-[4vw] w-[10vw] border-orange" />
+                        <img src={images.Avatar} alt="avatar" className="rounded-full xl:border-[0.2vw] border-[1vw] xl:w-[2vw] sm:w-[4vw] w-[10vw] border-orange" onClick={handleLogout} />
                     </div>
                 </div>
             </div>
-            <MenuList />
         </div>
     );
 };

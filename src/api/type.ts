@@ -7,16 +7,6 @@ export interface IUsers {
     passBank: string;
 }
 
-export interface IAxiosJWTInstance {
-    (config: {
-        method: string;
-        url: string;
-        headers: {
-            token: string;
-        };
-    }): Promise<any>;
-}
-
 export interface Journey {
     amount: number;
     commission: number;
@@ -59,7 +49,7 @@ export interface IUserInfo {
 export interface IAuthState {
     accessToken: string | null;
     userInfo: IUserInfo | null;
-    
+
     journey: {
         isFetching: boolean;
     };

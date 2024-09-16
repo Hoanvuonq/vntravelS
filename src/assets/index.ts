@@ -75,4 +75,5 @@ export const images: any = {
     AboutUs: require('./img/about.png'),
     historyEvaluate: require('./img/history-evaluate.png'),
     NoData: require('./img/no-data.jpg'),
+    Edit: require('./img/edit.png'),
 };

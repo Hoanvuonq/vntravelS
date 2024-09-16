@@ -1,4 +1,3 @@
-import TextTitle from 'components/textTitle';
 import Input from 'components/input/inputProfile';
 import Button from 'components/button';
 import BoxTotal from 'components/boxTotal';

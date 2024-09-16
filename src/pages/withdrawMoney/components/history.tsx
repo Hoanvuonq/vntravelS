@@ -11,7 +11,6 @@ interface HistoryPayment {
     status: string;
 }
 
-// const historyPayment: HistoryPayment[] = [];
 const historyPayment: HistoryPayment[] = [
     {
         service: '001',

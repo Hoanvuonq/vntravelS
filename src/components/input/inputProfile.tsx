@@ -5,7 +5,7 @@ interface InputContent {
     type: string;
     placeholder: string;
     name?: string;
-    value?: string;
+    value?: string | number;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     disabled?: boolean;
 }
@@ -13,7 +13,7 @@ interface InputContent {
 const InputC: React.FC<InputContent> = ({ Label, type, placeholder, name, value, onChange, disabled }) => {
     return (
         <div className="inputC">
-            <label htmlFor={name} className="block xl:mb-[1vw] mb-[2.5vw] text-label text-gray-900 dark:text-white">
+            <label htmlFor={name} className="block xl:mb-[0.5vw] mb-[2.5vw] text-label text-gray-900 dark:text-white">
                 {Label}
             </label>
             <input

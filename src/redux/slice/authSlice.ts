@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserInfo } from 'redux/reducer/apiRequest/type';
+import { UserInfo, IAdminInfo } from 'redux/reducer/apiRequest/type';
 import { IUserInfo } from 'api/type';
 
 interface IAuthState {
@@ -11,6 +11,12 @@ interface IAuthState {
         token: string | null;
         isTokenExpired: boolean;
         accessToken: string | null;
+    };
+    adminLogin: {
+        currentAdmin: IAdminInfo | null;
+        isFetching: boolean;
+        error: boolean;
+        token: string | null;
     };
     logout: {
         isFetching: boolean;
@@ -27,6 +33,12 @@ const initialState: IAuthState = {
         token: localStorage.getItem('accessToken') || null,
         accessToken: localStorage.getItem('accessToken') || null,
         isTokenExpired: false,
+    },
+    adminLogin: {
+        currentAdmin: null,
+        isFetching: false,
+        error: false,
+        token: localStorage.getItem('adminToken') || null,
     },
     logout: {
         isFetching: false,
@@ -63,6 +75,23 @@ const authSlice = createSlice({
             state.login.token = null;
             state.login.isTokenExpired = false;
         },
+        loginAdminStart: (state) => {
+            state.adminLogin.isFetching = true;
+            state.adminLogin.error = false;
+        },
+        loginAdminSuccess: (state, action: PayloadAction<{ admin: IAdminInfo; token: string }>) => {
+            state.adminLogin.isFetching = false;
+            state.adminLogin.currentAdmin = action.payload.admin;
+            state.adminLogin.token = action.payload.token;
+        },
+        loginAdminFailed: (state) => {
+            state.adminLogin.isFetching = false;
+            state.adminLogin.error = true;
+        },
+        logoutAdmin: (state) => {
+            state.adminLogin.currentAdmin = null;
+            state.adminLogin.token = null;
+        },
         logoutFailed: (state) => {
             state.logout.isFetching = false;
             state.logout.error = true;
@@ -70,13 +99,13 @@ const authSlice = createSlice({
         tokenExpired: (state) => {
             state.login.isTokenExpired = true;
         },
-        setUserInfo: (state, action: PayloadAction<IUserInfo>) => {
+        setUserInfo: (state, action: PayloadAction<IUserInfo | null>) => {
             state.userInfo = action.payload;
             state.login.currentUser = action.payload;
         },
     },
 });
 
-export const { loginStart, loginSuccess, loginFailed, logoutStart, logoutSuccess, logoutFailed, tokenExpired, setUserInfo } = authSlice.actions;
+export const { loginStart, loginSuccess, loginFailed, logoutStart, logoutSuccess, logoutFailed, tokenExpired, setUserInfo, loginAdminStart, loginAdminSuccess, loginAdminFailed, logoutAdmin } = authSlice.actions;
 
 export default authSlice.reducer;

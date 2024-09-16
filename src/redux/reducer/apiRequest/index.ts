@@ -1,18 +1,27 @@
 import { Dispatch } from '@reduxjs/toolkit';
 import axios, { AxiosInstance } from 'axios';
 import { jwtDecode } from 'jwt-decode';
-import { loginFailed, loginStart, loginSuccess, logoutFailed, logoutStart, logoutSuccess, tokenExpired } from '../../slice/authSlice';
+import { loginFailed, loginStart, loginSuccess, logoutFailed, logoutStart, logoutSuccess, tokenExpired, loginAdminStart, loginAdminSuccess, loginAdminFailed } from '../../slice/authSlice';
 import { IUser } from './type';
 
-interface LoginResponse {
+interface ILoginResponse {
     success: boolean;
     data?: {
         accessToken: string;
     };
     message?: string;
 }
+interface IAdminLoginResponse {
+    success: boolean;
+    data?: {
+        adminId: string;
+        adminUsername: string;
+        token: string;
+    };
+    message?: string;
+}
 
-export const loginUser = async (user: IUser, dispatch: Dispatch<any>): Promise<LoginResponse> => {
+export const loginUser = async (user: IUser, dispatch: Dispatch<any>): Promise<ILoginResponse> => {
     dispatch(loginStart());
     try {
         const loginData = {
@@ -38,6 +47,27 @@ export const loginUser = async (user: IUser, dispatch: Dispatch<any>): Promise<L
         return { success: false, message: error.message };
     }
 };
+
+export const loginAdmin = async (adminCredentials: { adminUsername: string; adminPassword: string }, dispatch: Dispatch<any>): Promise<IAdminLoginResponse> => {
+    dispatch(loginAdminStart());
+    try {
+        const res = await axios.post('http://localhost:1510/api/admin/loginAdmin', adminCredentials);
+
+        if (res.data && res.data.status) {
+            const { data } = res.data;
+            dispatch(loginAdminSuccess({ admin: data, token: data.token }));
+            localStorage.setItem('adminToken', data.token);
+            return { success: true, data };
+        }
+        dispatch(loginAdminFailed());
+        return { success: false, message: res.data.message || 'Admin login failed' };
+    } catch (error: any) {
+        dispatch(loginAdminFailed());
+        console.error('Admin login failed:', error.message);
+        return { success: false, message: error.message };
+    }
+};
+
 export const logOutUser = async (dispatch: Dispatch<any>, navigate: any) => {
     dispatch(logoutStart());
     try {
@@ -59,6 +89,39 @@ export const logOutUser = async (dispatch: Dispatch<any>, navigate: any) => {
     } catch (error: any) {
         console.error('Logout failed:', error);
         let errorMessage = 'An error occurred during logout';
+        if (error.response) {
+            errorMessage = error.response.data.message || errorMessage;
+            console.error('Response status:', error.response.status);
+        } else if (error.request) {
+            console.error('No response received:', error.request);
+        } else {
+            console.error('Error setting up request:', error.message);
+        }
+        dispatch(logoutFailed());
+    }
+};
+
+export const logOutAdmin = async (dispatch: Dispatch<any>, navigate: any) => {
+    dispatch(logoutStart());
+    try {
+        localStorage.removeItem('adminToken');
+        dispatch(logoutSuccess());
+        navigate('/loginAdmin');
+
+        axios
+            .post(
+                'http://localhost:1510/api/admin/logout',
+                {},
+                {
+                    withCredentials: true,
+                },
+            )
+            .catch((error) => {
+                console.error('Failed to connect to admin logout API:', error);
+            });
+    } catch (error: any) {
+        console.error('Admin logout failed:', error);
+        let errorMessage = 'An error occurred during admin logout';
         if (error.response) {
             errorMessage = error.response.data.message || errorMessage;
             console.error('Response status:', error.response.status);

@@ -54,11 +54,12 @@ export const getUserInformationByToken = async (): Promise<IUserInfo> => {
 export const updateUserInformation = async (bankInfo: IBankInfo): Promise<{ success: boolean; message: string; data?: IUserInfo }> => {
     const reqUrl = `${url}/updateInfo`;
     try {
-        const res = await Api.post<{ status: boolean; data: IUserInfo }>(reqUrl, bankInfo);
+        const res = await Api.post<{ status: boolean; data: { encryptedData: string }; message: string }>(reqUrl, bankInfo);
         if (res.data && res.data.status) {
-            return { success: true, message: 'User information updated successfully', data: res.data.data };
+            const decryptedData = decryptData(res.data.data.encryptedData);
+            return { success: true, message: 'User information updated successfully', data: decryptedData };
         } else {
-            throw new Error('Failed to update user information');
+            throw new Error(res.data.message || 'Failed to update user information');
         }
     } catch (error: any) {
         console.error('Error updating user info:', error.response ? error.response.data : error.message);

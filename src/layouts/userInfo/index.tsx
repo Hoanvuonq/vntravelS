@@ -19,7 +19,6 @@ const UserInfo = () => {
                 dispatch(setUserInfo(userInfo));
             } catch (error) {
                 console.error('Failed to fetch user information:', error);
-                ToastProvider('error', 'Không thể lấy thông tin người dùng');
             }
         };
 

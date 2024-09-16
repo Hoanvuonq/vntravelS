@@ -1,7 +1,10 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { getUserInformationByToken } from 'api/user';
 import ToastProvider from 'hooks/useToastProvider';
 import { IUserInfo } from 'api/type';
+import { setUserInfo } from 'redux/slice/authSlice';
+import { RootState } from 'redux/store';
 
 interface UserContextType {
     userInfo: IUserInfo | null;
@@ -12,7 +15,8 @@ interface UserContextType {
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [userInfo, setUserInfo] = useState<IUserInfo | null>(null);
+    const dispatch = useDispatch();
+    const reduxUserInfo = useSelector((state: RootState) => state.auth.userInfo);
     const [isLoading, setIsLoading] = useState(false);
 
     const fetchUserInfo = useCallback(async () => {
@@ -20,24 +24,30 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         try {
             const fetchedUserInfo = await getUserInformationByToken();
             if (fetchedUserInfo && Object.keys(fetchedUserInfo).length > 0) {
-                setUserInfo(fetchedUserInfo);
+                dispatch(setUserInfo(fetchedUserInfo));
             } else {
                 console.error('User info is empty or invalid');
-                ToastProvider('error', 'Không thể lấy thông tin người dùng');
             }
         } catch (error) {
             console.error('Failed to fetch user information:', error);
-            ToastProvider('error', 'Không thể lấy thông tin người dùng');
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, [dispatch]);
 
     useEffect(() => {
         fetchUserInfo();
     }, [fetchUserInfo]);
 
-    return <UserContext.Provider value={{ userInfo, fetchUserInfo, isLoading }}>{children}</UserContext.Provider>;
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            fetchUserInfo();
+        }, 60000);
+
+        return () => clearInterval(intervalId);
+    }, [fetchUserInfo]);
+
+    return <UserContext.Provider value={{ userInfo: reduxUserInfo, fetchUserInfo, isLoading }}>{children}</UserContext.Provider>;
 };
 
 export const useUserInfo = () => {

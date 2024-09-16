@@ -3,6 +3,10 @@ export interface IUser {
     phone?: number;
     password: string;
 }
+export interface IAdminInfo {
+    adminId: string;
+    adminUsername: string;
+}
 
 export interface IAxiosJWTInstance {
     (config: {

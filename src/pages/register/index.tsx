@@ -59,7 +59,6 @@ const Register = () => {
 
     return (
         <div className="bg-login">
-            {/* <video src={images.introVideo} autoPlay muted loop controls={false} className="w-screen absolute top-0" /> */}
             <div className="all-center flex-wrap min-h-screen xl:py-[2vw] py-[4vw] relative z-20">
                 <div className="bg-white xl:w-[26vw] lg:w-[40vw] sm:w-[50vw] w-[90vw] xl:rounded-[1vw] rounded-[4vw] py-[5vw] xl:px-[3vw] lg:px-[5vw] sm:px-[8vw] px-[10vw]">
                     <div className="flex-col all-center w-full xl:gap-[1.5vw] lg:gap-[3vw] sm:gap-[3vw] gap-[5vw]">

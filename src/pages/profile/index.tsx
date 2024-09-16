@@ -75,12 +75,12 @@ const Profile = () => {
 
     return (
         <div className="all-center xl:px-0 px-[1vw]">
-            <div className="bg-white shadow-custom-3 rounded-[1vw] w-full h-full lg:p-[1vw] p-[1vw] flex flex-col gap-[1.5vw]">
-                <div className=" w-full px-[2vw]">
+            <div className="bg-white shadow-custom-3 rounded-[1vw] w-full h-full py-[2vw] px-[1vw] flex flex-col gap-[1.5vw]">
+                <div className=" w-full px-[2vw] level">
                     <TextTitle title="Thông Tin Cá Nhân" />
                 </div>
                 <div className="all-center flex-col xl:gap-[2vw] gap-[8vw] lg:px-[5vw] px-[1vw]">
-                    <div className="bg-editUser relative rounded-[2vw] xl:h-[8vw] h-[26vw] ">
+                    <div className="bg-editUser relative xl:rounded-[1vw] rounded-[2vw] xl:h-[8vw] h-[26vw] ">
                         <div className="all-center cursor-pointer xl:h-[14vw] h-[46vw]">
                             <img src={images.Avatar} alt="Avatar" className="rounded-full border-[0.3vw] border-orange xl:w-[6vw] w-[18vw] scale-icon" />
                             <div className="absolute top-[1vw]  !text-white box-total">
@@ -124,40 +124,39 @@ const Profile = () => {
                             ></div>
                         </div>
                     </div>
-                </div>
-
-                <div className="bg-white all-start flex-col xl:gap-[1vw] gap-[3vw] xl:w-[40vw] w-full shadow-custom-5 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[2vw]">
-                    <div className="border-b-[0.2vw] pb-[1vw] border-[#E2E8F0] w-full">
-                        <TextTitle title="Thiết Lập Cá Nhân" />
-                    </div>
-                    <div className="flex flex-col xl:gap-[1vw] gap-[6vw] w-full">
-                        {fundDetails.map(({ icon, title, link, description, popupType }, index) => (
-                            <div
-                                key={index}
-                                onClick={() => {
-                                    if (popupType) {
-                                        handleOpenPopup(popupType);
-                                    } else if (link) {
-                                        window.location.href = link;
-                                    }
-                                }}
-                                className={`flex items-center border-b-[0.1vw] xl:pb-[1vw] pb-[3vw] border-[#E2E8F0] w-full xl:gap-[2vw] gap-[3vw] wallet-item cursor-pointer transition-all duration-300 p-[1vw] ${
-                                    hoveredItem === index ? 'bg-[#E6F7FF] ' : ''
-                                }`}
-                                onMouseEnter={() => setHoveredItem(index)}
-                                onMouseLeave={() => setHoveredItem(null)}
-                            >
-                                <img src={icon} alt={`icon ${title}`} className="xl:w-[2vw] w-[8vw]" />
-                                <div className="flex flex-col xl:gap-[0.5vw] gap-[1vw]">
-                                    <p className="text-title">{title}</p>
-                                    <p className="text-content">{description}</p>
+                    <div className="bg-white all-start flex-col xl:gap-[1vw] gap-[3vw] w-full shadow-custom-5 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[2vw]">
+                        <div className="border-b-[0.2vw] pb-[1vw] border-[#E2E8F0] w-full">
+                            <TextTitle title="Thiết Lập Cá Nhân" />
+                        </div>
+                        <div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-[2vw] gap-[6vw] w-full">
+                            {fundDetails.map(({ icon, title, link, description, popupType }, index) => (
+                                <div
+                                    key={index}
+                                    onClick={() => {
+                                        if (popupType) {
+                                            handleOpenPopup(popupType);
+                                        } else if (link) {
+                                            window.location.href = link;
+                                        }
+                                    }}
+                                    className={`flex items-center border-b-[0.1vw] xl:pb-[1vw] pb-[3vw] border-[#E2E8F0] w-full xl:gap-[2vw] gap-[3vw] wallet-item cursor-pointer transition-all duration-300 p-[1vw] ${
+                                        hoveredItem === index ? 'bg-[#E6F7FF] ' : ''
+                                    }`}
+                                    onMouseEnter={() => setHoveredItem(index)}
+                                    onMouseLeave={() => setHoveredItem(null)}
+                                >
+                                    <img src={icon} alt={`icon ${title}`} className="xl:w-[2vw] w-[8vw]" />
+                                    <div className="flex flex-col xl:gap-[0.5vw] gap-[1vw]">
+                                        <p className="text-title">{title}</p>
+                                        <p className="text-content">{description}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
+                        {activePopup === 'terms' && <PopupTerms onClose={handleClosePopup} />}
+                        {activePopup === 'request' && <PopupRequest onClose={handleClosePopup} />}
+                        {activePopup === 'aboutUs' && <PopupAboutUs onClose={handleClosePopup} />}
                     </div>
-                    {activePopup === 'terms' && <PopupTerms onClose={handleClosePopup} />}
-                    {activePopup === 'request' && <PopupRequest onClose={handleClosePopup} />}
-                    {activePopup === 'aboutUs' && <PopupAboutUs onClose={handleClosePopup} />}
                 </div>
             </div>
         </div>
