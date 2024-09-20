@@ -1,8 +1,7 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUserInformationByToken } from 'api/user';
-import ToastProvider from 'hooks/useToastProvider';
 import { IUserInfo } from 'api/type';
+import { getUserInformationByToken } from 'api/user';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { setUserInfo } from 'redux/slice/authSlice';
 import { RootState } from 'redux/store';
 
@@ -20,9 +19,19 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [isLoading, setIsLoading] = useState(false);
 
     const fetchUserInfo = useCallback(async () => {
+        const accessToken = localStorage.getItem('accessToken');
+        const adminToken = localStorage.getItem('adminToken');
+
+        if (!accessToken && !adminToken) {
+            console.log('No token found, skipping user info fetch');
+            return;
+        }
+
         setIsLoading(true);
         try {
+            const token = accessToken || adminToken;
             const fetchedUserInfo = await getUserInformationByToken();
+            console.log('Fetched User Info:', fetchedUserInfo);
             if (fetchedUserInfo && Object.keys(fetchedUserInfo).length > 0) {
                 dispatch(setUserInfo(fetchedUserInfo));
             } else {
@@ -36,12 +45,20 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, [dispatch]);
 
     useEffect(() => {
-        fetchUserInfo();
+        const accessToken = localStorage.getItem('accessToken');
+        const adminToken = localStorage.getItem('adminToken');
+        if (accessToken || adminToken) {
+            fetchUserInfo();
+        }
     }, [fetchUserInfo]);
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-            fetchUserInfo();
+            const accessToken = localStorage.getItem('accessToken');
+            const adminToken = localStorage.getItem('adminToken');
+            if (accessToken || adminToken) {
+                fetchUserInfo();
+            }
         }, 60000);
 
         return () => clearInterval(intervalId);

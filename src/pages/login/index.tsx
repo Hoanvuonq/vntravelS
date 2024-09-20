@@ -51,27 +51,24 @@ const Login = () => {
     });
 
     const onSubmit = async (data: any) => {
-        const response = await loginUser(data, dispatch);
-        if (response.success) {
-            const accessToken = response.data?.accessToken;
-            if (accessToken) {
-                localStorage.setItem('accessToken', accessToken);
+        try {
+            const response = await loginUser(data, dispatch);
+            if (response.success) {
                 ToastProvider('success', 'Đăng nhập thành công');
-
                 setTimeout(() => {
                     navigate('/');
                 }, 2000);
             } else {
-                ToastProvider('error', 'Mã thông báo truy cập bị thiếu');
+                ToastProvider('error', response.message || 'Đăng Nhập Thất Bại');
             }
-        } else {
-            ToastProvider('error', response.message || 'Đăng Nhập Thất Bại');
+        } catch (error) {
+            console.error('Login error:', error);
+            ToastProvider('error', 'Đã xảy ra lỗi khi đăng nhập');
         }
     };
 
     return (
         <div className="bg-login">
-            {/* <video src={images.introVideo} autoPlay muted loop controls={false} className="w-screen absolute top-0" /> */}
             <div className="all-center flex-wrap min-h-screen py-0 relative z-20">
                 <div className="bg-white xl:w-[26vw] lg:w-[40vw] md:w-[50vw] sm:w-[60vw] w-[80vw] xl:rounded-[1vw] lg:rounded-[1.6vw] md:rounded-[2vw] sm:rounded-[2.4vw] rounded-[3vw] xl:py-[3vw] py-[7vw] xl:px-[3vw] lg:px-[5vw] md:px-[9vw] px-[10vw]">
                     <div className="flex-col all-center w-full xl:gap-[1.5vw] lg:gap-[2.5vw] md:gap-[3vw] sm:gap-[3.5vw] gap-[4vw]">

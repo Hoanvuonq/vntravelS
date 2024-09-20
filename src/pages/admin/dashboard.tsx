@@ -2,9 +2,11 @@ import { useState, useEffect, useMemo } from 'react';
 import TextTitle from 'components/textTitle';
 import { Card, CardHeader, Input, Typography, Button, CardBody, CardFooter, Tabs, TabsHeader, Tab, Tooltip } from '@material-tailwind/react';
 import { images } from 'assets';
-import { getAllUsers, getUserInfo } from 'api/admin';
+import { getAllUsers, getUserInfo, searchUser } from 'api/admin';
 import { IUserInfo } from 'api/type';
 import EditUser from './editUser';
+import ConfirmMoney from './confirmMoney';
+import { useUserInfo } from 'hooks/UserContext';
 
 const TABS = [
     {
@@ -21,13 +23,63 @@ const TABS = [
     },
 ];
 
-const TABLE_HEAD = ['Thông Tin', 'VIP', 'Đăng Ký', 'Trạng Thái', ''];
+const TABLE_HEAD = ['Thông Tin', 'VIP', 'Đăng Ký', 'Trạng Thái', '', '', ''];
 
 const Dashboard = () => {
+    const { fetchUserInfo } = useUserInfo();
     const [users, setUsers] = useState<IUserInfo[]>([]);
+    const [filteredUsers, setFilteredUsers] = useState<IUserInfo[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [selectedUser, setSelectedUser] = useState<IUserInfo | null>(null);
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const handleEditUser = async (userId: string) => {
+        try {
+            const userInfo = await getUserInfo(userId);
+            setSelectedUser(userInfo);
+            await fetchUserInfo();
+        } catch (error) {
+            console.error('Failed to fetch user info:', error);
+        }
+    };
+
+    // const handleConfirmMoney = async (userId: string) => {
+    //     try {
+    //         const userInfo = await getUserInfo(userId);
+    //         setSelectedUser(userInfo);
+    //         await fetchUserInfo();
+    //     } catch (error) {
+    //         console.error('Failed to fetch user info:', error);
+    //     }
+    // };
+    const handleSearch = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            const trimmedQuery = searchQuery.trim();
+            if (trimmedQuery === '') {
+                setFilteredUsers(users);
+                return;
+            }
+
+            try {
+                setIsLoading(true);
+                const searchResults = await searchUser(trimmedQuery);
+                setFilteredUsers(searchResults);
+            } catch (error) {
+                console.error('Failed to search users:', error);
+                setError('Failed to search users. Please try again.');
+            } finally {
+                setIsLoading(false);
+            }
+        }
+    };
+
+    const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value);
+        if (e.target.value === '') {
+            setFilteredUsers(users);
+        }
+    };
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -35,6 +87,7 @@ const Dashboard = () => {
                 setIsLoading(true);
                 const data = await getAllUsers();
                 setUsers(data);
+                setFilteredUsers(data);
             } catch (error) {
                 console.error('Failed to fetch users:', error);
                 setError('Failed to load users. Please try again later.');
@@ -45,18 +98,9 @@ const Dashboard = () => {
         fetchUsers();
     }, []);
 
-    const handleEditUser = async (userId: string) => {
-        try {
-            const userInfo = await getUserInfo(userId);
-            setSelectedUser(userInfo);
-        } catch (error) {
-            console.error('Failed to fetch user info:', error);
-        }
-    };
-
     const memoizedTableRows = useMemo(() => {
-        return users.map((user, index) => {
-            const isLast = index === users.length - 1;
+        return filteredUsers.map((user, index) => {
+            const isLast = index === filteredUsers.length - 1;
             const classes = isLast ? 'xl:p-[1vw] p-[2vw]' : 'xl:p-[1vw] p-[2vw] border-b border-blue-gray-50 level';
 
             return (
@@ -94,15 +138,29 @@ const Dashboard = () => {
                             </Typography>
                         </div>
                     </td>
-                    <td className={classes}>
+                    <td className={`${classes} !w-[4vw]`}>
                         <Tooltip content="Edit User">
-                            <img src={images.Edit} alt="Edit" className="hover-items cursor-pointer" onClick={() => handleEditUser(user._id)} />
+                            <img src={images.Edit} alt="Edit" className="hover-items cursor-pointer w-[3vw]" onClick={() => handleEditUser(user._id)} />
+                        </Tooltip>
+                    </td>
+                    <td className={`${classes} !w-[4vw]`}></td>
+                    {/* <td className={`${classes} !w-[4vw]`}>
+                        <Tooltip content="Edit User">
+                            <img src={images.wallet} alt="Edit" className="hover-items cursor-pointer w-[3vw]" onClick={() => handleEditUser(user._id)} />
+                        </Tooltip>
+                    </td> */}
+                    <td className={`${classes} !w-[4vw]`}>
+                        <Tooltip content="Edit User">
+                            <div className="relative hover-items ">
+                                <img src={images.NotificationIcon} alt="Notification" className="relative cursor-pointer w-[3vw]" />
+                                <span className="absolute bg-red p-[0.4vw] w-[1.3vw] h-[1.3vw] all-center text-white rounded-full -top-[0.2vw] -right-[0.4vw]">0</span>
+                            </div>
                         </Tooltip>
                     </td>
                 </tr>
             );
         });
-    }, [users]);
+    }, [filteredUsers]);
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -121,7 +179,7 @@ const Dashboard = () => {
                         <CardHeader floated={false} shadow={false} className="rounded-none" {...({} as any)}>
                             <div className="mb-8 flex items-center justify-between gap-8">
                                 <div />
-                                <div className="flex shrink-0 xl:flex-col gap-2 flex-row">
+                                <div className="flex shrink-0 gap-[1vw] flex-row">
                                     <Button variant="outlined" size="sm" {...({} as any)}>
                                         view all
                                     </Button>
@@ -141,7 +199,7 @@ const Dashboard = () => {
                                     </TabsHeader>
                                 </Tabs>
                                 <div className="w-full md:w-72">
-                                    <Input label="Search" {...({} as any)} />
+                                    <Input label="Search" value={searchQuery} onChange={handleSearchInputChange} onKeyPress={handleSearch} {...({} as any)} />
                                 </div>
                             </div>
                         </CardHeader>
@@ -177,7 +235,7 @@ const Dashboard = () => {
                     </Card>
                 </div>
             </div>
-            {selectedUser && <EditUser user={selectedUser} onClose={() => setSelectedUser(null)} />}
+            {selectedUser && <ConfirmMoney user={selectedUser} onClose={() => setSelectedUser(null)} />}
         </div>
     );
 };

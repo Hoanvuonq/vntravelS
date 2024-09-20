@@ -28,30 +28,28 @@ export const loginUser = async (user: IUser, dispatch: Dispatch<any>): Promise<I
             ...user,
             loginTime: new Date().toISOString(),
         };
-        const res = await axios.post('http://localhost:1510/api/user/login', loginData);
-        console.log('API Response:', res.data);
-
+        const res = await axios.post(process.env.REACT_APP_API_DEV + 'user/login', loginData);
+        console.log('Login API response:', res.data);
         if (res.data && res.data.status) {
-            const { data } = res.data;
-            const { accessToken } = data;
+            const { encryptedData, accessToken } = res.data.data;
             if (accessToken) {
                 localStorage.setItem('accessToken', accessToken);
-                dispatch(loginSuccess({ user: data, token: accessToken }));
+                dispatch(loginSuccess({ user: encryptedData, token: accessToken }));
                 return { success: true, data: { accessToken } };
             }
         }
-        return { success: false, message: 'Login failed' };
+        return { success: false, message: res.data.message || 'Login failed' };
     } catch (error: any) {
+        console.error('Login error:', error.response || error); // Log chi tiết lỗi
         dispatch(loginFailed());
-        console.error('Login failed:', error.message);
-        return { success: false, message: error.message };
+        return { success: false, message: error.response?.data?.message || error.message };
     }
 };
 
 export const loginAdmin = async (adminCredentials: { adminUsername: string; adminPassword: string }, dispatch: Dispatch<any>): Promise<IAdminLoginResponse> => {
     dispatch(loginAdminStart());
     try {
-        const res = await axios.post('http://localhost:1510/api/admin/loginAdmin', adminCredentials);
+        const res = await axios.post(process.env.REACT_APP_API_DEV + 'admin/loginAdmin', adminCredentials);
 
         if (res.data && res.data.status) {
             const { data } = res.data;
@@ -77,25 +75,20 @@ export const logOutUser = async (dispatch: Dispatch<any>, navigate: any) => {
 
         axios
             .post(
-                'http://localhost:1510/api/user/logout',
+                process.env.REACT_APP_API_DEV + 'user/logout',
                 {},
                 {
                     withCredentials: true,
                 },
             )
-            .catch((error) => {
-                console.error('Failed to connect to logout API:', error);
-            });
+            .catch((error) => {});
     } catch (error: any) {
-        console.error('Logout failed:', error);
-        let errorMessage = 'An error occurred during logout';
         if (error.response) {
-            errorMessage = error.response.data.message || errorMessage;
-            console.error('Response status:', error.response.status);
+            console.error('Logout error:', error.response.data.message || 'An error occurred during logout');
         } else if (error.request) {
-            console.error('No response received:', error.request);
+            console.error('No response received during logout');
         } else {
-            console.error('Error setting up request:', error.message);
+            console.error('Error setting up logout request:', error.message);
         }
         dispatch(logoutFailed());
     }
@@ -110,7 +103,7 @@ export const logOutAdmin = async (dispatch: Dispatch<any>, navigate: any) => {
 
         axios
             .post(
-                'http://localhost:1510/api/admin/logout',
+                process.env.REACT_APP_API_DEV + 'admin/logout',
                 {},
                 {
                     withCredentials: true,
@@ -120,15 +113,12 @@ export const logOutAdmin = async (dispatch: Dispatch<any>, navigate: any) => {
                 console.error('Failed to connect to admin logout API:', error);
             });
     } catch (error: any) {
-        console.error('Admin logout failed:', error);
-        let errorMessage = 'An error occurred during admin logout';
         if (error.response) {
-            errorMessage = error.response.data.message || errorMessage;
-            console.error('Response status:', error.response.status);
+            console.error('Logout error:', error.response.data.message || 'An error occurred during logout');
         } else if (error.request) {
-            console.error('No response received:', error.request);
+            console.error('No response received during logout');
         } else {
-            console.error('Error setting up request:', error.message);
+            console.error('Error setting up logout request:', error.message);
         }
         dispatch(logoutFailed());
     }
@@ -136,7 +126,7 @@ export const logOutAdmin = async (dispatch: Dispatch<any>, navigate: any) => {
 
 export const createAxiosJWT = (dispatch: Dispatch<any>): AxiosInstance => {
     const axiosJWT = axios.create({
-        baseURL: 'http://localhost:1510/api/user',
+        baseURL: process.env.REACT_APP_API_DEV + 'user',
         withCredentials: true,
     });
 
@@ -184,7 +174,7 @@ export const checkTokenExpiration = () => {
 
 export const refreshToken = async (dispatch: Dispatch<any>) => {
     try {
-        const res = await axios.post('http://localhost:1510/api/user/refreshToken', {}, { withCredentials: true });
+        const res = await axios.post(process.env.REACT_APP_API_DEV + 'user/refreshToken', {}, { withCredentials: true });
         if (res.data && res.data.status) {
             const { accessToken } = res.data.data;
             localStorage.setItem('accessToken', accessToken);

@@ -65,7 +65,7 @@ const Navbar: React.FC = () => {
                 </button>
                 <img src={images.logoTravelS} alt="Logo" className="xl:w-[10vw] w-[30vw] ml-[6vw] xl:hidden block" />
                 <div className="all-center">
-                    <img src={images.NotificationIcon} alt="Notification Icon" className="mt-[0.2vw] xl:w-[2vw] sm:w-[4vw] w-[8vw] scale-icon" onClick={handleNotificationClick} />
+                    {/* <img src={images.NotificationIcon} alt="Notification Icon" className="mt-[0.2vw] xl:w-[2vw] sm:w-[4vw] w-[8vw] scale-icon" onClick={handleNotificationClick} /> */}
                     <div className="flex items-center gap-1 cursor-pointer " onClick={handleToggleMenu}>
                         <img src={images.Avatar} alt="avatar" className="rounded-full xl:border-[0.2vw] border-[1vw] xl:w-[2vw] sm:w-[4vw] w-[10vw] border-orange" onClick={handleLogout} />
                     </div>

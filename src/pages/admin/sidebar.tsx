@@ -1,12 +1,13 @@
 import { images } from 'assets';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toggleSidebar } from 'redux/slice/sidebarSlice';
 import { RootState } from 'redux/store';
+import { AppDispatch } from 'redux/store';
 
 const Sidebar: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const [isMobile, setIsMobile] = useState(window.innerWidth < 1025);
     const isOpenSidebar = useSelector((state: RootState) => state.sidebar.isOpenSidebar);
     const sidebarRef = useRef<HTMLDivElement>(null);
@@ -60,7 +61,7 @@ const Sidebar: React.FC = () => {
                     </Link>
                 </div>
                 <p className="xl:py-[0.4vw] xl:px-[0.8vw] py-[2vw] px-[3vw] text-directory">Danh Mục</p>
-                <div className="py-[0.2vw] px-[1w]"></div>
+                {/* <div className="py-[0.2vw] px-[1w]">{SidebarMenu}</div> */}
             </div>
         </>
     );

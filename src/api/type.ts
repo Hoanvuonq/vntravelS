@@ -102,3 +102,30 @@ export interface IJourneyHistoryResponse {
         updatedAt: string;
     }>;
 }
+
+export enum TransactionType {
+    DEPOSIT = 'deposit',
+    WITHDRAW = 'withdraw',
+}
+
+export enum TransactionStatus {
+    PENDING = 'pending',
+    SUCCESS = 'success',
+    ERROR = 'error',
+}
+export interface ITransaction {
+    status: boolean;
+    message: string;
+    data: {
+        username: string;
+        amount: number;
+        type: string;
+        status: string;
+        requestTime: string;
+        pointsEquivalent: number;
+        _id: string;
+        createdAt: string;
+        updatedAt: string;
+        __v: number;
+    };
+}

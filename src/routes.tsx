@@ -18,7 +18,7 @@ import Dashboard from './pages/admin/dashboard';
 const routes = createBrowserRouter([
     { path: '/login', element: <ProtectedLogin /> },
     { path: '/register', element: <Register /> },
-    { path: '/loginAdmin', element: <ProtectedAdminLogin /> },
+
     {
         element: <ProtectedRoute />,
         children: [
@@ -80,6 +80,7 @@ const routes = createBrowserRouter([
             },
         ],
     },
+    { path: '/loginAdmin', element: <ProtectedAdminLogin /> },
     {
         element: <ProtectedAdminRoute />,
         children: [

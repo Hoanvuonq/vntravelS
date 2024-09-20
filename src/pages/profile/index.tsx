@@ -1,3 +1,4 @@
+import JourneyProgress from 'components/journeyProgress';
 import { images } from 'assets';
 import TextTitle from 'components/textTitle';
 import { useUserInfo } from 'hooks/UserContext';
@@ -104,26 +105,7 @@ const Profile = () => {
                             ))}
                         </div>
                     </div>
-                    <div className="shadow-custom-3 bg-white xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:gap-[1vw] flex flex-col gap-[3vw] w-full">
-                        <div className="flex items-center xl:gap-[0.5vw] gap-[1vw] wallet-item">
-                            <p className="text-title">Hành Trình Hôm Nay: </p>
-                            <div className="flex items-center xl:gap-[0.5vw] gap-[1vw]">
-                                <p className="text-title">{journeys}</p>
-                                <p className="text-title">/</p>
-                                <p className="text-title">{journeyComplete}</p>
-                            </div>
-                        </div>
-                        <div className="progress xl:w-full w-full xl:!h-[0.5vw] !h-[2vw]">
-                            <div
-                                className="progress-bar xl:h-[0.5vw] h-[2vw] facebook"
-                                style={
-                                    {
-                                        '--progress-width': `${journeyComplete > 0 ? (journeys / journeyComplete) * 100 : 0}%`,
-                                    } as React.CSSProperties
-                                }
-                            ></div>
-                        </div>
-                    </div>
+                    <JourneyProgress className="w-full" journeys={journeys} journeyComplete={journeyComplete} />
                     <div className="bg-white all-start flex-col xl:gap-[1vw] gap-[3vw] w-full shadow-custom-5 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[2vw]">
                         <div className="border-b-[0.2vw] pb-[1vw] border-[#E2E8F0] w-full">
                             <TextTitle title="Thiết Lập Cá Nhân" />

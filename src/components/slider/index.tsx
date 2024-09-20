@@ -49,7 +49,7 @@ const SliderComponent: React.FC = () => {
         centerPadding: centerMode ? '0' : '10%',
         slidesToScroll: 1,
         autoplay: true,
-        autoplaySpeed: 0, // Đặt thành 0 để chạy liên tục
+        autoplaySpeed: 0,
         nextArrow: <NextArrow />,
         prevArrow: <PrevArrow />,
         infinite: true,

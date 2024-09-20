@@ -10,7 +10,6 @@ import { setUserInfo } from 'redux/slice/authSlice';
 import ToastProvider from 'hooks/useToastProvider';
 import { AppDispatch } from 'redux/store';
 import { useUserInfo } from 'hooks/UserContext';
-import JourneyProgress from 'components/journeyProgress';
 
 interface IAccountInfo {
     label: string;
@@ -66,7 +65,7 @@ interface PopupProps {
     user: IUserInfo;
 }
 
-const EditUser: React.FC<PopupProps> = ({ onClose, user }) => {
+const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
     const dispatch = useDispatch<AppDispatch>();
     const { fetchUserInfo } = useUserInfo();
     const userVipLevel = user.vipLevel || 0;
@@ -186,7 +185,7 @@ const EditUser: React.FC<PopupProps> = ({ onClose, user }) => {
                 <div ref={popupRef} className="bg-white xl:w-[90vw] w-[90vw] xl:h-[40vw] h-[90%] xl:rounded-[0.5vw] rounded-[2vw] shadow-custom-4 border border-[#e5e9f2] bai-jamjuree flex flex-col">
                     <div className="border-b-[0.2vw] border-[#E2E8F0] w-full">
                         <div className="w-full all-center !justify-between xl:px-[2vw] px-[4vw] xl:py-[0.8vw] py-[4vw]">
-                            <TextTitle title={`Chỉnh Sửa Tài Khoản :  ${user.username}`} />
+                            <TextTitle title={`Nạp Tiền Vào Tài Khoản :  ${user.username}`} />
                             <button className="text-gray-500 hover:text-gray-700 text-close" onClick={onClose}>
                                 X
                             </button>
@@ -218,7 +217,26 @@ const EditUser: React.FC<PopupProps> = ({ onClose, user }) => {
                                                 <p className="text-title ">0</p>
                                             </div>
                                         </div>
-                                        <JourneyProgress className="xl:w-[35vw] w-full" journeys={journeys} journeyComplete={journeyComplete} />
+                                        <div className="shadow-custom-3 bg-white xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:gap-[1vw] flex flex-col gap-[3vw] xl:w-[35vw] w-full">
+                                            <div className="flex items-center xl:gap-[0.5vw] gap-[1vw] wallet-item">
+                                                <p className="text-title">Hành Trình Hôm Nay: </p>
+                                                <div className="flex items-center xl:gap-[0.5vw] gap-[1vw]">
+                                                    <p className="text-title">{journeys}</p>
+                                                    <p className="text-title">/</p>
+                                                    <p className="text-title">{journeyComplete}</p>
+                                                </div>
+                                            </div>
+                                            <div className="progress xl:w-full w-full xl:!h-[0.5vw] !h-[2vw]">
+                                                <div
+                                                    className="progress-bar xl:h-[0.5vw] h-[2vw] facebook"
+                                                    style={
+                                                        {
+                                                            '--progress-width': `${journeyComplete > 0 ? (journeys / journeyComplete) * 100 : 0}%`,
+                                                        } as React.CSSProperties
+                                                    }
+                                                ></div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div className="flex xl:flex-row flex-col items-center w-full xl:gap-[1.5vw] gap-[6vw]">
                                         <div className="bg-white shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] w-full">
@@ -275,4 +293,4 @@ const EditUser: React.FC<PopupProps> = ({ onClose, user }) => {
     );
 };
 
-export default EditUser;
+export default ConfirmMoney;

@@ -14,6 +14,7 @@ module.exports = withMT({
         orange: "#ff8831",
         red: "#ec0015",
         blue: "#0ebdea",
+        blueHover: "#1290b0",
         itemsMenu: "#5d596c",
         btnHover: "##ff742f",
         colorBorder: "#0ec6ec",

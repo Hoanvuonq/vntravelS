@@ -44,3 +44,48 @@ export const getUserInfo = async (userId: string): Promise<IUserInfo> => {
         throw error;
     }
 };
+
+export const updateBankInfo = async (userId: string, bankData: any): Promise<any> => {
+    try {
+        const response = await Api.post(`${url}/updateBankInfo/${userId}`, bankData);
+        return response.data;
+    } catch (error) {
+        console.error('Error in updateBankInfo:', error);
+        throw error;
+    }
+};
+
+export const updateUserInfo = async (userId: string, userData: any): Promise<any> => {
+    try {
+        const response = await Api.post(`${url}/updateUserInfo/${userId}`, userData);
+        return response.data;
+    } catch (error) {
+        console.error('Error in updateUserInfo :', error);
+        throw error;
+    }
+};
+
+export const updateUserPassword = async (userId: string, passwordData: { newPassword: string }): Promise<any> => {
+    try {
+        const response = await Api.post(`${url}/updateUserPassword/${userId}`, passwordData);
+        return response.data;
+    } catch (error) {
+        console.error('Error in updateUserPassword:', error);
+        throw error;
+    }
+};
+
+export const searchUser = async (query: string): Promise<IUserInfo[]> => {
+    try {
+        const response = await Api.get<UsersResponse>(`${url}/searchUser`, { query });
+        if (response.data.status && Array.isArray(response.data.data)) {
+            return response.data.data;
+        } else {
+            console.error('Unexpected response structure:', response.data);
+            throw new Error('Unexpected response structure');
+        }
+    } catch (error) {
+        console.error('Error in searchUser:', error);
+        throw error;
+    }
+};

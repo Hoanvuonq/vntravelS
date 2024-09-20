@@ -1,22 +1,50 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { images } from 'assets';
+import Input from 'components/input/inputProfile';
+import Button from 'components/button';
+import { depositMoney } from 'api/transaction';
+import ToastProvider from 'hooks/useToastProvider';
 
 const notes = [
-    '+ Mẹo : Quét Mã QR để Chuyển tiền nhanh với nội dung đã có sẵn!',
+    '+ Mẹo : Sau Khi Gửi Yêu Cầu Nạp Tiền Hãy Liên Hệ Với CSKH Để Được Hỗ Trợ Nhanh Nhất !',
     '+ Vui lòng chuyển khoản ĐÚNG nội dung để được nạp tiền tự động trong vòng 30s giây. Không HOÀN TIỀN khi đã NẠP vào!',
     '+ Chuyển SAI nội dung hoặc sau 2 phút không cộng tiền vui lòng liên hệ Admin ở phần Liên hệ.',
-    '+ Đối với Thẻ cào - Nếu sai mệnh giá thẻ sẽ bị trừ 50% giá trị.',
-];
-
-const bankDetails = [
-    { label: 'Vietcombank', icon: images.Vietcombank },
-    { label: 'NGUYEN VAN A', className: 'font-bold uppercase bank-name' },
-    { label: '012345678910', className: 'bank-number font-bold my-2' },
-    { label: 'Nội dung', className: 'content-payment' },
-    { label: 'AC-010102', className: 'content-payment2' },
 ];
 
 const PaymentDetail = () => {
+    const [amount, setAmount] = useState('');
+
+    const formatNumber = (num: string) => {
+        return num.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    };
+
+    const handleAmountChange = (value: string) => {
+        setAmount(formatNumber(value));
+    };
+
+    const handleButtonClick = (value: string) => {
+        setAmount(formatNumber(value));
+    };
+
+    const handleDeposit = async () => {
+        const numericAmount = parseInt(amount.replace(/\./g, ''));
+        if (numericAmount <= 0) {
+            console.error('Amount is invalid');
+            ToastProvider('warning', 'Vui Lòng Nhập Số Tiền Muốn Nạp');
+            return;
+        }
+        try {
+            const response = await depositMoney(numericAmount);
+            console.log('Deposit successful:', response);
+            ToastProvider('success', 'Yêu Cầu Nạp Tiền Thành Công');
+        } catch (error) {
+            console.error('Deposit failed:', error);
+            ToastProvider('error', 'Yêu Cầu Nạp Tiền Thất Bại !!');
+        }
+    };
+
+    const amountButtons = ['50.000', '100.000', '200.000', '500.000', '1.000.000', '2.000.000', '5.000.000', '10.000.000'];
+
     const GroupNote = useMemo(
         () =>
             notes.map((note, index) => (
@@ -26,22 +54,23 @@ const PaymentDetail = () => {
             )),
         [notes],
     );
+
     return (
         <div className="flex flex-col gap-[4vw] notes">
             <div className="all-center !justify-between xl:flex-row flex-col xl:gap-[1vw] gap-[8vw] w-full p-[2vw] ">
-                <div className="all-center xl:w-[35vw] w-full">
-                    <div className="bank_box gap-[2vw] p-[2vw] xl:rounded-[1vw] rounded-[2vw]">
-                        <div className="bank-card xl:gap-[1vw] gap-[2vw] xl:py-[1vw] py-[3vw] px-[2vw] flex flex-col z-10 relative">
-                            {bankDetails.map(({ label, icon, className }, index) => (
-                                <div key={index} className={`${className || ''} ${index === 0 ? 'flex gap-[1vw] items-center' : ''}`}>
-                                    {index === 0 && <img src={icon} alt={`logo ${label}`} className="xl:w-[2vw] w-[10vw]" />}
-                                    <p className={index === 0 ? 'text-colorVCB font-bold vietcombank' : ''}>{label}</p>
-                                </div>
-                            ))}
-                        </div>
-                        <div className="bg-white xl:rounded-[0.5vw] rounded-[2vw]">
-                            <img src={images.qrCode} alt="QRCode" className="xl:w-[6vw] w-[20vw]" />
-                        </div>
+                <div className="all-center flex-col gap-[3vw]">
+                    <div className="grid grid-cols-4 gap-4 xl:w-[35vw] w-full">
+                        {amountButtons.map((value, index) => (
+                            <button key={index} className="bg-blue hover:bg-blueHover text-white font-bold py-[0.4vw] rounded-[0.4vw] hover-items" onClick={() => handleButtonClick(value)}>
+                                {value}
+                            </button>
+                        ))}
+                    </div>
+                    <div className="w-[20vw]">
+                        <Input Label="Nhập Số Tiền Cần Nạp" placeholder="0" type="text" className="!p-[1vw] tracking-[0.1vw] font-bold !text-2xl" value={amount} onChange={(e) => handleAmountChange(e.target.value)} />
+                    </div>
+                    <div className="w-[15vw]">
+                        <Button title="Nạp Tiền" onClick={handleDeposit} />
                     </div>
                 </div>
                 <div className="flex flex-col xl:gap-[0.4vw] gap-[1vw] xl:w-[30vw] w-full">

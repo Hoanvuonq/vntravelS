@@ -4,24 +4,9 @@ import store from 'redux/store';
 const client = axios.create({
     baseURL: `${process.env.REACT_APP_API_DEV}`,
 });
-
-const INACTIVITY_TIMEOUT = 30 * 60 * 1000;
-
-const updateLastActivity = () => {
-    localStorage.setItem('lastActivityTime', Date.now().toString());
-};
-
-export const checkInactivity = () => {
-    const lastActivityTime = parseInt(localStorage.getItem('lastActivityTime') || '0');
-    if (Date.now() - lastActivityTime > INACTIVITY_TIMEOUT) {
-        localStorage.removeItem('accessToken');
-        window.location.href = '/login';
-    }
-};
+console.log(process.env.REACT_APP_API_DEV);
 class Api {
     static async get<T = any>(url: string, params = {}): Promise<AxiosResponse<T>> {
-        checkInactivity();
-        updateLastActivity();
         const response = await client.get<T>(url, {
             params,
             headers: this.getHeaders(),
@@ -30,8 +15,6 @@ class Api {
     }
 
     static async post<T = any>(url: string, data = {}, params = {}): Promise<AxiosResponse<T>> {
-        checkInactivity();
-        updateLastActivity();
         const response = await client.post<T>(url, data, {
             params,
             headers: this.getHeaders(),
@@ -40,8 +23,6 @@ class Api {
     }
 
     static async update<T = any>(url: string, data = {}, params = {}): Promise<AxiosResponse<T>> {
-        checkInactivity();
-        updateLastActivity();
         const response = await client.put<T>(url, data, {
             params,
             headers: this.getHeaders(),
@@ -50,8 +31,6 @@ class Api {
     }
 
     static async delete<T = any>(url: string, params = {}): Promise<AxiosResponse<T>> {
-        checkInactivity();
-        updateLastActivity();
         const response = await client.delete<T>(url, {
             params,
             headers: this.getHeaders(),

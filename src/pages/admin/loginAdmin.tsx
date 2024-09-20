@@ -21,6 +21,7 @@ const LoginAdmin = () => {
     const {
         handleSubmit,
         register,
+        watch,
         formState: { errors },
     } = useForm({
         resolver: yupResolver(loginSchema),
@@ -45,7 +46,17 @@ const LoginAdmin = () => {
                     <div className="flex-col all-center w-full xl:gap-[1.5vw] lg:gap-[2.5vw] md:gap-[3vw] sm:gap-[3.5vw] gap-[4vw]">
                         <img src={images.logoTravel} alt="logo VN-Travel" className="xl:w-[14vw] lg:w-[17vw] md:w-[21vw] sm:w-[27vw] w-[31vw] rounded-[1vw] shadow-xl" />
                         <Input icon="user" type="text" Label="Tài Khoản" placeholder="Tài Khoản" hasError={!!errors.adminUsername} register={register} name="adminUsername" error={errors.adminUsername?.message} />
-                        <Input icon="lock" type="password" Label="Mật Khẩu" placeholder="Mật Khẩu" hasError={!!errors.adminPassword} register={register} name="adminPassword" error={errors.adminPassword?.message} />
+                        <Input
+                            icon="lock"
+                            type="password"
+                            Label="Mật Khẩu"
+                            placeholder="Mật Khẩu"
+                            hasError={!!errors.adminPassword}
+                            register={register}
+                            name="adminPassword"
+                            error={errors.adminPassword?.message}
+                            value={watch('adminPassword')}
+                        />
                         <Button title="Login" onClick={handleSubmit(onSubmit)} />
                     </div>
                 </div>
