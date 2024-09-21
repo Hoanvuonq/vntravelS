@@ -40,7 +40,7 @@ export const loginUser = async (user: IUser, dispatch: Dispatch<any>): Promise<I
         }
         return { success: false, message: res.data.message || 'Login failed' };
     } catch (error: any) {
-        console.error('Login error:', error.response || error); // Log chi tiết lỗi
+        console.error('Login error:', error.response || error);
         dispatch(loginFailed());
         return { success: false, message: error.response?.data?.message || error.message };
     }
