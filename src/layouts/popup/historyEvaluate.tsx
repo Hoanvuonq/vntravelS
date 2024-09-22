@@ -4,6 +4,7 @@ import { getUserJourneyHistory } from 'api/journey';
 import { images } from 'assets';
 import TextTitle from 'components/textTitle';
 import { ITripData, tripData } from './dataListEvalute';
+import CloseTabs from 'components/closeTabs';
 
 interface PopupProps {
     onClose: () => void;
@@ -134,9 +135,7 @@ const HistoryEvaluate: React.FC<PopupProps> = ({ onClose }) => {
                     <div className="border-b-[0.2vw] border-[#E2E8F0] w-full">
                         <div className="w-full all-center !justify-between xl:px-[2vw] px-[4vw] xl:py-[0.8vw] py-[4vw]">
                             <TextTitle title="Lịch Sử Đánh Giá Tour" />
-                            <button className="text-gray-500 hover:text-gray-700 text-close" onClick={onClose}>
-                                X
-                            </button>
+                            <CloseTabs onClick={onClose} />
                         </div>
                     </div>
                     <div className="w-full h-full bg-white rounded-2xl shadow-custom-5 p-[1.5vw] bai-jamjuree">

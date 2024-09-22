@@ -43,6 +43,15 @@
             line-height: 8vw;
         }
     }
+    .text-contentT {
+        font-size: 1.4vw;
+        line-height: 1.4vw;
+        font-weight: 700;
+        @media (max-width: 1024px) {
+            font-size: 4.7vw;
+            line-height: 8vw;
+        }
+    }
 
     .text-titleLevel{
         font-size: 1.1vw;
@@ -58,6 +67,15 @@
         font-size: 1vw;
         line-height: 1vw;
         font-weight: 400;
+        @media (max-width: 1024px) {
+            font-size: 4vw;
+            line-height: 6vw;
+        }
+    }
+    .text-vip {
+        font-size: 0.8vw;
+        line-height: 1vw;
+        font-weight: 700;
         @media (max-width: 1024px) {
             font-size: 4vw;
             line-height: 6vw;

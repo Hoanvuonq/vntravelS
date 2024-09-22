@@ -8,6 +8,11 @@ import EditUser from './editUser';
 import ConfirmMoney from './confirmMoney';
 import { useUserInfo } from 'hooks/UserContext';
 
+// Extend IUserInfo to include the action property
+interface IUserInfoWithAction extends IUserInfo {
+    action: 'edit' | 'confirmMoney';
+}
+
 const TABS = [
     {
         label: 'All',
@@ -23,7 +28,7 @@ const TABS = [
     },
 ];
 
-const TABLE_HEAD = ['Thông Tin', 'VIP', 'Đăng Ký', 'Trạng Thái', '', '', ''];
+const TABLE_HEAD = ['Thông Tin', 'VIP', 'Đăng Ký', 'Trạng Thái', '', '', '', ''];
 
 const Dashboard = () => {
     const { fetchUserInfo } = useUserInfo();
@@ -31,28 +36,29 @@ const Dashboard = () => {
     const [filteredUsers, setFilteredUsers] = useState<IUserInfo[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [selectedUser, setSelectedUser] = useState<IUserInfo | null>(null);
+    const [selectedUser, setSelectedUser] = useState<IUserInfoWithAction | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
 
     const handleEditUser = async (userId: string) => {
         try {
             const userInfo = await getUserInfo(userId);
-            setSelectedUser(userInfo);
+            setSelectedUser({ ...userInfo, action: 'edit' });
             await fetchUserInfo();
         } catch (error) {
             console.error('Failed to fetch user info:', error);
         }
     };
 
-    // const handleConfirmMoney = async (userId: string) => {
-    //     try {
-    //         const userInfo = await getUserInfo(userId);
-    //         setSelectedUser(userInfo);
-    //         await fetchUserInfo();
-    //     } catch (error) {
-    //         console.error('Failed to fetch user info:', error);
-    //     }
-    // };
+    const handleConfirmMoney = async (userId: string) => {
+        try {
+            const userInfo = await getUserInfo(userId);
+            setSelectedUser({ ...userInfo, action: 'confirmMoney' });
+            await fetchUserInfo();
+        } catch (error) {
+            console.error('Failed to fetch user info:', error);
+        }
+    };
+
     const handleSearch = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             const trimmedQuery = searchQuery.trim();
@@ -139,16 +145,16 @@ const Dashboard = () => {
                         </div>
                     </td>
                     <td className={`${classes} !w-[4vw]`}>
-                        <Tooltip content="Edit User">
-                            <img src={images.Edit} alt="Edit" className="hover-items cursor-pointer w-[3vw]" onClick={() => handleEditUser(user._id)} />
+                        <Tooltip content="Chỉnh Sửa User">
+                            <img src={images.Edit} alt="Eidt" className="hover-items cursor-pointer w-[3vw]" onClick={() => handleEditUser(user._id)} />
                         </Tooltip>
                     </td>
                     <td className={`${classes} !w-[4vw]`}></td>
-                    {/* <td className={`${classes} !w-[4vw]`}>
-                        <Tooltip content="Edit User">
-                            <img src={images.wallet} alt="Edit" className="hover-items cursor-pointer w-[3vw]" onClick={() => handleEditUser(user._id)} />
+                    <td className={`${classes} !w-[4vw]`}>
+                        <Tooltip content="Chỉnh Sửa Hành Trình">
+                            <img src={images.wallet} alt="Evaluate" className="hover-items cursor-pointer w-[3vw]" onClick={() => handleConfirmMoney(user._id)} />
                         </Tooltip>
-                    </td> */}
+                    </td>
                     <td className={`${classes} !w-[4vw]`}>
                         <Tooltip content="Edit User">
                             <div className="relative hover-items ">
@@ -235,7 +241,8 @@ const Dashboard = () => {
                     </Card>
                 </div>
             </div>
-            {selectedUser && <ConfirmMoney user={selectedUser} onClose={() => setSelectedUser(null)} />}
+            {selectedUser && selectedUser.action === 'confirmMoney' && <ConfirmMoney user={selectedUser} onClose={() => setSelectedUser(null)} />}
+            {selectedUser && selectedUser.action === 'edit' && <EditUser user={selectedUser} onClose={() => setSelectedUser(null)} />}
         </div>
     );
 };

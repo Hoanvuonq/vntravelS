@@ -13,7 +13,7 @@ interface InputContent {
 
 const InputC: React.FC<InputContent> = ({ Label, type, placeholder, name, value, onChange, disabled, className }) => {
     return (
-        <div className="inputC">
+        <div className="inputC w-full">
             <label htmlFor={name} className="block xl:mb-[0.5vw] mb-[2.5vw] text-label text-gray-900 dark:text-white">
                 {Label}
             </label>

@@ -11,6 +11,7 @@ import ToastProvider from 'hooks/useToastProvider';
 import { AppDispatch } from 'redux/store';
 import { useUserInfo } from 'hooks/UserContext';
 import JourneyProgress from 'components/journeyProgress';
+import CloseTabs from 'components/closeTabs';
 
 interface IAccountInfo {
     label: string;
@@ -72,14 +73,19 @@ const EditUser: React.FC<PopupProps> = ({ onClose, user }) => {
     const userVipLevel = user.vipLevel || 0;
     const journeyComplete = user.journeyComplete || 0;
     const journeys = user.journeys?.length || 0;
+    const totalDeposited = user.totalDeposited || 0;
+    const totalWithdrawn = user.totalWithdrawn || 0;
     const popupRef = useRef<HTMLDivElement>(null);
     const [newPassword, setNewPassword] = useState('');
+
     const [bankData, setBankData] = useState({
         bankAccount: user.information.bankAccount || '',
         bankName: user.information.bankName || '',
         bankNumber: user.information.bankNumber || '',
     });
-
+    const formatNumber = (num: string) => {
+        return num.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    };
     const [accountData, setAccountData] = useState({
         username: user.username || '',
         phone: user.phone ? `0${user.phone}` : '',
@@ -187,9 +193,7 @@ const EditUser: React.FC<PopupProps> = ({ onClose, user }) => {
                     <div className="border-b-[0.2vw] border-[#E2E8F0] w-full">
                         <div className="w-full all-center !justify-between xl:px-[2vw] px-[4vw] xl:py-[0.8vw] py-[4vw]">
                             <TextTitle title={`Chỉnh Sửa Tài Khoản :  ${user.username}`} />
-                            <button className="text-gray-500 hover:text-gray-700 text-close" onClick={onClose}>
-                                X
-                            </button>
+                            <CloseTabs onClick={onClose} />
                         </div>
                     </div>
                     <div className="flex-1 overflow-y-auto custom-scrollbar">
@@ -211,11 +215,11 @@ const EditUser: React.FC<PopupProps> = ({ onClose, user }) => {
                                         <div className="shadow-custom-3 bg-white xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:gap-[1vw] flex flex-col gap-[3vw] xl:w-[35vw] w-full">
                                             <div className="flex items-center xl:gap-[0.5vw] gap-[1vw] wallet-item">
                                                 <p className="text-title xl:w-[4vw] w-[18vw]">Đã Nạp: </p>
-                                                <p className="text-title ">0</p>
+                                                <p className="text-title ">{formatNumber(totalDeposited.toString())}</p>
                                             </div>
                                             <div className="flex items-center xl:gap-[0.5vw] gap-[1vw] wallet-item">
                                                 <p className="text-title xl:w-[4vw] w-[18vw]">Đã rút: </p>
-                                                <p className="text-title ">0</p>
+                                                <p className="text-title ">{formatNumber(totalWithdrawn.toString())}</p>
                                             </div>
                                         </div>
                                         <JourneyProgress className="xl:w-[35vw] w-full" journeys={journeys} journeyComplete={journeyComplete} />

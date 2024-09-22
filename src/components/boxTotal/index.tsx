@@ -9,7 +9,7 @@ const BoxTotal = ({ title, money, img }: IBoxTotal) => {
             <div className="flex flex-col justify-between h-full">
                 <h1 className="text-title text-[#334155] uppercase truncate mb-[0.2vw]">{title}</h1>
                 <div className="flex gap-2 justify-between items-center w-full">
-                    <p className="text-content flex-1 truncate">{money}</p>
+                    <p className="text-contentT flex-1 truncate">{money}</p>
                     <div className="flex-shrink-0">
                         <img src={img} alt="Items total" className="scale-icon xl:w-[5vw] sm:w-[10vw] w-[14vw]" />
                     </div>

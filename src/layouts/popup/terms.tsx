@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import TextTitle from 'components/textTitle';
+import CloseTabs from 'components/closeTabs';
 
 interface PopupProps {
     onClose: () => void;
@@ -28,9 +29,7 @@ const PopupTerms: React.FC<PopupProps> = ({ onClose }) => {
                     <div className="border-b-[0.2vw] border-[#E2E8F0] w-full">
                         <div className="w-full all-center !justify-between xl:px-[2vw] px-[4vw] xl:py-[0.8vw] py-[4vw]">
                             <TextTitle title="Điều Khoảng và Điều Kiện" />
-                            <button className=" text-gray-500 hover:text-gray-700 text-close" onClick={onClose}>
-                                X
-                            </button>
+                            <CloseTabs onClick={onClose} />
                         </div>
                     </div>
                     <div className="flex-1 overflow-y-auto custom-scrollbar">

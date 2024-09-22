@@ -6,13 +6,13 @@ import TextTitle from 'components/textTitle';
 import { useUserInfo } from 'hooks/UserContext';
 import { useMemo } from 'react';
 
-interface VipLevelItem {
+interface IVip {
     title: string;
     content: string;
     vipLevel: number;
 }
 
-const totalLevel: VipLevelItem[] = [
+const totalLevel: IVip[] = [
     { title: 'VIP1', content: '20%', vipLevel: 1 },
     { title: 'VIP2', content: '20%', vipLevel: 2 },
     { title: 'VIP3', content: '25%', vipLevel: 3 },

@@ -24,6 +24,9 @@ module.exports = withMT({
         success: "#1adf31",
         error: "#f70707",
         warning: "#d4e20d",
+        green: "#d2ffd8",
+        yellow: "#fff7d2",
+        red: "#ffd2d2",
       },
 
       maxWidth: {

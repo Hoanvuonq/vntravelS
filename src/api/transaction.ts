@@ -5,15 +5,10 @@ const url = '/transaction';
 
 export const depositMoney = async (amount: number): Promise<ITransaction> => {
     try {
-        const res = await Api.post<ITransaction>(`${url}/deposit`, { amount });
+        const res = await Api.post<{ status: boolean; message: string; data: ITransaction }>(`${url}/deposit`, { amount });
 
         if (res.data.status && res.data.data) {
-            const transaction: ITransaction = {
-                status: res.data.status,
-                message: res.data.message,
-                data: res.data.data,
-            };
-            return transaction;
+            return res.data.data;
         } else {
             console.error('Unexpected response structure:', res.data);
             throw new Error('Unexpected response structure');
@@ -23,12 +18,18 @@ export const depositMoney = async (amount: number): Promise<ITransaction> => {
         throw error;
     }
 };
-// ... existing code ...
-export const withdrawMoney = async (username: string, amount: number): Promise<ITransaction> => {
+
+export const withdrawMoney = async (amount: number, passBank: number): Promise<ITransaction> => {
     try {
-        const response = await Api.post<ITransaction>(`${url}/withdraw`, { username, amount });
-        return response.data;
-    } catch (error) {
+        const res = await Api.post<{ status: boolean; message: string; data: ITransaction }>(`${url}/withdraw`, { amount, passBank });
+
+        if (res.data.status && res.data.data) {
+            return res.data.data;
+        } else {
+            console.error('Unexpected response structure:', res.data);
+            throw new Error('Unexpected response structure');
+        }
+    } catch (error: any) {
         console.error('Error in withdraw:', error);
         throw error;
     }
@@ -36,10 +37,15 @@ export const withdrawMoney = async (username: string, amount: number): Promise<I
 
 export const getTransactionHistory = async (): Promise<ITransaction[]> => {
     try {
-        const res = await Api.get<ITransaction[]>(`${url}/history`);
-        return res.data;
+        const res = await Api.get<{ status: boolean; message: string; data: ITransaction[] }>(`${url}/history`);
+        if (res.data.status) {
+            return res.data.data;
+        } else {
+            console.error('Unexpected response structure:', res.data);
+            throw new Error('Unexpected response structure');
+        }
     } catch (error) {
         console.error('Error in getTransactionHistory:', error);
-        throw error;
+        throw new Error('Failed to fetch transaction history');
     }
 };

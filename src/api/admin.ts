@@ -1,5 +1,5 @@
 import Api from './api';
-import { IUserInfo } from './type';
+import { IUserInfo, ITransaction } from './type';
 
 const url = '/admin';
 
@@ -13,6 +13,21 @@ interface UserResponse {
     status: boolean;
     message: string;
     data: IUserInfo;
+}
+
+interface TransactionResponse {
+    status: boolean;
+    message: string;
+    data: ITransaction;
+}
+
+interface UserTransactionHistoryResponse {
+    status: boolean;
+    message: string;
+    data: {
+        deposits: ITransaction[];
+        withdraws: ITransaction[];
+    };
 }
 
 export const getAllUsers = async (): Promise<IUserInfo[]> => {
@@ -86,6 +101,66 @@ export const searchUser = async (query: string): Promise<IUserInfo[]> => {
         }
     } catch (error) {
         console.error('Error in searchUser:', error);
+        throw error;
+    }
+};
+
+export const adminDeposit = async (userId: string, amount: number): Promise<ITransaction> => {
+    try {
+        const response = await Api.post<TransactionResponse>(`${url}/deposit/${userId}`, { amount });
+        if (response.data.status && response.data.data) {
+            return response.data.data;
+        } else {
+            console.error('Cấu trúc phản hồi không mong đợi:', response.data);
+            throw new Error('Cấu trúc phản hồi không mong đợi');
+        }
+    } catch (error) {
+        console.error('Lỗi trong adminDeposit:', error);
+        throw error;
+    }
+};
+
+export const confirmTransaction = async (transactionId: string): Promise<ITransaction> => {
+    try {
+        const response = await Api.post<TransactionResponse>(`${url}/confirm-transaction/${transactionId}`);
+        if (response.data.status && response.data.data) {
+            return response.data.data;
+        } else {
+            console.error('Unexpected response structure:', response.data);
+            throw new Error('Unexpected response structure');
+        }
+    } catch (error) {
+        console.error('Error in confirmTransaction:', error);
+        throw error;
+    }
+};
+
+export const rejectTransaction = async (transactionId: string): Promise<ITransaction> => {
+    try {
+        const response = await Api.post<TransactionResponse>(`${url}/reject-transaction/${transactionId}`);
+        if (response.data.status && response.data.data) {
+            return response.data.data;
+        } else {
+            console.error('Unexpected response structure:', response.data);
+            throw new Error('Unexpected response structure');
+        }
+    } catch (error) {
+        console.error('Error in rejectTransaction:', error);
+        throw error;
+    }
+};
+
+export const getUserTransactionHistory = async (userId: string): Promise<{ deposits: ITransaction[]; withdraws: ITransaction[] }> => {
+    try {
+        const response = await Api.get<UserTransactionHistoryResponse>(`${url}/getUserTransactionHistory/${userId}`);
+        if (response.data.status && response.data.data) {
+            return response.data.data;
+        } else {
+            console.error('Unexpected response structure:', response.data);
+            throw new Error('Unexpected response structure');
+        }
+    } catch (error) {
+        console.error('Error in getUserTransactionHistory:', error);
         throw error;
     }
 };

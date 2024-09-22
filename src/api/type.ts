@@ -27,6 +27,8 @@ export interface IUserInfo {
     username: string;
     phone: number;
     balance: number;
+    totalDeposited: number;
+    totalWithdrawn: number;
     passBank: number;
     loginTime: string | null;
     isBlocked: boolean;
@@ -113,19 +115,19 @@ export enum TransactionStatus {
     SUCCESS = 'success',
     ERROR = 'error',
 }
+
 export interface ITransaction {
-    status: boolean;
-    message: string;
-    data: {
-        username: string;
-        amount: number;
-        type: string;
-        status: string;
-        requestTime: string;
-        pointsEquivalent: number;
-        _id: string;
-        createdAt: string;
-        updatedAt: string;
-        __v: number;
-    };
+    username: string;
+    amount: number;
+    type: TransactionType;
+    status: TransactionStatus;
+    requestTime: string;
+    completedTime?: string;
+    pointsEquivalent: number;
+    description?: string;
+    adminNote?: string;
+    _id: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
 }
