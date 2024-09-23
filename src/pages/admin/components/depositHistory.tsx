@@ -1,5 +1,5 @@
 import { adminDeposit } from 'api/admin';
-import ButtonSign from 'components/button';
+import Button from 'components/button';
 import Input from 'components/input/inputProfile';
 import ToastProvider from 'hooks/useToastProvider';
 import { useState } from 'react';
@@ -42,20 +42,31 @@ const DepositHistory: React.FC<PopupProps> = ({ user }) => {
     };
 
     return (
-        <div className="flex flex-col gap-[1vw]">
-            <div className="all-center flex-col gap-[1vw]">
-                <div className="grid grid-cols-4 gap-[1vw] xl:w-[30vw] w-full">
+        <div className="w-full">
+            <div className="all-center flex-col xl:gap-[1vw] gap-[3vw]">
+                <div className="grid grid-cols-4 xl:gap-[1vw] gap-[3vw] xl:w-[30vw] w-full xl:py-[1vw] py-[3vw]">
                     {amountButtons.map((value, index) => (
-                        <button key={index} className="bg-blue hover:bg-blueHover text-white font-bold py-[0.6vw] rounded-[0.4vw] hover-items" onClick={() => handleButtonClick(value)}>
+                        <button
+                            key={index}
+                            className="bg-blue hover:bg-blueHover text-white font-bold xl:py-[0.6vw] py-[2.5vw] xl:rounded-[0.4vw] rounded-[1.5vw] xl:text-[1vw] text-[2.8vw] hover-items"
+                            onClick={() => handleButtonClick(value)}
+                        >
                             {value}
                         </button>
                     ))}
                 </div>
-                <div className="w-[20vw]">
-                    <Input Label="Nhập Số Tiền Cần Nạp" placeholder="0" type="text" className="!p-[0.4vw] tracking-[0.1vw] font-bold !text-2xl" value={amount} onChange={(e) => handleAmountChange(e.target.value)} />
+                <div className="xl:w-[20vw] w-full">
+                    <Input
+                        Label="Nhập Số Tiền Cần Nạp"
+                        placeholder="0"
+                        type="text"
+                        className="xl:!p-[0.4vw] !p-[2.5vw] tracking-[0.1vw] font-bold xl:!text-[1vw] !text-[3vw]"
+                        value={amount}
+                        onChange={(e) => handleAmountChange(e.target.value)}
+                    />
                 </div>
-                <div className="w-[15vw]">
-                    <ButtonSign title="Nạp Tiền" onClick={handleDeposit} />
+                <div className="xl:w-[10vw] w-[30vw]">
+                    <Button title="Nạp Tiền" onClick={handleDeposit} />
                 </div>
             </div>
         </div>

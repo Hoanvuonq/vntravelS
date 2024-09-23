@@ -5,7 +5,7 @@ interface IClose {
 function CloseTabs({ onClick }: IClose) {
     return (
         <button className="hover-items" onClick={onClick}>
-            <img src={images.close} alt="close" className="w-[2vw] h-[2vw]" />
+            <img src={images.close} alt="close" className="xl:w-[2vw] w-[6vw]" />
         </button>
     );
 }

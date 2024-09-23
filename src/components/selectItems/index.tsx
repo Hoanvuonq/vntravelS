@@ -50,8 +50,8 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ Label, name, value, onChang
     const selectedOption = options.find((option) => option.value === value);
 
     return (
-        <div className={`custom-select !w-full ${className}`} ref={selectRef}>
-            <label htmlFor={name} className="block mb-[0.5vw] text-label text-gray-900 dark:text-white">
+        <div className={`custom-select inputC xl:pt-[1vw] pt-[3vw] !w-full ${className}`} ref={selectRef}>
+            <label htmlFor={name} className="block mb-[0.5vw]  text-label text-gray-900 dark:text-white">
                 {Label}
             </label>
             <div className="relative">
@@ -63,7 +63,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ Label, name, value, onChang
                 >
                     {selectedOption ? (
                         <div className="flex items-center">
-                            <img src={images[`Level${selectedOption.vipLevel}`]} alt={`Level ${selectedOption.vipLevel}`} className="w-[1.8vw] h-[1.8vw] mr-[0.5vw]" />
+                            <img src={images[`Level${selectedOption.vipLevel}`]} alt={`Level ${selectedOption.vipLevel}`} className="xl:w-[1.8vw] w-[10vw] mr-[0.5vw]" />
                             <span>{selectedOption.label}</span>
                         </div>
                     ) : (
@@ -71,10 +71,10 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ Label, name, value, onChang
                     )}
                 </div>
                 {isOpen && (
-                    <div className="absolute z-10 w-full bg-white border border-gray-300 rounded mt-[0.5vw] max-h-[10vw] overflow-y-auto custom-scrollbar">
+                    <div className="absolute z-10 w-full bg-white border border-gray-300 rounded mt-[0.5vw] xl:max-h-[10vw] max-h-auto overflow-y-auto custom-scrollbar">
                         {options.map((option) => (
-                            <div key={option.value} className="flex items-center p-[0.6vw] cursor-pointer hover:bg-gray-100" onClick={() => handleOptionClick(option.value)}>
-                                <img src={images[`Level${option.vipLevel}`]} alt={`Level ${option.vipLevel}`} className="w-[1.8vw] h-[1.8vw] mr-[0.5vw]" />
+                            <div key={option.value} className="flex items-center xl:p-[0.6vw] p-[1.2vw] cursor-pointer hover:bg-gray-100" onClick={() => handleOptionClick(option.value)}>
+                                <img src={images[`Level${option.vipLevel}`]} alt={`Level ${option.vipLevel}`} className="xl:w-[1.8vw] w-[10vw] mr-[0.5vw]" />
                                 <span>{option.label}</span>
                             </div>
                         ))}

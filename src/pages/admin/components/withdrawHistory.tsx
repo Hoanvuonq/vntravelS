@@ -29,7 +29,6 @@ const WithdrawHistory: React.FC<PopupProps> = ({ user }) => {
     const handleConfirm = async (transactionId: string) => {
         try {
             await confirmTransaction(transactionId);
-            // Cập nhật trạng thái giao dịch sau khi xác nhận
             setWithdraws(withdraws.map((w) => (w._id === transactionId ? { ...w, status: TransactionStatus.SUCCESS } : w)));
         } catch (error) {
             console.error('Lỗi khi xác nhận giao dịch:', error);
@@ -39,7 +38,6 @@ const WithdrawHistory: React.FC<PopupProps> = ({ user }) => {
     const handleReject = async (transactionId: string) => {
         try {
             await rejectTransaction(transactionId);
-            // Cập nhật trạng thái giao dịch sau khi từ chối
             setWithdraws(withdraws.map((w) => (w._id === transactionId ? { ...w, status: TransactionStatus.ERROR } : w)));
         } catch (error) {
             console.error('Lỗi khi từ chối giao dịch:', error);
@@ -50,10 +48,10 @@ const WithdrawHistory: React.FC<PopupProps> = ({ user }) => {
         <div className="flex flex-col gap-[1vw]">
             {withdraws.map((transaction) => (
                 <div key={transaction._id} className="flex items-center justify-between gap-[1vw] border-t-[0.1vw] border-gray-300 pt-[0.5vw]">
-                    <div className="flex gap-[2vw] items-center">
-                        <img src={images.Total1} alt="withdraw" className="w-[3vw] hover-items" />
+                    <div className="flex items-center xl:gap-[2vw] gap-[6vw] items-center">
+                        <img src={images.Total1} alt="withdraw" className="xl:w-[3vw] w-[10vw] hover-items" />
                         <p>{transaction.amount} VNĐ</p>
-                        <p>{new Date(transaction.requestTime).toLocaleString()}</p>
+                        {/* <p>{new Date(transaction.requestTime).toLocaleString()}</p>  */}
                         <p>{transaction.status}</p>
                     </div>
                     {transaction.status.toLowerCase() === TransactionStatus.PENDING.toLowerCase() && (

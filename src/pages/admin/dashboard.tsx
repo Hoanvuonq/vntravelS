@@ -144,21 +144,20 @@ const Dashboard = () => {
                             </Typography>
                         </div>
                     </td>
-                    <td className={`${classes} !w-[4vw]`}>
+                    <td className={`${classes} xl:!w-[4vw] !w-[10vw]`}>
                         <Tooltip content="Chỉnh Sửa User">
-                            <img src={images.Edit} alt="Eidt" className="hover-items cursor-pointer w-[3vw]" onClick={() => handleEditUser(user._id)} />
+                            <img src={images.Edit} alt="Eidt" className="hover-items cursor-pointer xl:w-[3vw] w-[12vw]" onClick={() => handleEditUser(user._id)} />
                         </Tooltip>
                     </td>
-                    <td className={`${classes} !w-[4vw]`}></td>
-                    <td className={`${classes} !w-[4vw]`}>
+                    <td className={`${classes} xl:!w-[4vw] !w-[10vw]`}>
                         <Tooltip content="Chỉnh Sửa Hành Trình">
-                            <img src={images.wallet} alt="Evaluate" className="hover-items cursor-pointer w-[3vw]" onClick={() => handleConfirmMoney(user._id)} />
+                            <img src={images.wallet} alt="Evaluate" className="hover-items cursor-pointer xl:w-[3vw] w-[12vw]" onClick={() => handleConfirmMoney(user._id)} />
                         </Tooltip>
                     </td>
-                    <td className={`${classes} !w-[4vw]`}>
+                    <td className={`${classes} xl:!w-[4vw] !w-[10vw]`}>
                         <Tooltip content="Edit User">
                             <div className="relative hover-items ">
-                                <img src={images.NotificationIcon} alt="Notification" className="relative cursor-pointer w-[3vw]" />
+                                <img src={images.NotificationIcon} alt="Notification" className="relative cursor-pointer xl:w-[3vw] w-[12vw]" />
                                 <span className="absolute bg-red p-[0.4vw] w-[1.3vw] h-[1.3vw] all-center text-white rounded-full -top-[0.2vw] -right-[0.4vw]">0</span>
                             </div>
                         </Tooltip>

@@ -61,7 +61,7 @@ const PaymentDetail = () => {
                 <div className="all-center flex-col gap-[3vw]">
                     <div className="grid grid-cols-4 gap-4 xl:w-[35vw] w-full">
                         {amountButtons.map((value, index) => (
-                            <button key={index} className="bg-blue hover:bg-blueHover text-white font-bold py-[0.4vw] rounded-[0.4vw] hover-items" onClick={() => handleButtonClick(value)}>
+                            <button key={index} className="bg-blue hover:bg-blueHover text-white font-bold py-[0.4vw] xl:rounded-[0.4vw] rounded-[1vw] hover-items" onClick={() => handleButtonClick(value)}>
                                 {value}
                             </button>
                         ))}

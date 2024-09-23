@@ -164,3 +164,18 @@ export const getUserTransactionHistory = async (userId: string): Promise<{ depos
         throw error;
     }
 };
+
+export const interveneJourney = async (userId: string, journeyIndex: number, additionalPoints: number): Promise<ITransaction> => {
+    try {
+        const response = await Api.post<TransactionResponse>(`${url}/interveneJourney/${userId}`, { journeyIndex, additionalPoints });
+        if (response.data.status && response.data.data) {
+            return response.data.data;
+        } else {
+            console.error('Cấu trúc phản hồi không mong đợi:', response.data);
+            throw new Error('Cấu trúc phản hồi không mong đợi');
+        }
+    } catch (error) {
+        console.error('Lỗi trong interveneJourney:', error);
+        throw error;
+    }
+};

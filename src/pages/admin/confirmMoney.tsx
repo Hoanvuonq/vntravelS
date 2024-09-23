@@ -11,7 +11,10 @@ import CustomSelect from 'components/selectItems';
 import Input from 'components/input/inputProfile';
 import CustomSlider from './components/custonSlider';
 import CloseTabs from 'components/closeTabs';
+import { updateUserInfo, interveneJourney } from 'api/admin';
 import { Tooltip } from '@material-tailwind/react';
+import { toast } from 'react-toastify';
+import ToastProvider from 'hooks/useToastProvider';
 
 const DepositHistory = lazy(() => import('./components/depositHistory'));
 const WithdrawHistory = lazy(() => import('./components/withdrawHistory'));
@@ -60,13 +63,14 @@ interface PopupProps {
 const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
     const dispatch = useDispatch<AppDispatch>();
     const { fetchUserInfo } = useUserInfo();
-    const [selectVip, setSelectVip] = useState<number>(1);
+    const [selectVip, setSelectVip] = useState<number>(user.vipLevel || 1);
     const [activeTab, setActiveTab] = useState<string>('deposit');
+    const [journeyCompleteValue, setJourneyCompleteValue] = useState<number>(user.journeyComplete || 0);
+    const [points, setpoints] = useState<number>(0);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const userVipLevel = user.vipLevel || 0;
     const journeyComplete = user.journeyComplete || 0;
     const journeys = user.journeys?.length || 0;
-    const totalDeposited = user.totalDeposited || 0;
-    const totalWithdrawn = user.totalWithdrawn || 0;
     const [sliderValue, setSliderValue] = useState<number>(journeys);
     const popupRef = useRef<HTMLDivElement>(null);
 
@@ -74,8 +78,58 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
         setSelectVip(value);
     };
 
+    const handleJourneyCompleteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setJourneyCompleteValue(Number(e.target.value));
+    };
+
+    const handleAdditionalPointsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setpoints(Number(e.target.value));
+    };
+
+    const handleUpdateUserInfo = async () => {
+        setIsLoading(true);
+        try {
+            const updatedData = {
+                journeyComplete: journeyCompleteValue,
+                vipLevel: selectVip,
+            };
+
+            await updateUserInfo(user._id, updatedData);
+            await fetchUserInfo();
+            toast.success('User information updated successfully');
+        } catch (error) {
+            console.error('Error updating user info:', error);
+            toast.error('Failed to update user information');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const formatNumber = (num: string) => {
         return num.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    };
+
+    const handleInterveneJourney = async () => {
+        setIsLoading(true);
+        try {
+            const journeyIndex = sliderValue;
+            const additionalPoints = points;
+
+            if (journeyIndex >= journeyComplete) {
+                ToastProvider('warning', 'Người dùng đã hoàn thành hành trình của mình');
+                setIsLoading(false);
+                return;
+            }
+
+            await interveneJourney(user._id, journeyIndex, additionalPoints);
+            await fetchUserInfo();
+            ToastProvider('success', 'Cập Nhật Thành Công');
+        } catch (error) {
+            console.error('Cập Nhật Thất Bại:', error);
+            ToastProvider('error', 'Cập Nhật Thất Bại');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -121,24 +175,24 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
                                         <JourneyProgress className=" w-full" journeys={journeys} journeyComplete={journeyComplete} />
                                     </div>
                                     <div className="flex xl:flex-row flex-col items-center w-full xl:gap-[1.5vw] gap-[6vw]">
-                                        <div className="bg-white all-center flex-col gap-[1vw] shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] w-[20vw] h-[20vw]">
+                                        <div className="bg-white all-center flex-col gap-[1vw] shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:w-[20vw] w-full xl:h-[20vw] h-full">
                                             <div className="box-total w-full left-0">
                                                 <p className="text-titleLevel">Setup Đơn May Mắn</p>
                                             </div>
                                             <div className="flex w-full flex-col gap-[1vw]">
                                                 <p className="text-content">Hành Trình</p>
                                                 <CustomSlider min={journeys} max={journeyComplete} step={1} value={sliderValue} onChange={setSliderValue} />
-                                                <Input Label="Số Tiền" type="number" placeholder="20" name="money" />
+                                                <Input Label="Số Điểm" type="number" onChange={handleAdditionalPointsChange} placeholder="20" name="money" />
                                             </div>
-                                            <div className="w-[8vw]">
-                                                <Button title="CẬP NHẬT" />
+                                            <div className="xl:w-[8vw] w-[30vw] xl:pt-[1vw] pt-[3vw]">
+                                                <Button title="CẬP NHẬT" onClick={handleInterveneJourney} disabled={isLoading} />
                                             </div>
                                         </div>
-                                        <div className="bg-white all-center flex-col  gap-[1vw] shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] w-[20vw] h-[20vw]">
+                                        <div className="bg-white all-center flex-col  gap-[1vw] shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:w-[20vw] w-full xl:h-[20vw] h-full">
                                             <div className="box-total w-full left-0">
                                                 <p className="text-titleLevel">Chỉnh Sửa Hành Trình + VIP</p>
                                             </div>
-                                            <Input Label="Hành Trình" type="number" placeholder="20" name="evaluate" />
+                                            <Input Label="Hành Trình" type="number" placeholder="20" name="evaluate" value={journeyCompleteValue} onChange={handleJourneyCompleteChange} />
                                             <div className="box-total w-full">
                                                 <CustomSelect
                                                     Label="Vip"
@@ -152,16 +206,16 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
                                                     }))}
                                                 />
                                             </div>
-                                            <div className="w-[8vw]">
-                                                <Button title="CẬP NHẬT" />
+                                            <div className="xl:w-[8vw] w-[30vw] xl:pt-[1vw] pt-[3vw]">
+                                                <Button title="CẬP NHẬT" onClick={handleUpdateUserInfo} disabled={isLoading} />
                                             </div>
                                         </div>
-                                        <div className="bg-white flex flex-col gap-[1vw] shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] w-[36vw] h-[20vw]">
-                                            <div className="payment flex items-center gap-[1vw]">
+                                        <div className="bg-white flex flex-col gap-[1vw] shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:w-[36vw] w-full xl:h-[20vw] h-full">
+                                            <div className="payment flex items-center xl:gap-[1vw] gap-[3vw]">
                                                 {tabItems.map((tab) => (
                                                     <div
                                                         key={tab.key}
-                                                        className={`text-content hover-items border-b-2 ${activeTab === tab.key ? tab.classActive : tab.classUnactive}`}
+                                                        className={`text-content hover-items xl:border-b-[0.2vw] border-b-[0.5vw] ${activeTab === tab.key ? tab.classActive : tab.classUnactive}`}
                                                         onClick={() => setActiveTab(tab.key)}
                                                     >
                                                         {tab.title}
