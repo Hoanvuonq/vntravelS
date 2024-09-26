@@ -117,6 +117,7 @@ export enum TransactionStatus {
 }
 
 export interface ITransaction {
+    _id: string;
     username: string;
     amount: number;
     type: TransactionType;
@@ -126,7 +127,6 @@ export interface ITransaction {
     pointsEquivalent: number;
     description?: string;
     adminNote?: string;
-    _id: string;
     createdAt: string;
     updatedAt: string;
     __v: number;

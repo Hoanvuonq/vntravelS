@@ -99,7 +99,7 @@ const Login = () => {
                         </p>
 
                         <Button title="Đăng Nhập" onClick={handleSubmit(onSubmit)} />
-                        <p className="text-poppins font-light text-cusLogin xl:text-[0.8vw] lg:text-[1.4vw] md:text-[1.6vw] text-[2vw] cursor-pointer flex gap-[0.4vw]">
+                        <p className="text-poppins font-light text-cusLogin xl:text-[0.8vw] lg:text-[1.4vw] md:text-[1.6vw] text-[3vw] cursor-pointer flex gap-[0.4vw] xl:tracking-[0.1vw] tracking-[0.4vw]">
                             Bạn chưa có tài khoản?
                             <Link to="/register" className="font-bold hover:text-blue-600">
                                 Đăng ký

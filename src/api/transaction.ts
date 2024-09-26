@@ -35,9 +35,11 @@ export const withdrawMoney = async (amount: number, passBank: number): Promise<I
     }
 };
 
-export const getTransactionHistory = async (): Promise<ITransaction[]> => {
+export const getDepositHistory = async (limit: number = 20): Promise<ITransaction[]> => {
     try {
-        const res = await Api.get<{ status: boolean; message: string; data: ITransaction[] }>(`${url}/history`);
+        const res = await Api.get<{ status: boolean; message: string; data: ITransaction[] }>(`${url}/history/deposit`, {
+            params: { limit },
+        });
         if (res.data.status) {
             return res.data.data;
         } else {
@@ -45,7 +47,24 @@ export const getTransactionHistory = async (): Promise<ITransaction[]> => {
             throw new Error('Unexpected response structure');
         }
     } catch (error) {
-        console.error('Error in getTransactionHistory:', error);
-        throw new Error('Failed to fetch transaction history');
+        console.error('Error in getDepositHistory:', error);
+        throw new Error('Failed to fetch deposit history');
+    }
+};
+
+export const getWithdrawHistory = async (limit: number = 20): Promise<ITransaction[]> => {
+    try {
+        const res = await Api.get<{ status: boolean; message: string; data: ITransaction[] }>(`${url}/history/withdraw`, {
+            params: { limit },
+        });
+        if (res.data.status) {
+            return res.data.data;
+        } else {
+            console.error('Unexpected response structure:', res.data);
+            throw new Error('Unexpected response structure');
+        }
+    } catch (error) {
+        console.error('Error in getWithdrawHistory:', error);
+        throw new Error('Failed to fetch withdraw history');
     }
 };

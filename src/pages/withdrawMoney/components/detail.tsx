@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Input from 'components/input/inputProfile';
 import Button from 'components/button';
 import BoxTotal from 'components/boxTotal';
@@ -6,13 +7,7 @@ import ToastProvider from 'hooks/useToastProvider';
 import { images } from 'assets';
 import { useUserInfo } from 'hooks/UserContext';
 import { withdrawMoney } from 'api/transaction';
-
-interface IBankInfo {
-    label: string;
-    type: string;
-    placeholder: string;
-    disabled: string;
-}
+import { useLoading } from 'contexts/useLoading';
 
 const amountButtons = ['100', '300', '500', '700', '1000', '1500', '3000', '5000'];
 
@@ -21,6 +16,8 @@ const WithdrawMoney = () => {
     const balance = userInfo?.balance || 0;
     const [amount, setAmount] = useState('');
     const [passBank, setPassBank] = useState('');
+    const { setLoading } = useLoading();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const formatNumber = (num: string) => {
         return num.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -51,11 +48,14 @@ const WithdrawMoney = () => {
             ToastProvider('warning', 'Vui Lòng Nhập Mật Khẩu Rút Tiền');
             return;
         }
+        setLoading(true); // Start loading
         try {
+            await new Promise((resolve) => setTimeout(resolve, 2000));
             console.log('Sending request with:', { amount: numericAmount, passBank: numericPassBank });
             const transaction = await withdrawMoney(numericAmount, numericPassBank);
             ToastProvider('success', 'Yêu Cầu Rút Tiền Thành Công');
             console.log('Transaction:', transaction);
+            setSearchParams({ tabPayment: 'historyPayment' });
         } catch (error: any) {
             console.error('Withdraw failed:', error);
             if (error.response && error.response.data && error.response.data.message) {
@@ -63,6 +63,8 @@ const WithdrawMoney = () => {
             } else {
                 ToastProvider('error', 'Yêu Cầu Rút Tiền Thất Bại !!');
             }
+        } finally {
+            setLoading(false);
         }
     };
 

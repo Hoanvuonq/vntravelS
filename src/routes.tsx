@@ -14,6 +14,7 @@ import Wallet from './pages/wallet';
 import Bank from 'pages/bank';
 import WithdrawMoney from './pages/withdrawMoney';
 import Dashboard from './pages/admin/dashboard';
+import WithdrawAllUser from './pages/admin/withdrawAllUser';
 
 const routes = createBrowserRouter([
     { path: '/login', element: <ProtectedLogin /> },
@@ -89,6 +90,14 @@ const routes = createBrowserRouter([
                 element: (
                     <AdminLayout>
                         <Dashboard />
+                    </AdminLayout>
+                ),
+            },
+            {
+                path: '/withdraw-all-user',
+                element: (
+                    <AdminLayout>
+                        <WithdrawAllUser />
                     </AdminLayout>
                 ),
             },

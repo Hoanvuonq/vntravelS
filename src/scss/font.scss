@@ -349,7 +349,7 @@
         }
     }
     .text-place {
-        font-size: 0.8vw;
+        font-size: 1vw;
         line-height: 1.2vw;
         font-weight: 700;
         @media (max-width: 1024px) {
@@ -397,6 +397,39 @@
         @media (max-width: 1024px) {
             font-size: 3vw;
             line-height: 4vw;
+        }
+    }
+}
+
+.menu-list {
+    .text-username {
+        font-size: 0.9vw;
+        line-height: 1.2vw;
+        font-weight: 700;
+        @media (max-width: 1024px) {
+            font-size: 4vw;
+            line-height: 6vw;
+        }
+    }
+
+    .text-phone {
+        font-size: 0.8vw;
+        line-height: 1.2vw;
+        letter-spacing: 0.1em;
+        font-weight: 400;
+        font-family: 'Bai Jamjuree', sans-serif!important;
+        @media (max-width: 1024px) {
+            font-size: 4vw;
+            line-height: 6vw;
+        }
+    }
+    .text-title {
+        font-size: 0.7vw;
+        line-height: 1.2vw;
+        font-weight: 700;
+        @media (max-width: 1024px) {
+            font-size: 4vw;
+            line-height: 6vw;
         }
     }
 }

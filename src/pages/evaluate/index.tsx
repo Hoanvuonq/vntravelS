@@ -24,7 +24,6 @@ const Evaluate = () => {
     const [showHistoryPopup, setShowHistoryPopup] = useState(false);
     const [showFomEvaluate, setShowFomEvaluate] = useState(false);
     const [previewData, setPreviewData] = useState<IJourneyPreviewResponse | null>(null);
-
     const balance = userInfo?.balance || 0;
     const totalCommission = userInfo?.totalCommission || 0;
     const journeyComplete = userInfo?.journeyComplete || 0;
@@ -61,6 +60,10 @@ const Evaluate = () => {
         fetchUserInfo();
     }, [fetchUserInfo]);
 
+    const handleShowHistoryPopup = () => {
+        setShowHistoryPopup(true);
+    };
+
     return (
         <div className="flex flex-col xl:gap-[1vw] gap-[4vw]">
             <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw]">
@@ -82,7 +85,7 @@ const Evaluate = () => {
             </div>
             <ExploreTours />
             {showHistoryPopup && <HistoryEvaluate onClose={() => setShowHistoryPopup(false)} />}
-            {showFomEvaluate && previewData && <FomEvaluate onClose={() => setShowFomEvaluate(false)} previewData={previewData} />}
+            {showFomEvaluate && previewData && <FomEvaluate onClose={() => setShowFomEvaluate(false)} previewData={previewData} onShowHistory={handleShowHistoryPopup} />}
         </div>
     );
 };

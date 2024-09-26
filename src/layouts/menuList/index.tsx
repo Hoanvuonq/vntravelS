@@ -9,10 +9,10 @@ import ToastProvider from 'hooks/useToastProvider';
 import { useUserInfo } from 'hooks/UserContext';
 
 const listMenu = [
-    { link: 'payment', title: 'Nạp tiền', isSearchParams: true },
-    { link: 'profile', title: 'Thông tin' },
-    { link: '', title: 'Đổi mật khẩu' },
-    { link: '', title: 'Chế dộ màu tối' },
+    { link: 'payment', title: 'Nạp Tiền', isSearchParams: true },
+    { link: 'withdraw-money', title: 'Rút Tiền' },
+    { link: 'profile', title: 'Thông Tin' },
+    { link: 'bank', title: 'Thông Tin Ngân Hàng' },
 ];
 
 const MenuList: React.FC = () => {
@@ -41,9 +41,9 @@ const MenuList: React.FC = () => {
     const MenuListNavbar = useMemo(() => {
         return listMenu.map(({ link, title, isSearchParams }, index) => (
             <Link key={index} to={{ pathname: `/${link}`, search: isSearchParams ? `?tabPayment=${link}` : '' }} onClick={handleClose}>
-                <li className="py-2 bai-jamjuree flex gap-3 items-center text-[#000] px-3 hover:bg-[#f1f1f1] rounded-lg font-medium">
-                    <img src={images[`Menu${index + 1}`]} alt="icon menu" width={40} height={40} className="scale-icon" />
-                    {title}
+                <li className="xl:py-[0.5vw] py-[2.5vw] bai-jamjuree flex xl:gap-[0.5vw] gap-[2vw] items-center text-[#000] xl:px-[1vw] px-[4vw] hover:bg-[#f1f1f1] rounded-lg font-medium">
+                    <img src={images[`Menu${index + 1}`]} alt="icon menu" className="scale-icon xl:w-[2vw] sm:w-[4vw] w-[9vw]" />
+                    <p className="text-title">{title}</p>
                 </li>
             </Link>
         ));
@@ -52,24 +52,28 @@ const MenuList: React.FC = () => {
     return (
         <div>
             {isOpen && <div className="overlay !bg-transparent" onClick={handleClose}></div>}
-            <div className={`menu border z-50 border-[#e5e9f2] shadow-custom-3 rounded-2xl w-[300px] bg-white !top-[86px] !right-2 ${isOpen ? 'menu-visible' : 'menu-hidden'}`}>
+            <div
+                className={`menu border z-50 border-[#e5e9f2] shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:w-[16vw] w-[75vw] bg-white xl:!top-[5vw] !top-[16vw] xl:!right-[0.3vw] !right-[1.5vw] menu-list ${
+                    isOpen ? 'menu-visible' : 'menu-hidden'
+                }`}
+            >
                 <Link to={'/profile'} className="cursor-pointer">
-                    <div className="bg-[#f5f6fa] border border-[#e5e9f2] rounded-t-2xl">
-                        <div className="p-5 flex items-center gap-4">
-                            <img src={images.Avatar} alt="avatar" className="rounded-full border-4 border-orange" width={40} height={40} />
+                    <div className="bg-[#f5f6fa] border border-[#e5e9f2] xl:rounded-t-[1vw] rounded-t-[3vw]">
+                        <div className="xl:p-[1.2vw] p-[4vw] flex items-center gap-[1vw]">
+                            <img src={images.Avatar} alt="avatar" className="rounded-full xl:w-[2vw] sm:w-[4vw] w-[10vw] xl:border-[0.2vw] border-[1vw] border-orange" />
                             <div className="bai-jamjuree">
-                                <p className="font-semibold">{username}</p>
-                                <p className="text-[#8094ae] text-xs">{phone}</p>
+                                <p className="text-username">{username}</p>
+                                <p className="text-phone">0{phone}</p>
                             </div>
                         </div>
                     </div>
                 </Link>
-                <ul className="text-base py-3 px-2">{MenuListNavbar}</ul>
+                <ul className="text-base py-[0.7vw] px-[0.2vw]">{MenuListNavbar}</ul>
                 <div className="text-base border-t border-[#e5e9f2]">
                     <div onClick={handleLogout}>
-                        <li className="flex gap-3 bai-jamjuree items-center text-[#474747] hover:text-[#000] py-3 px-7 hover:bg-[#f1f1f1] hover:rounded-b-2xl cursor-pointer">
-                            <img src={images.IconLogOutt} alt="Sign Out" width={22} height={22} />
-                            Đăng xuất
+                        <li className="flex xl:gap-[0.5vw] gap-[2vw] bai-jamjuree items-center text-[#474747] hover:text-[#000] xl:py-[0.7vw] xl:px-[1.5vw] py-[2.5vw] px-[6vw] hover:bg-[#f1f1f1] hover:rounded-b-[1vw] cursor-pointer">
+                            <img src={images.IconLogOutt} alt="Sign Out" className="xl:w-[1.3vw] sm:w-[4vw] w-[7vw]" />
+                            <p className="text-title">Đăng xuất</p>
                         </li>
                     </div>
                 </div>

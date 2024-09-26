@@ -1,35 +1,24 @@
-import { useState, useEffect, useMemo } from 'react';
-import TextTitle from 'components/textTitle';
-import { Card, CardHeader, Input, Typography, Button, CardBody, CardFooter, Tabs, TabsHeader, Tab, Tooltip } from '@material-tailwind/react';
+import { Button, Card, CardBody, CardFooter, CardHeader, Input, Tooltip, Typography } from '@material-tailwind/react';
+import { confirmTransaction, getAllUsers, getAllWithdrawTransactions, rejectTransaction, searchUser } from 'api/admin';
+import { ITransaction, IUserInfo, TransactionStatus } from 'api/type';
 import { images } from 'assets';
-import { getAllUsers, getUserInfo, searchUser } from 'api/admin';
-import { IUserInfo } from 'api/type';
-import EditUser from './editUser';
-import ConfirmMoney from './confirmMoney';
+import TextTitle from 'components/textTitle';
 import { useUserInfo } from 'hooks/UserContext';
+import { useEffect, useMemo, useState } from 'react';
+import ConfirmMoney from './confirmMoney';
+import EditUser from './editUser';
 
 interface IUserInfoWithAction extends IUserInfo {
     action: 'edit' | 'confirmMoney';
 }
 
-const TABS = [
-    {
-        label: 'All',
-        value: 'all',
-    },
-    {
-        label: 'Online',
-        value: 'online',
-    },
-    {
-        label: 'Offline',
-        value: 'offline',
-    },
-];
+interface IUserWithTransaction extends IUserInfo {
+    transaction?: ITransaction;
+}
 
-const TABLE_HEAD = ['Thông Tin', 'VIP', 'Đăng Ký', 'Trạng Thái', '', '', '', ''];
+const TABLE_HEAD = ['Thông Tin', 'Yêu Cầu Rút', 'Thông Tin Ngân Hàng', 'Số Tiền', 'Trạng Thái', '', '', '', ''];
 
-const Dashboard = () => {
+const WithDrawAllUsuer = () => {
     const { fetchUserInfo } = useUserInfo();
     const [users, setUsers] = useState<IUserInfo[]>([]);
     const [filteredUsers, setFilteredUsers] = useState<IUserInfo[]>([]);
@@ -38,25 +27,7 @@ const Dashboard = () => {
     const [selectedUser, setSelectedUser] = useState<IUserInfoWithAction | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
 
-    const handleEditUser = async (userId: string) => {
-        try {
-            const userInfo = await getUserInfo(userId);
-            setSelectedUser({ ...userInfo, action: 'edit' });
-            await fetchUserInfo();
-        } catch (error) {
-            console.error('Failed to fetch user info:', error);
-        }
-    };
-
-    const handleConfirmMoney = async (userId: string) => {
-        try {
-            const userInfo = await getUserInfo(userId);
-            setSelectedUser({ ...userInfo, action: 'confirmMoney' });
-            await fetchUserInfo();
-        } catch (error) {
-            console.error('Failed to fetch user info:', error);
-        }
-    };
+    const [withdraws, setWithdraws] = useState<ITransaction[]>([]);
 
     const handleSearch = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
@@ -87,25 +58,51 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
-        const fetchUsers = async () => {
+        const fetchData = async () => {
             try {
                 setIsLoading(true);
-                const data = await getAllUsers();
-                setUsers(data);
-                setFilteredUsers(data);
+                const [userData, withdrawData] = await Promise.all([getAllUsers(), getAllWithdrawTransactions()]);
+                setUsers(userData);
+                setFilteredUsers(userData);
+                setWithdraws(withdrawData);
             } catch (error) {
-                console.error('Failed to fetch users:', error);
-                setError('Failed to load users. Please try again later.');
+                console.error('Failed to fetch data:', error);
+                setError('Failed to load data. Please try again later.');
             } finally {
                 setIsLoading(false);
             }
         };
-        fetchUsers();
+        fetchData();
     }, []);
 
+    const handleConfirm = async (transactionId: string) => {
+        try {
+            await confirmTransaction(transactionId);
+            setWithdraws(withdraws.map((w) => (w._id === transactionId ? { ...w, status: TransactionStatus.SUCCESS } : w)));
+        } catch (error) {
+            console.error('Lỗi khi xác nhận giao dịch:', error);
+        }
+    };
+
+    const handleReject = async (transactionId: string) => {
+        try {
+            await rejectTransaction(transactionId);
+            setWithdraws(withdraws.map((w) => (w._id === transactionId ? { ...w, status: TransactionStatus.ERROR } : w)));
+        } catch (error) {
+            console.error('Lỗi khi từ chối giao dịch:', error);
+        }
+    };
+
+    const combinedData: IUserWithTransaction[] = useMemo(() => {
+        return users.map((user) => {
+            const userTransaction = withdraws.find((transaction) => transaction.username === user.username);
+            return { ...user, transaction: userTransaction };
+        });
+    }, [users, withdraws]);
+
     const memoizedTableRows = useMemo(() => {
-        return filteredUsers.map((user, index) => {
-            const isLast = index === filteredUsers.length - 1;
+        return combinedData.map((user, index) => {
+            const isLast = index === combinedData.length - 1;
             const classes = isLast ? 'xl:p-[1vw] p-[2vw]' : 'xl:p-[1vw] p-[2vw] border-b border-blue-gray-50 level';
 
             return (
@@ -125,46 +122,57 @@ const Dashboard = () => {
                     </td>
                     <td className={classes}>
                         <div className="flex items-center gap-3 -ml-[2vw]">
-                            <img src={images[`Level${user.vipLevel}`]} alt={user.username} className="xl:w-[3vw] w-[12vw] " />
                             <Typography variant="small" color="blue-gray" className="font-bold" {...({} as any)}>
-                                VIP {user.vipLevel}
+                                {user.transaction?.requestTime ? new Date(user.transaction.requestTime).toLocaleString() : 'N/A'}
                             </Typography>
                         </div>
                     </td>
-                    <td className={`${classes} hidden md:table-cell`}>
+                    <td className={classes}>
                         <Typography variant="small" color="blue-gray" className="font-normal" {...({} as any)}>
-                            {new Date(user.createdAt).toLocaleDateString()}
+                            {user.information.bankName}
+                        </Typography>
+                        <Typography variant="small" color="blue-gray" className="font-normal" {...({} as any)}>
+                            {user.information.bankAccount}
+                        </Typography>
+                        <Typography variant="small" color="blue-gray" className="font-normal" {...({} as any)}>
+                            {user.information.bankNumber}
                         </Typography>
                     </td>
-                    <td className={`${classes} hidden md:table-cell`}>
-                        <div className="w-max">
-                            <Typography variant="small" color="blue-gray" className="font-normal" {...({} as any)}>
-                                {user.isBlocked ? 'Blocked' : 'Active'}
+                    <td className={classes}>
+                        <div className="flex items-center gap-3 -ml-[2vw]">
+                            <Typography variant="small" color="blue-gray" className="font-bold" {...({} as any)}>
+                                {user.transaction?.amount || 'N/A'}
                             </Typography>
                         </div>
                     </td>
-                    <td className={`${classes} xl:!w-[4vw] !w-[10vw]`}>
-                        <Tooltip content="Chỉnh Sửa User">
-                            <img src={images.Edit} alt="Eidt" className="hover-items cursor-pointer xl:w-[2vw] w-[12vw]" onClick={() => handleEditUser(user._id)} />
-                        </Tooltip>
+                    <td className={classes}>
+                        <div className="flex items-center gap-3 -ml-[2vw]">
+                            <Typography variant="small" color="blue-gray" className="font-bold" {...({} as any)}>
+                                {user.transaction?.status || 'N/A'}
+                            </Typography>
+                        </div>
                     </td>
-                    <td className={`${classes} xl:!w-[4vw] !w-[10vw]`}>
-                        <Tooltip content="Chỉnh Sửa Hành Trình">
-                            <img src={images.editPayment} alt="Edit Evaluate" className="hover-items cursor-pointer xl:w-[2vw] w-[12vw]" onClick={() => handleConfirmMoney(user._id)} />
-                        </Tooltip>
+                    <td className={classes}>
+                        <Typography variant="small" color="blue-gray" className="font-normal" {...({} as any)}>
+                            {user.transaction?.pointsEquivalent || 'N/A'}
+                        </Typography>
                     </td>
-                    <td className={`${classes} xl:!w-[4vw] !w-[10vw]`}>
-                        <Tooltip content="Edit User">
-                            <div className="relative hover-items ">
-                                <img src={images.NotificationIcon} alt="Notification" className="relative cursor-pointer xl:w-[2vw] w-[12vw]" />
-                                <span className="absolute bg-red p-[0.4vw] w-[1.3vw] h-[1.3vw] all-center text-white rounded-full -top-[0.2vw] -right-[0.4vw]">0</span>
+                    {user.transaction?.status?.toLowerCase() === TransactionStatus.PENDING.toLowerCase() && (
+                        <td className={classes} key={user.transaction._id}>
+                            <div className="flex gap-[1vw]">
+                                <Tooltip content="Xác Nhận">
+                                    <img src={images.checkIcon} alt="check" className="w-[2vw] hover-items" onClick={() => handleConfirm(user.transaction!._id)} />
+                                </Tooltip>
+                                <Tooltip content="Hủy Đơn">
+                                    <img src={images.errorIcon} alt="reject" className="w-[2vw] hover-items" onClick={() => handleReject(user.transaction!._id)} />
+                                </Tooltip>
                             </div>
-                        </Tooltip>
-                    </td>
+                        </td>
+                    )}
                 </tr>
             );
         });
-    }, [filteredUsers]);
+    }, [combinedData]);
 
     if (isLoading) {
         return <div>loading ...</div>;
@@ -177,31 +185,12 @@ const Dashboard = () => {
     return (
         <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw]">
             <div className="rounded-xl w-full h-full p-[1vw] flex flex-col gap-5 level">
-                <TextTitle title="Danh Sách Khách Hàng" />
+                <TextTitle title="Danh Sách Rút Tiền" />
                 <div className="">
                     <Card className="h-full w-full" {...({} as any)}>
                         <CardHeader floated={false} shadow={false} className="rounded-none" {...({} as any)}>
-                            <div className="mb-8 flex items-center justify-between gap-8">
-                                <div />
-                                <div className="flex shrink-0 gap-[1vw] flex-row">
-                                    <Button variant="outlined" size="sm" {...({} as any)}>
-                                        view all
-                                    </Button>
-                                    <Button className="flex items-center gap-3" size="sm" {...({} as any)}>
-                                        Add member
-                                    </Button>
-                                </div>
-                            </div>
-                            <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-                                <Tabs value="all" className="w-full md:w-max">
-                                    <TabsHeader {...({} as any)}>
-                                        {TABS.map(({ label, value }) => (
-                                            <Tab key={value} value={value} {...({} as any)}>
-                                                &nbsp;&nbsp;{label}&nbsp;&nbsp;
-                                            </Tab>
-                                        ))}
-                                    </TabsHeader>
-                                </Tabs>
+                            <div className="flex flex-col items-center justify-between gap-4 py-[1vw] md:flex-row">
+                                <div className="w-full md:w-max"></div>
                                 <div className="w-full md:w-72">
                                     <Input label="Search" value={searchQuery} onChange={handleSearchInputChange} onKeyPress={handleSearch} {...({} as any)} />
                                 </div>
@@ -245,4 +234,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default WithDrawAllUsuer;

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { images } from 'assets';
 import TextTitle from 'components/textTitle';
 import { ITransaction } from 'api/type';
-import { getTransactionHistory } from 'api/transaction';
+import { getDepositHistory } from 'api/transaction';
 
 const getStatusClassName = (status: string) => {
     switch (status) {
@@ -71,14 +71,14 @@ const formatDate = (dateString: string) => {
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 };
 
-const HistoryDetail = () => {
+const HistoryPayment = () => {
     const [historyPayment, setHistoryPayment] = useState<ITransaction[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchHistory = async () => {
             try {
-                const data = await getTransactionHistory();
+                const data = await getDepositHistory();
                 setHistoryPayment(data);
             } catch (error) {
                 console.error('Failed to fetch transaction history:', error);
@@ -133,4 +133,4 @@ const HistoryDetail = () => {
     );
 };
 
-export default HistoryDetail;
+export default HistoryPayment;

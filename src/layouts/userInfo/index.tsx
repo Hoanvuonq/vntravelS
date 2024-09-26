@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUserInformationByToken } from 'api/user';
 import { RootState, AppDispatch } from 'redux/store';
 import { setUserInfo } from 'redux/slice/authSlice';
-import ToastProvider from 'hooks/useToastProvider';
+import { useUserInfo } from 'hooks/UserContext';
 
 const UserInfo = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -23,7 +23,7 @@ const UserInfo = () => {
         };
 
         fetchUserInfo();
-    }, [dispatch]);
+    }, [dispatch]); 
 
     return (
         <div className="all-center flex-col w-full user-info">

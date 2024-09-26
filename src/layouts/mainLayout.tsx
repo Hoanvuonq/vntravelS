@@ -2,10 +2,11 @@ import { ReactNode } from 'react';
 import Navbar from './navbar';
 import Sidebar from './sidebar';
 import Taskbar from './taskbar';
+import { LoadingProvider } from 'contexts/useLoading';
 
 const MainLayout = ({ children }: { children: ReactNode }) => {
     return (
-        <>
+        <LoadingProvider>
             <div className="h-screen bg-[#f8f7fa] flex m-0 w-full">
                 <Sidebar />
                 <div className="w-full content-children ">
@@ -17,7 +18,7 @@ const MainLayout = ({ children }: { children: ReactNode }) => {
                 </div>
                 <div className="overlay-sidebar" />
             </div>
-        </>
+        </LoadingProvider>
     );
 };
 

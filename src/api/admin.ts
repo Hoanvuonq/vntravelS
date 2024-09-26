@@ -30,6 +30,12 @@ interface UserTransactionHistoryResponse {
     };
 }
 
+interface AllWithdrawTransactionsResponse {
+    status: boolean;
+    message: string;
+    data: ITransaction[];
+}
+
 export const getAllUsers = async (): Promise<IUserInfo[]> => {
     try {
         const response = await Api.get<UsersResponse>(`${url}/getAllUser`);
@@ -76,6 +82,36 @@ export const updateUserInfo = async (userId: string, userData: any): Promise<any
         return response.data;
     } catch (error) {
         console.error('Error in updateUserInfo :', error);
+        throw error;
+    }
+};
+
+export const banUser = async (userId: string): Promise<any> => {
+    try {
+        const response = await Api.post(`${url}/blockUser/${userId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error in banUser:', error);
+        throw error;
+    }
+};
+
+export const unblockUser = async (userId: string): Promise<any> => {
+    try {
+        const response = await Api.post(`${url}/unblockUser/${userId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error in banUser:', error);
+        throw error;
+    }
+};
+
+export const deleteUser = async (userId: string): Promise<any> => {
+    try {
+        const response = await Api.delete(`${url}/deleteUser/${userId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error in banUser:', error);
         throw error;
     }
 };
@@ -176,6 +212,21 @@ export const interveneJourney = async (userId: string, journeyIndex: number, add
         }
     } catch (error) {
         console.error('Lỗi trong interveneJourney:', error);
+        throw error;
+    }
+};
+
+export const getAllWithdrawTransactions = async (): Promise<ITransaction[]> => {
+    try {
+        const response = await Api.get<AllWithdrawTransactionsResponse>(`${url}/getAllWithdrawTransactions`);
+        if (response.data.status && Array.isArray(response.data.data)) {
+            return response.data.data;
+        } else {
+            console.error('Unexpected response structure:', response.data);
+            throw new Error('Unexpected response structure');
+        }
+    } catch (error) {
+        console.error('Error in getAllWithdrawTransactions:', error);
         throw error;
     }
 };

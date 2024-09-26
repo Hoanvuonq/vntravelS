@@ -57,7 +57,7 @@ const Input = ({ Label, icon, type, placeholder, hasError, name, error, register
                         type={showPassword ? 'text' : type}
                         name={name}
                         placeholder={isFocused ? '' : placeholder}
-                        className="input-log outline-none w-full xl:h-[3vw] lg:h-[4vw] h-[10vw] text-input font-normal color-cusLogin xl:text-[0.8vw] text-[2vw] xl:pl-[2vw] pl-[6vw]"
+                        className="input-log outline-none w-full xl:h-[3vw] lg:h-[4vw] h-[10vw] text-input font-normal color-cusLogin xl:text-[0.8vw] text-[1.8vw] xl:pl-[2vw] pl-[6vw] xl:tracking-[0.1vw] tracking-[0.4vw]"
                         onFocus={handleFocus}
                         onBlur={handleBlur}
                         {...register(name)}

@@ -48,7 +48,7 @@ const WithdrawHistory: React.FC<PopupProps> = ({ user }) => {
         <div className="flex flex-col gap-[1vw]">
             {withdraws.map((transaction) => (
                 <div key={transaction._id} className="flex items-center justify-between gap-[1vw] border-t-[0.1vw] border-gray-300 pt-[0.5vw]">
-                    <div className="flex items-center xl:gap-[2vw] gap-[6vw] items-center">
+                    <div className="flex items-center xl:gap-[2vw] gap-[6vw]">
                         <img src={images.Total1} alt="withdraw" className="xl:w-[3vw] w-[10vw] hover-items" />
                         <p>{transaction.amount} VNĐ</p>
                         {/* <p>{new Date(transaction.requestTime).toLocaleString()}</p>  */}

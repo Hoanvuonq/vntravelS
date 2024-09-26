@@ -6,6 +6,7 @@ import { tripData, ITripData } from 'layouts/popup/dataListEvalute';
 import ToastProvider from 'hooks/useToastProvider';
 import { Rating } from '@material-tailwind/react';
 import { useUserInfo } from 'hooks/UserContext';
+import { useLoading } from 'contexts/useLoading';
 
 interface IPopupProps {
     onClose: () => void;
@@ -16,21 +17,20 @@ interface IPopupProps {
         createdAt: string;
         rating: number;
     };
+    onShowHistory: () => void;
 }
 
-const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
+const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData, onShowHistory }) => {
     const popupRef = useRef<HTMLDivElement>(null);
-    const { userInfo, fetchUserInfo, isLoading } = useUserInfo();
+    const { userInfo, fetchUserInfo } = useUserInfo();
+    const { setLoading } = useLoading();
     const [randomTrip, setRandomTrip] = useState<ITripData | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [rating, setRating] = useState(previewData.rating);
     const [isSending, setIsSending] = useState(false);
     const userBalance = userInfo?.balance || 0;
 
-    const handleRatingChange = (value: number) => {
-        setRating(value);
-        console.log('New rating:', value);
-    };
+    const handleRatingChange = (value: number) => setRating(value);
 
     const handleSendJourney = async () => {
         if (!randomTrip) {
@@ -44,23 +44,18 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
         }
 
         setIsSending(true);
+        setLoading(true);
 
         try {
+            await new Promise((resolve) => setTimeout(resolve, 2000));
             const backgroundImageKey = Object.keys(images).find((key) => images[key] === randomTrip.backgroundImage);
 
             if (!backgroundImageKey) {
                 setError('Invalid trip image');
                 setIsSending(false);
+                setLoading(false);
                 return;
             }
-
-            console.log('Sending journey with:', {
-                place: backgroundImageKey,
-                journeyAmount: previewData.journeyAmount,
-                profit: previewData.profit,
-                createdAt: previewData.createdAt,
-                rating: rating,
-            });
 
             const result = await sendJourney({
                 place: backgroundImageKey,
@@ -70,32 +65,25 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
                 rating: rating,
             });
 
-            console.log('sendJourney result:', result);
-
             if (result.success) {
                 ToastProvider('success', 'Gửi hành trình thành công');
                 fetchUserInfo();
                 onClose();
+                onShowHistory();
             } else {
-                console.error('Failed to send journey:', result.message);
                 ToastProvider('error', result.message || 'Gửi hành trình thất bại');
             }
         } catch (error) {
-            console.error('Error sending journey:', error);
             setError('An error occurred while sending journey');
         } finally {
             setIsSending(false);
+            setLoading(false);
         }
     };
 
-    const getRandomTrip = (): ITripData => {
-        const randomIndex = Math.floor(Math.random() * tripData.length);
-        return tripData[randomIndex];
-    };
+    const getRandomTrip = (): ITripData => tripData[Math.floor(Math.random() * tripData.length)];
 
-    const formatAmount = (amount: number) => {
-        return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    };
+    const formatAmount = (amount: number) => amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -105,28 +93,12 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
         };
 
         document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [onClose]);
 
     useEffect(() => {
-        const newRandomTrip = getRandomTrip();
-        setRandomTrip(newRandomTrip);
+        setRandomTrip(getRandomTrip());
     }, []);
-
-    useEffect(() => {
-        console.log('Preview Data:', previewData);
-    }, [previewData]);
-
-    useEffect(() => {
-        console.log('randomTrip:', randomTrip);
-        console.log('userBalance:', userBalance);
-    }, [randomTrip, userBalance]);
-
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
 
     return (
         <>
@@ -160,7 +132,7 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
                                 </div>
                             </div>
                         )}
-                        <Rating value={rating} onChange={handleRatingChange} size="xl" readonly={false} {...({} as any)} className="rating" />
+                        <Rating value={rating} onChange={handleRatingChange} ratedColor="amber" size="xl" readonly={false} className="rating" {...({} as any)} />
                         <div className="w-full all-center m-auto gap-[2vw] xl:max-w-[16vw] max-w-[80vw]">
                             <Button title="GỬI HÀNH TRÌNH" onClick={handleSendJourney} disabled={isSending || !randomTrip || userBalance < 100.0} />
                         </div>

@@ -1,9 +1,11 @@
 import { IUserInfo } from 'api/type';
 import { getUserInformationByToken } from 'api/user';
+import { getAllUsers } from 'api/admin';
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUserInfo } from 'redux/slice/authSlice';
+import { setUserInfo, tokenExpired } from 'redux/slice/authSlice';
 import { RootState } from 'redux/store';
+import { logOutUser } from 'redux/reducer/apiRequest';
 
 interface UserContextType {
     userInfo: IUserInfo | null;
@@ -29,11 +31,22 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         setIsLoading(true);
         try {
-            const token = accessToken || adminToken;
-            const fetchedUserInfo = await getUserInformationByToken();
+            let fetchedUserInfo: IUserInfo | IUserInfo[] | null = null;
+            if (accessToken) {
+                fetchedUserInfo = await getUserInformationByToken();
+            } else if (adminToken) {
+                fetchedUserInfo = await getAllUsers();
+            }
+
             console.log('Fetched User Info:', fetchedUserInfo);
-            if (fetchedUserInfo && Object.keys(fetchedUserInfo).length > 0) {
-                dispatch(setUserInfo(fetchedUserInfo));
+            if (fetchedUserInfo && !Array.isArray(fetchedUserInfo) && Object.keys(fetchedUserInfo).length > 0) {
+                if (fetchedUserInfo.isBlocked) {
+                    alert('Your account has been blocked. Logging out.');
+                    dispatch(tokenExpired());
+                    logOutUser(dispatch, (window.location.href = accessToken ? '/login' : '/loginAdmin'));
+                } else {
+                    dispatch(setUserInfo(fetchedUserInfo));
+                }
             } else {
                 console.error('User info is empty or invalid');
             }
@@ -50,12 +63,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (accessToken || adminToken) {
             fetchUserInfo();
         }
-    }, [fetchUserInfo]);
 
-    useEffect(() => {
         const intervalId = setInterval(() => {
-            const accessToken = localStorage.getItem('accessToken');
-            const adminToken = localStorage.getItem('adminToken');
             if (accessToken || adminToken) {
                 fetchUserInfo();
             }

@@ -1,20 +1,18 @@
+import { interveneJourney, updateUserInfo } from 'api/admin';
 import { IUserInfo } from 'api/type';
 import { images } from 'assets';
+import Button from 'components/button';
+import CloseTabs from 'components/closeTabs';
+import Input from 'components/input/inputProfile';
 import JourneyProgress from 'components/journeyProgress';
+import CustomSelect from 'components/selectItems';
 import TextTitle from 'components/textTitle';
 import { useUserInfo } from 'hooks/UserContext';
-import { useEffect, useRef, useState, lazy, Suspense } from 'react';
-import { useDispatch } from 'react-redux';
-import Button from 'components/button';
-import { AppDispatch } from 'redux/store';
-import CustomSelect from 'components/selectItems';
-import Input from 'components/input/inputProfile';
-import CustomSlider from './components/custonSlider';
-import CloseTabs from 'components/closeTabs';
-import { updateUserInfo, interveneJourney } from 'api/admin';
-import { Tooltip } from '@material-tailwind/react';
-import { toast } from 'react-toastify';
 import ToastProvider from 'hooks/useToastProvider';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from 'redux/store';
+import CustomSlider from './components/custonSlider';
 
 const DepositHistory = lazy(() => import('./components/depositHistory'));
 const WithdrawHistory = lazy(() => import('./components/withdrawHistory'));
@@ -71,6 +69,8 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
     const userVipLevel = user.vipLevel || 0;
     const journeyComplete = user.journeyComplete || 0;
     const journeys = user.journeys?.length || 0;
+    const totalDeposited = user.totalDeposited || 0;
+    const totalWithdrawn = user.totalWithdrawn || 0;
     const [sliderValue, setSliderValue] = useState<number>(journeys);
     const popupRef = useRef<HTMLDivElement>(null);
 
@@ -85,6 +85,9 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
     const handleAdditionalPointsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setpoints(Number(e.target.value));
     };
+    const formatNumber = (num: string) => {
+        return num.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    };
 
     const handleUpdateUserInfo = async () => {
         setIsLoading(true);
@@ -94,19 +97,19 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
                 vipLevel: selectVip,
             };
 
-            await updateUserInfo(user._id, updatedData);
-            await fetchUserInfo();
-            toast.success('User information updated successfully');
+            const response = await updateUserInfo(user._id, updatedData);
+            if (response.status) {
+                await fetchUserInfo();
+                ToastProvider('success', 'User information updated successfully');
+            } else {
+                ToastProvider('error', response.message || 'Failed to update user information');
+            }
         } catch (error) {
-            console.error('Error updating user info:', error);
-            toast.error('Failed to update user information');
+            ToastProvider('error', 'Error updating user info:', String(error));
+            ToastProvider('error', 'Failed to update user information');
         } finally {
             setIsLoading(false);
         }
-    };
-
-    const formatNumber = (num: string) => {
-        return num.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     };
 
     const handleInterveneJourney = async () => {
@@ -172,7 +175,17 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <JourneyProgress className=" w-full" journeys={journeys} journeyComplete={journeyComplete} />
+                                        <div className="shadow-custom-3 bg-white xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:gap-[1vw] flex flex-col gap-[3vw] xl:w-[20vw] w-full">
+                                            <div className="flex items-center xl:gap-[0.5vw] gap-[1vw] wallet-item">
+                                                <p className="text-title xl:w-[4vw] w-[18vw]">Đã Nạp: </p>
+                                                <p className="text-title ">{formatNumber(totalDeposited.toString())}</p>
+                                            </div>
+                                            <div className="flex items-center xl:gap-[0.5vw] gap-[1vw] wallet-item">
+                                                <p className="text-title xl:w-[4vw] w-[18vw]">Đã rút: </p>
+                                                <p className="text-title ">{formatNumber(totalWithdrawn.toString())}</p>
+                                            </div>
+                                        </div>
+                                        <JourneyProgress className="xl:w-[40vw] w-full" journeys={journeys} journeyComplete={journeyComplete} />
                                     </div>
                                     <div className="flex xl:flex-row flex-col items-center w-full xl:gap-[1.5vw] gap-[6vw]">
                                         <div className="bg-white all-center flex-col gap-[1vw] shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:w-[20vw] w-full xl:h-[20vw] h-full">

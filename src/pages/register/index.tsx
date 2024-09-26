@@ -64,13 +64,13 @@ const Register = () => {
                     <div className="flex-col all-center w-full xl:gap-[1.5vw] lg:gap-[3vw] sm:gap-[3vw] gap-[5vw]">
                         <img src={images.logoTravel} alt="logo VN-Travel" className="xl:w-[14vw] lg:w-[17vw] md:w-[21vw] sm:w-[27vw] w-[31vw] rounded-[1vw] shadow-xl" />
 
-                        <Input icon="phone" type="number" Label="Số Điện Thoại" placeholder="SỐ ĐIỆN THOẠI" hasError={!!errors.phone_user} register={register} name="phone_user" error={errors.phone_user?.message} />
-                        <Input icon="user" type="text" Label="Tên Đăng Nhập" placeholder="TÊN ĐĂNG NHẬP" hasError={!!errors.username_user} register={register} name="username_user" error={errors.username_user?.message} />
+                        <Input icon="phone" type="number" Label="Số Điện Thoại" placeholder="SO DIEN THOAI" hasError={!!errors.phone_user} register={register} name="phone_user" error={errors.phone_user?.message} />
+                        <Input icon="user" type="text" Label="Tên Đăng Nhập" placeholder="TEN DANG NHAP" hasError={!!errors.username_user} register={register} name="username_user" error={errors.username_user?.message} />
                         <Input
                             icon="lock"
                             type="password"
                             Label="Mật Khẩu"
-                            placeholder="MẬT KHẨU"
+                            placeholder="MAT KHAU"
                             hasError={!!errors.password_user}
                             register={register}
                             name="password_user"
@@ -80,15 +80,24 @@ const Register = () => {
                         <Input
                             icon="lock"
                             type="password"
-                            Label="Xác nhận mật khẩu"
-                            placeholder="XÁC NHẬN MẬT KHẨU"
+                            Label="Xác nhận Mật Khẩu"
+                            placeholder="XAC NHAN MAT KHAU"
                             hasError={!!errors.confirm_password}
                             register={register}
                             name="confirm_password"
                             error={errors.confirm_password?.message}
                             value={confirmPasswordValue}
                         />
-                        <Input icon="lock" type="number" Label="Mật Khẩu " placeholder="MẬT KHẨU " hasError={!!errors.passBank_user} register={register} name="passBank_user" error={errors.passBank_user?.message} />
+                        <Input
+                            icon="lock"
+                            type="number"
+                            Label="Mật Khẩu Rút Tiền"
+                            placeholder="MẬT KHẨU RUT TIEN"
+                            hasError={!!errors.passBank_user}
+                            register={register}
+                            name="passBank_user"
+                            error={errors.passBank_user?.message}
+                        />
 
                         <div className="w-full">
                             <CheckBox id="agree" isChecked={isAgree} label="Đồng ý với các điều khoản" onChange={() => setIsAgree(!isAgree)} />
@@ -96,9 +105,9 @@ const Register = () => {
 
                         <Button title="Đăng Ký" onClick={handleSubmit(onSubmit)} />
 
-                        <p className="text-poppins font-light text-[0.8vw] text-cusLogin cursor-pointer w-full text-center">
+                        <p className="text-poppins font-light text-cusLogin xl:text-[0.8vw] lg:text-[1.4vw] md:text-[1.6vw] text-[3vw] cursor-pointer flex gap-[0.4vw] xl:tracking-[0.1vw] tracking-[0.4vw]">
                             Bạn đã có tài khoản?{' '}
-                            <Link to="/login" className="font-medium hover:text-blue">
+                            <Link to="/login" className="font-bold hover:text-blue-600">
                                 Đăng Nhập
                             </Link>
                         </p>

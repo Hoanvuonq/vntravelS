@@ -6,10 +6,7 @@ import { toggleSidebar } from 'redux/slice/sidebarSlice';
 import { RootState } from 'redux/store';
 import { AppDispatch } from 'redux/store';
 
-const SidebarMenu = [
-    { title: 'Đánh giá', icon: images.evaluate, link: '/evaluate' },
-    { title: 'Ví tiền', icon: images.wallet, link: '/wallet' },
-];
+const SidebarMenu = [{ title: 'Danh Sách Rút Tiền', icon: images.wallet, link: '/withdraw-all-user' }];
 const Sidebar: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const [isMobile, setIsMobile] = useState(window.innerWidth < 1025);
@@ -66,7 +63,7 @@ const Sidebar: React.FC = () => {
                 </div>
                 <p className="xl:py-[0.4vw] xl:px-[0.8vw] py-[2vw] px-[3vw] text-directory">Danh Mục</p>
                 <div className="py-[0.2vw] px-[1w]">
-                    {/* {SidebarMenu.map((item, index) => (
+                    {SidebarMenu.map((item, index) => (
                         <div key={index} className="font-bold text-menu flex items-center justify-between item-sidebar-dropdown text-itemsMenu xl:p-[0.4vw] p-[1.5vw] xl:rounded-[0.5vw] rounded-[2vw] cursor-pointer">
                             <div className="flex gap-[0.4vw] items-center">
                                 <img src={item.icon} alt={`Icon for ${item.title}`} className="xl:w-[2vw] w-[10vw]" />
@@ -75,7 +72,7 @@ const Sidebar: React.FC = () => {
                                 </Link>
                             </div>
                         </div>
-                    ))} */}
+                    ))}
                 </div>
             </div>
         </>

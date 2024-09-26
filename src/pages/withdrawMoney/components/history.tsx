@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { images } from 'assets';
 import TextTitle from 'components/textTitle';
 import { ITransaction } from 'api/type';
-import { getTransactionHistory } from 'api/transaction';
+import { getWithdrawHistory } from 'api/transaction';
 
 const getStatusClassName = (status: string) => {
     switch (status) {
@@ -71,14 +71,14 @@ const formatDate = (dateString: string) => {
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 };
 
-const HistoryDetail = () => {
+const HistoryWithdraw = () => {
     const [historyPayment, setHistoryPayment] = useState<ITransaction[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchHistory = async () => {
             try {
-                const data = await getTransactionHistory();
+                const data = await getWithdrawHistory();
                 setHistoryPayment(data);
             } catch (error) {
                 console.error('Failed to fetch transaction history:', error);
@@ -114,7 +114,7 @@ const HistoryDetail = () => {
     return (
         <div className="w-full bg-white rounded-2xl shadow-custom-5 p-6 bai-jamjuree">
             <div className="xl:py-[1vw] py-[3vw]">
-                <TextTitle title="Lịch Sử Nạp Tiền" />
+                <TextTitle title="Lịch Sử Rút Tiền" />
             </div>
             <div className="transaction overflow-y-auto max-h-[70vh]">
                 {loading ? (
@@ -133,4 +133,4 @@ const HistoryDetail = () => {
     );
 };
 
-export default HistoryDetail;
+export default HistoryWithdraw;

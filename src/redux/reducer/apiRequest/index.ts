@@ -3,6 +3,7 @@ import axios, { AxiosInstance } from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { loginFailed, loginStart, loginSuccess, logoutFailed, logoutStart, logoutSuccess, tokenExpired, loginAdminStart, loginAdminSuccess, loginAdminFailed } from '../../slice/authSlice';
 import { IUser } from './type';
+import ToastProvider from 'hooks/useToastProvider';
 
 interface ILoginResponse {
     success: boolean;
@@ -37,6 +38,8 @@ export const loginUser = async (user: IUser, dispatch: Dispatch<any>): Promise<I
                 dispatch(loginSuccess({ user: encryptedData, token: accessToken }));
                 return { success: true, data: { accessToken } };
             }
+        } else if (res.data.message === 'Tài khoản của bạn đã bị chặn') {
+            ToastProvider('error', 'Tài khoản của bạn đã bị chặn');
         }
         return { success: false, message: res.data.message || 'Login failed' };
     } catch (error: any) {
@@ -81,7 +84,9 @@ export const logOutUser = async (dispatch: Dispatch<any>, navigate: any) => {
                     withCredentials: true,
                 },
             )
-            .catch((error) => {});
+            .catch((error) => {
+                console.error('Failed to connect to admin logout API:', error);
+            });
     } catch (error: any) {
         if (error.response) {
             console.error('Logout error:', error.response.data.message || 'An error occurred during logout');
@@ -136,11 +141,13 @@ export const createAxiosJWT = (dispatch: Dispatch<any>): AxiosInstance => {
                 const refreshSuccess = await refreshToken(dispatch);
                 if (!refreshSuccess) {
                     dispatch(tokenExpired());
-                    window.location.href = '/login';
+                    clearTokens();
+                    const isAdmin = localStorage.getItem('adminToken') !== null;
+                    window.location.href = isAdmin ? '/loginAdmin' : '/login';
                     return Promise.reject('Token expired');
                 }
             }
-            const token = localStorage.getItem('accessToken');
+            const token = localStorage.getItem('accessToken') || localStorage.getItem('adminToken');
             if (token) {
                 config.headers.Authorization = `Bearer ${token}`;
             }
@@ -154,6 +161,14 @@ export const createAxiosJWT = (dispatch: Dispatch<any>): AxiosInstance => {
         async (error) => {
             if (error.response?.status === 401) {
                 dispatch(tokenExpired());
+                clearTokens();
+                const isAdmin = localStorage.getItem('adminToken') !== null;
+                window.location.href = isAdmin ? '/loginAdmin' : '/login';
+            } else if (error.response?.data?.message === 'Tài khoản của bạn đã bị chặn') {
+                // Handle blocked user case
+                alert('Your account has been blocked. Please contact support.');
+                dispatch(tokenExpired());
+                clearTokens();
                 window.location.href = '/login';
             }
             return Promise.reject(error);
@@ -163,13 +178,23 @@ export const createAxiosJWT = (dispatch: Dispatch<any>): AxiosInstance => {
     return axiosJWT;
 };
 
+const clearTokens = () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('adminToken');
+};
+
 export const checkTokenExpiration = () => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-        const decodedToken: any = jwtDecode(token);
-        return decodedToken.exp && decodedToken.exp * 1000 < Date.now();
+    const accessToken = localStorage.getItem('accessToken');
+    const adminToken = localStorage.getItem('adminToken');
+    if (accessToken || adminToken) {
+        const token = accessToken || adminToken;
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            const currentTime = Date.now() / 1000;
+            return decodedToken.exp !== undefined && decodedToken.exp < currentTime;
+        }
     }
-    return false;
+    return true;
 };
 
 export const refreshToken = async (dispatch: Dispatch<any>) => {

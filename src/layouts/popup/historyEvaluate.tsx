@@ -107,7 +107,6 @@ const HistoryEvaluate: React.FC<PopupProps> = ({ onClose }) => {
                             <p className="text-place">{placeInfo?.place || 'Unknown Place'}</p>
                             <div className="w-full flex items-center justify-between">
                                 <p className="text-title">{formatAmount(journey.journeyAmount)}</p>
-                                <Rating value={Number(journey.rating) || 0} readonly {...({} as any)} className="rating-history" />
                             </div>
                         </div>
                     </div>
