@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUserInformationByToken } from 'api/user';
 import { RootState, AppDispatch } from 'redux/store';
 import { setUserInfo } from 'redux/slice/authSlice';
-import { useUserInfo } from 'hooks/UserContext';
+import { formatNumber } from 'hooks/useColorStatus';
 
 const UserInfo = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -23,7 +23,7 @@ const UserInfo = () => {
         };
 
         fetchUserInfo();
-    }, [dispatch]); 
+    }, [dispatch]);
 
     return (
         <div className="all-center flex-col w-full user-info">
@@ -35,7 +35,7 @@ const UserInfo = () => {
             </div>
             <div className="flex xl:gap-[0.2vw] sm:gap-[0.4vw] gap-[1.6vw] items-center">
                 <img src={images.Coin} alt="Coin" className="rounded-full xl:w-[1.2vw] sm:w-[2vw] w-[4vw]" />
-                <p className="font-medium text-balance text-[#c8982f] bai-jamjuree">{balance.toFixed(2)}</p>
+                <p className="font-medium text-balance text-[#c8982f] bai-jamjuree">{formatNumber(balance)}</p>
             </div>
         </div>
     );

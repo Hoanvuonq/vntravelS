@@ -8,6 +8,7 @@ export const images: any = {
     Coin: require('./img/coin.png'),
     DashBoard: require('./img/dashboard.png'),
     NotificationIcon: require('./img/notification.gif'),
+    Confetti: require('./img/Confetti.gif'),
     Menu1: require('./img/card.png'),
     Menu2: require('./img/withdraw-money.png'),
     Menu3: require('./img/card-info.png'),

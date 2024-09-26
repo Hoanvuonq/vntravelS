@@ -66,6 +66,7 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
     const [journeyCompleteValue, setJourneyCompleteValue] = useState<number>(user.journeyComplete || 0);
     const [points, setpoints] = useState<number>(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isFormValid, setIsFormValid] = useState<boolean>(false);
     const userVipLevel = user.vipLevel || 0;
     const journeyComplete = user.journeyComplete || 0;
     const journeys = user.journeys?.length || 0;
@@ -76,20 +77,36 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
 
     const handleVipChange = (value: number) => {
         setSelectVip(value);
+        validateForm();
     };
 
     const handleJourneyCompleteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setJourneyCompleteValue(Number(e.target.value));
+        validateForm();
     };
 
     const handleAdditionalPointsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setpoints(Number(e.target.value));
+        validateForm();
     };
+
+    const validateForm = () => {
+        if (journeyCompleteValue > 0 && points > 0 && selectVip > 0) {
+            setIsFormValid(true);
+        } else {
+            setIsFormValid(false);
+        }
+    };
+
     const formatNumber = (num: string) => {
         return num.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     };
 
     const handleUpdateUserInfo = async () => {
+        if (!isFormValid) {
+            ToastProvider('warning', 'Vui Lòng Nhập Đầy Đủ Thông Tin');
+            return;
+        }
         setIsLoading(true);
         try {
             const updatedData = {
@@ -113,6 +130,10 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
     };
 
     const handleInterveneJourney = async () => {
+        if (!isFormValid) {
+            ToastProvider('warning', 'Vui Lòng Nhập Đầy Đủ Thông Tin');
+            return;
+        }
         setIsLoading(true);
         try {
             const journeyIndex = sliderValue;
@@ -197,8 +218,8 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
                                                 <CustomSlider min={journeys} max={journeyComplete} step={1} value={sliderValue} onChange={setSliderValue} />
                                                 <Input Label="Số Điểm" type="number" onChange={handleAdditionalPointsChange} placeholder="20" name="money" />
                                             </div>
-                                            <div className="xl:w-[8vw] w-[30vw] xl:pt-[1vw] pt-[3vw]">
-                                                <Button title="CẬP NHẬT" onClick={handleInterveneJourney} disabled={isLoading} />
+                                            <div className="xl:w-[8vw] w-[36vw] xl:pt-[1vw] pt-[3vw]">
+                                                <Button title="CẬP NHẬT" onClick={handleInterveneJourney} disabled={isLoading || !isFormValid} />
                                             </div>
                                         </div>
                                         <div className="bg-white all-center flex-col  gap-[1vw] shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:w-[20vw] w-full xl:h-[20vw] h-full">
@@ -219,8 +240,8 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
                                                     }))}
                                                 />
                                             </div>
-                                            <div className="xl:w-[8vw] w-[30vw] xl:pt-[1vw] pt-[3vw]">
-                                                <Button title="CẬP NHẬT" onClick={handleUpdateUserInfo} disabled={isLoading} />
+                                            <div className="xl:w-[8vw] w-[36vw] xl:pt-[1vw] pt-[3vw]">
+                                                <Button title="CẬP NHẬT" onClick={handleUpdateUserInfo} disabled={isLoading || !isFormValid} />
                                             </div>
                                         </div>
                                         <div className="bg-white flex flex-col gap-[1vw] shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:w-[36vw] w-full xl:h-[20vw] h-full">

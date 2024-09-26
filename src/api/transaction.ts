@@ -54,17 +54,16 @@ export const getDepositHistory = async (limit: number = 20): Promise<ITransactio
 
 export const getWithdrawHistory = async (limit: number = 20): Promise<ITransaction[]> => {
     try {
-        const res = await Api.get<{ status: boolean; message: string; data: ITransaction[] }>(`${url}/history/withdraw`, {
-            params: { limit },
-        });
-        if (res.data.status) {
+        const res = await Api.get<{ status: boolean; message: string; data: ITransaction[] }>(`${url}/withdraw/history`, { params: { limit } });
+
+        if (res.data.status && res.data.data) {
             return res.data.data;
         } else {
             console.error('Unexpected response structure:', res.data);
             throw new Error('Unexpected response structure');
         }
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error in getWithdrawHistory:', error);
-        throw new Error('Failed to fetch withdraw history');
+        throw error;
     }
 };

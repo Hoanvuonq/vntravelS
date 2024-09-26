@@ -7,6 +7,7 @@ import ToastProvider from 'hooks/useToastProvider';
 import { Rating } from '@material-tailwind/react';
 import { useUserInfo } from 'hooks/UserContext';
 import { useLoading } from 'contexts/useLoading';
+import { formatNumber } from 'hooks/useColorStatus';
 
 interface IPopupProps {
     onClose: () => void;
@@ -116,17 +117,17 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData, onShowHistor
                                                 <p className="text-time">{new Date(previewData.createdAt).toLocaleString()}</p>
                                             </div>
                                             <p className="text-place">{randomTrip?.place}</p>
-                                            <p className="text-title">{formatAmount(previewData.journeyAmount)}</p>
+                                            <p className="text-title">{formatNumber(previewData.journeyAmount)}</p>
                                         </div>
                                     </div>
                                     <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw] border-t-[0.1vw] border-[#e5e9f2] pt-[1vw]">
                                         <div className="flex justify-between items-end">
                                             <p className="text-title">Số Tiền</p>
-                                            <p className="text-title">{formatAmount(previewData.journeyAmount)}</p>
+                                            <p className="text-title">{formatNumber(previewData.journeyAmount)}</p>
                                         </div>
                                         <div className="flex justify-between items-end">
                                             <p className="text-title">Lợi Nhuận</p>
-                                            <p className="text-title">{formatAmount(previewData.profit)}</p>
+                                            <p className="text-title">{formatNumber(previewData.profit)}</p>
                                         </div>
                                     </div>
                                 </div>

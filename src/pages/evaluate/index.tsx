@@ -10,7 +10,8 @@ import ExploreTours from 'components/exploreTours';
 import HistoryEvaluate from 'layouts/popup/historyEvaluate';
 import ToastProvider from 'hooks/useToastProvider';
 import { useUserInfo } from 'hooks/UserContext';
-
+import MessagePopup from 'layouts/popup/message';
+import { formatNumber } from 'hooks/useColorStatus';
 interface IJourneyPreviewResponse {
     journeyAmount: number;
     profit: number;
@@ -24,17 +25,19 @@ const Evaluate = () => {
     const [showHistoryPopup, setShowHistoryPopup] = useState(false);
     const [showFomEvaluate, setShowFomEvaluate] = useState(false);
     const [previewData, setPreviewData] = useState<IJourneyPreviewResponse | null>(null);
+    const [popupMessage, setPopupMessage] = useState<string | null>(null);
     const balance = userInfo?.balance || 0;
     const totalCommission = userInfo?.totalCommission || 0;
     const journeyComplete = userInfo?.journeyComplete || 0;
     const journeys = userInfo?.journeys?.length || 0;
 
     const totalSpending = [
-        { title: 'Số Dư', money: balance.toFixed(2) },
-        { title: 'Hoa Hồng', money: totalCommission.toFixed(2) },
+        { title: 'Số Dư', money: formatNumber(balance) },
+        { title: 'Hoa Hồng', money: formatNumber(totalCommission) },
         { title: 'Hành Trình', money: journeys.toString() },
         { title: 'Tổng Hành Trình', money: journeyComplete.toString() },
     ];
+
 
     const handlePreviewJourney = async () => {
         try {
@@ -45,6 +48,10 @@ const Evaluate = () => {
                 } else {
                     setPreviewData({ ...result.data, createdAt: new Date().toISOString() });
                     setShowFomEvaluate(true);
+                    const difference = result.data.journeyAmount - balance;
+                    if (balance < result.data.journeyAmount) {
+                        setPopupMessage(`Chúc Mừng Bạn Đã Nhận Được Đơn Hành Trình Kết Nối, Đơn Hành Trình Này Có Thể Nhận Được Nhiều Hoa Hồng Hơn và Cần Phải Bù Phần Chênh Lệch ${formatNumber(difference)} VNĐ`);
+                    }
                 }
             } else {
                 console.error('Failed to preview journey:', result.message);
@@ -62,6 +69,10 @@ const Evaluate = () => {
 
     const handleShowHistoryPopup = () => {
         setShowHistoryPopup(true);
+    };
+
+    const handleClosePopup = () => {
+        setPopupMessage(null);
     };
 
     return (
@@ -86,6 +97,7 @@ const Evaluate = () => {
             <ExploreTours />
             {showHistoryPopup && <HistoryEvaluate onClose={() => setShowHistoryPopup(false)} />}
             {showFomEvaluate && previewData && <FomEvaluate onClose={() => setShowFomEvaluate(false)} previewData={previewData} onShowHistory={handleShowHistoryPopup} />}
+            {popupMessage && <MessagePopup message={popupMessage} onClose={handleClosePopup} />}
         </div>
     );
 };

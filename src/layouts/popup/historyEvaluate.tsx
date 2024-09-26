@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Rating } from '@material-tailwind/react';
 import { getUserJourneyHistory } from 'api/journey';
 import { images } from 'assets';
-import TextTitle from 'components/textTitle';
-import { ITripData, tripData } from './dataListEvalute';
 import CloseTabs from 'components/closeTabs';
+import TextTitle from 'components/textTitle';
+import { formatAmount, getStatusClassName } from 'hooks/useColorStatus';
+import React, { useEffect, useRef, useState } from 'react';
+import { ITripData, tripData } from './dataListEvalute';
 
 interface PopupProps {
     onClose: () => void;
@@ -20,36 +20,6 @@ interface IJourney {
 
 const getPlaceInfo = (placeId: string): ITripData | undefined => {
     return tripData.find((trip) => trip.id === placeId);
-};
-
-const getStatusClassName = (status: string) => {
-    switch (status) {
-        case 'success':
-            return 'text-green-600';
-        case 'error':
-            return 'text-rose-600';
-        case 'pending':
-            return 'text-yellow-600';
-        default:
-            return 'text-gray-600';
-    }
-};
-
-const getStatusBgColor = (status: string) => {
-    switch (status) {
-        case 'success':
-            return 'bg-green-100';
-        case 'error':
-            return 'bg-rose-100';
-        case 'pending':
-            return 'bg-yellow-100';
-        default:
-            return 'bg-gray-100';
-    }
-};
-
-const formatAmount = (amount: number) => {
-    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 };
 
 const HistoryEvaluate: React.FC<PopupProps> = ({ onClose }) => {
@@ -102,7 +72,7 @@ const HistoryEvaluate: React.FC<PopupProps> = ({ onClose }) => {
                         <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw]">
                             <div className="flex items-center w-full justify-between">
                                 <p className="text-time">{new Date(journey.createdAt).toLocaleString()}</p>
-                                <div className={`${getStatusBgColor('success')} ${getStatusClassName('success')} xl:p-[0.5vw] p-[1vw] text-status`}>Đã Hoàn Thành</div>
+                                <div className={` ${getStatusClassName('success')} xl:p-[0.5vw] p-[1vw] text-status`}>Đã Hoàn Thành</div>
                             </div>
                             <p className="text-place">{placeInfo?.place || 'Unknown Place'}</p>
                             <div className="w-full flex items-center justify-between">

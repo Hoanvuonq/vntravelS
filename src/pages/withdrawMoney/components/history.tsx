@@ -3,73 +3,7 @@ import { images } from 'assets';
 import TextTitle from 'components/textTitle';
 import { ITransaction } from 'api/type';
 import { getWithdrawHistory } from 'api/transaction';
-
-const getStatusClassName = (status: string) => {
-    switch (status) {
-        case 'success':
-            return 'text-green-600';
-        case 'error':
-            return 'text-rose-600';
-        case 'pending':
-            return 'text-yellow-600';
-        default:
-            return 'text-gray-600';
-    }
-};
-
-const getStatusBgColor = (status: string) => {
-    switch (status) {
-        case 'success':
-            return 'bg-green';
-        case 'error':
-            return 'bg-red';
-        case 'pending':
-            return 'bg-yellow';
-        default:
-            return 'bg-gray-100';
-    }
-};
-
-const getStatusBorderColor = (status: string) => {
-    switch (status) {
-        case 'success':
-            return 'border-light-green-500';
-        case 'error':
-            return 'border-orange';
-        case 'pending':
-            return 'border-amber-200';
-        default:
-            return 'border-gray-100';
-    }
-};
-
-const getStatusImage = (status: string) => {
-    switch (status) {
-        case 'success':
-            return images.paymentSuccess;
-        case 'error':
-            return images.paymentError;
-        case 'pending':
-            return images.paymentPending;
-        default:
-            return images.paymentPending;
-    }
-};
-
-const formatAmount = (amount: number) => {
-    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-};
-
-const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
-};
+import { getStatusClassName, getStatusBgColor, getStatusBorderColor, getStatusImage, formatDate, formatAmount } from 'hooks/useColorStatus';
 
 const HistoryWithdraw = () => {
     const [historyPayment, setHistoryPayment] = useState<ITransaction[]>([]);
@@ -83,6 +17,7 @@ const HistoryWithdraw = () => {
             } catch (error) {
                 console.error('Failed to fetch transaction history:', error);
             } finally {
+                await new Promise((resolve) => setTimeout(resolve, 1000));
                 setLoading(false);
             }
         };
@@ -112,20 +47,26 @@ const HistoryWithdraw = () => {
     }, [historyPayment]);
 
     return (
-        <div className="w-full bg-white rounded-2xl shadow-custom-5 p-6 bai-jamjuree">
+        <div className="w-full bg-white rounded-2xl shadow-custom-5 xl:p-[1.5vw] p-[3vw] bai-jamjuree">
             <div className="xl:py-[1vw] py-[3vw]">
                 <TextTitle title="Lịch Sử Rút Tiền" />
             </div>
             <div className="transaction overflow-y-auto max-h-[70vh]">
                 {loading ? (
                     <div className="w-full all-center">
-                        <p>Loading...</p>
+                        <div className="loader-ellipsis mt-[1vw]">
+                            <div className="!bg-black"></div>
+                            <div className="!bg-black"></div>
+                            <div className="!bg-black"></div>
+                            <div className="!bg-black"></div>
+                        </div>
                     </div>
                 ) : hasData ? (
                     HistoryPaymentMemo
                 ) : (
-                    <div className="w-full all-center">
-                        <img src={images.NoData} alt="No Data" className="xl:w-[20vw] w-[50vw] xl:h-[20vw] h-[50vw]" />
+                    <div className="w-full all-center flex-col xl:gap-[1vw] gap-[3vw] notes">
+                        <img src={images.logoTravelS} alt="No Data" className="xl:w-[10vw] w-[50vw] " />
+                        <p className="text-titleNote">Bạn chưa có lịch sử rút tiền nào</p>
                     </div>
                 )}
             </div>

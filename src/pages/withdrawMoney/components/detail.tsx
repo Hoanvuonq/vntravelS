@@ -48,7 +48,12 @@ const WithdrawMoney = () => {
             ToastProvider('warning', 'Vui Lòng Nhập Mật Khẩu Rút Tiền');
             return;
         }
-        setLoading(true); // Start loading
+        if (!userInfo?.information || !userInfo?.information.bankAccount || !userInfo?.information.bankName || !userInfo?.information.bankNumber) {
+            console.error('Bank information is incomplete');
+            ToastProvider('warning', 'Vui Lòng Điền Đầy Đủ Thông Tin Ngân Hàng');
+            return;
+        }
+        setLoading(true);
         try {
             await new Promise((resolve) => setTimeout(resolve, 2000));
             console.log('Sending request with:', { amount: numericAmount, passBank: numericPassBank });
