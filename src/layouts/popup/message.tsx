@@ -1,6 +1,7 @@
 import { images } from 'assets';
 import { useEffect, useRef } from 'react';
 
+// ?
 interface MessagePopupProps {
     message: string;
     onClose: () => void;
