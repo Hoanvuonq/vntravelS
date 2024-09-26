@@ -29,7 +29,7 @@ export const loginUser = async (user: IUser, dispatch: Dispatch<any>): Promise<I
             ...user,
             loginTime: new Date().toISOString(),
         };
-        const res = await axios.post(process.env.REACT_APP_API_DEV + 'user/login', loginData);
+        const res = await axios.post(process.env.NEXT_PUBLIC_API_DEV + 'user/login', loginData);
         console.log('Login API response:', res.data);
         if (res.data && res.data.status) {
             const { encryptedData, accessToken } = res.data.data;
@@ -52,7 +52,7 @@ export const loginUser = async (user: IUser, dispatch: Dispatch<any>): Promise<I
 export const loginAdmin = async (adminCredentials: { adminUsername: string; adminPassword: string }, dispatch: Dispatch<any>): Promise<IAdminLoginResponse> => {
     dispatch(loginAdminStart());
     try {
-        const res = await axios.post(process.env.REACT_APP_API_DEV + 'admin/loginAdmin', adminCredentials);
+        const res = await axios.post(process.env.NEXT_PUBLIC_API_DEV + 'admin/loginAdmin', adminCredentials);
 
         if (res.data && res.data.status) {
             const { data } = res.data;
@@ -78,7 +78,7 @@ export const logOutUser = async (dispatch: Dispatch<any>, navigate: any) => {
 
         axios
             .post(
-                process.env.REACT_APP_API_DEV + 'user/logout',
+                process.env.NEXT_PUBLIC_API_DEV + 'user/logout',
                 {},
                 {
                     withCredentials: true,
@@ -108,7 +108,7 @@ export const logOutAdmin = async (dispatch: Dispatch<any>, navigate: any) => {
 
         axios
             .post(
-                process.env.REACT_APP_API_DEV + 'admin/logout',
+                process.env.NEXT_PUBLIC_API_DEV + 'admin/logout',
                 {},
                 {
                     withCredentials: true,
@@ -131,7 +131,7 @@ export const logOutAdmin = async (dispatch: Dispatch<any>, navigate: any) => {
 
 export const createAxiosJWT = (dispatch: Dispatch<any>): AxiosInstance => {
     const axiosJWT = axios.create({
-        baseURL: process.env.REACT_APP_API_DEV + 'user',
+        baseURL: process.env.NEXT_PUBLIC_API_DEV + 'user',
         withCredentials: true,
     });
 
@@ -199,7 +199,7 @@ export const checkTokenExpiration = () => {
 
 export const refreshToken = async (dispatch: Dispatch<any>) => {
     try {
-        const res = await axios.post(process.env.REACT_APP_API_DEV + 'user/refreshToken', {}, { withCredentials: true });
+        const res = await axios.post(process.env.NEXT_PUBLIC_API_DEV + 'user/refreshToken', {}, { withCredentials: true });
         if (res.data && res.data.status) {
             const { accessToken } = res.data.data;
             localStorage.setItem('accessToken', accessToken);

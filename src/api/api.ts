@@ -2,9 +2,10 @@ import axios, { AxiosResponse } from 'axios';
 import store from 'redux/store';
 
 const client = axios.create({
-    baseURL: `${process.env.REACT_APP_API_DEV}`,
+    baseURL: `${process.env.NEXT_PUBLIC_API_DEV}`,
 });
-console.log(process.env.REACT_APP_API_DEV);
+console.log(process.env.NEXT_PUBLIC_API_DEV);
+
 class Api {
     static async get<T = any>(url: string, params = {}): Promise<AxiosResponse<T>> {
         const response = await client.get<T>(url, {
