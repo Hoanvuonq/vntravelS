@@ -95,7 +95,14 @@ const WithdrawMoney = () => {
                         ))}
                     </div>
                     <div className="xl:w-[20vw] w-full flex flex-col xl:gap-[1vw] gap-[3vw]">
-                        <Input Label="Nhập Số Điểm Cần Rút" placeholder="0" type="text" className="xL:!p-[1vw]  tracking-[0.1vw] font-bold " value={amount} onChange={(e) => handleAmountChange(e.target.value)} />
+                        <Input
+                            Label="Nhập Số Điểm Cần Rút"
+                            placeholder="0"
+                            type="text"
+                            className="xL:!p-[1vw] xl:tracking-[0.1vw] tracking-[0.4vw] font-bold "
+                            value={amount}
+                            onChange={(e) => handleAmountChange(e.target.value)}
+                        />
                         <Input Label="Mật Khẩu Rút Tiền" className=" tracking-[0.2vw]  " type="number" placeholder="Mật Khẩu Rút Tiền" value={passBank} onChange={(e) => handlePassBankChange(e.target.value)} />
                     </div>
 

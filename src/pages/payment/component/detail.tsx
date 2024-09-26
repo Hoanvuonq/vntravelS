@@ -61,13 +61,20 @@ const PaymentDetail = () => {
                 <div className="all-center flex-col gap-[3vw]">
                     <div className="grid grid-cols-4 gap-4 xl:w-[35vw] w-full">
                         {amountButtons.map((value, index) => (
-                            <button key={index} className="bg-blue hover:bg-blueHover text-white font-bold py-[0.4vw] xl:rounded-[0.4vw] rounded-[1vw] hover-items" onClick={() => handleButtonClick(value)}>
+                            <button key={index} className="bg-blue hover:bg-blueHover text-white font-bold xl:py-[0.4vw] py-[2vw] xl:rounded-[0.4vw] rounded-[1vw] hover-items" onClick={() => handleButtonClick(value)}>
                                 {value}
                             </button>
                         ))}
                     </div>
-                    <div className="w-[20vw]">
-                        <Input Label="Nhập Số Tiền Cần Nạp" placeholder="0" type="text" className="!p-[1vw] tracking-[0.1vw] font-bold !text-2xl" value={amount} onChange={(e) => handleAmountChange(e.target.value)} />
+                    <div className="xl:w-[20vw] w-full">
+                        <Input
+                            Label="Nhập Số Tiền Cần Nạp"
+                            placeholder="0"
+                            type="text"
+                            className="xl:tracking-[0.1vw] tracking-[0.4vw] font-bold !text-2xl"
+                            value={amount}
+                            onChange={(e) => handleAmountChange(e.target.value)}
+                        />
                     </div>
                     <div className="w-[15vw]">
                         <Button title="Nạp Tiền" onClick={handleDeposit} />
