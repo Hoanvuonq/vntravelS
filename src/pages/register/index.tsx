@@ -88,16 +88,7 @@ const Register = () => {
                             error={errors.confirm_password?.message}
                             value={confirmPasswordValue}
                         />
-                        <Input
-                            icon="lock"
-                            type="number"
-                            Label="Mật Khẩu Rút Tiền"
-                            placeholder="MẬT KHẨU RUT TIEN"
-                            hasError={!!errors.passBank_user}
-                            register={register}
-                            name="passBank_user"
-                            error={errors.passBank_user?.message}
-                        />
+                        <Input icon="lock" type="number" Label="Mật Khẩu " placeholder="MẬT KHẨU " hasError={!!errors.passBank_user} register={register} name="passBank_user" error={errors.passBank_user?.message} />
 
                         <div className="w-full">
                             <CheckBox id="agree" isChecked={isAgree} label="Đồng ý với các điều khoản" onChange={() => setIsAgree(!isAgree)} />
