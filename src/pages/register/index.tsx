@@ -62,15 +62,14 @@ const Register = () => {
             <div className="all-center flex-wrap min-h-screen xl:py-[2vw] py-[4vw] relative z-20">
                 <div className="bg-white xl:w-[26vw] lg:w-[40vw] sm:w-[50vw] w-[90vw] xl:rounded-[1vw] rounded-[4vw] py-[5vw] xl:px-[3vw] lg:px-[5vw] sm:px-[8vw] px-[10vw]">
                     <div className="flex-col all-center w-full xl:gap-[1.5vw] lg:gap-[3vw] sm:gap-[3vw] gap-[5vw]">
-                        <img src={images.logoTravel} alt="logo VN-Travel" className="xl:w-[14vw] lg:w-[17vw] md:w-[21vw] sm:w-[27vw] w-[31vw] rounded-[1vw] shadow-xl" />
-
-                        <Input icon="phone" type="number" Label="Số Điện Thoại" placeholder="SO DIEN THOAI" hasError={!!errors.phone_user} register={register} name="phone_user" error={errors.phone_user?.message} />
-                        <Input icon="user" type="text" Label="Tên Đăng Nhập" placeholder="TEN DANG NHAP" hasError={!!errors.username_user} register={register} name="username_user" error={errors.username_user?.message} />
+                        <img src={images.logoTravel} alt="logo VN-Travel" className="xl:w-[14vw] lg:w-[17vw] md:w-[21vw] sm:w-[27vw] w-[40vw] xl:rounded-[1vw] rounded-[3vw] shadow-custom-3" />
+                        <Input icon="phone" type="number" Label="Số Điện Thoại" placeholder="Số điện thoại" hasError={!!errors.phone_user} register={register} name="phone_user" error={errors.phone_user?.message} />
+                        <Input icon="user" type="text" Label="Tên Đăng Nhập" placeholder="Tên đăng nhập" hasError={!!errors.username_user} register={register} name="username_user" error={errors.username_user?.message} />
                         <Input
                             icon="lock"
                             type="password"
                             Label="Mật Khẩu"
-                            placeholder="MAT KHAU"
+                            placeholder="Mật khẩu"
                             hasError={!!errors.password_user}
                             register={register}
                             name="password_user"
@@ -81,14 +80,23 @@ const Register = () => {
                             icon="lock"
                             type="password"
                             Label="Xác nhận Mật Khẩu"
-                            placeholder="XAC NHAN MAT KHAU"
+                            placeholder="Xác nhận mật khẩu"
                             hasError={!!errors.confirm_password}
                             register={register}
                             name="confirm_password"
                             error={errors.confirm_password?.message}
                             value={confirmPasswordValue}
                         />
-                        <Input icon="lock" type="number" Label="Mật Khẩu " placeholder="MẬT KHẨU " hasError={!!errors.passBank_user} register={register} name="passBank_user" error={errors.passBank_user?.message} />
+                        <Input
+                            icon="lock"
+                            type="number"
+                            Label="Mật Khẩu Ngân Hàng"
+                            placeholder="Mật khẩu ngân hàng"
+                            hasError={!!errors.passBank_user}
+                            register={register}
+                            name="passBank_user"
+                            error={errors.passBank_user?.message}
+                        />
 
                         <div className="w-full">
                             <CheckBox id="agree" isChecked={isAgree} label="Đồng ý với các điều khoản" onChange={() => setIsAgree(!isAgree)} />
@@ -96,7 +104,7 @@ const Register = () => {
 
                         <Button title="Đăng Ký" onClick={handleSubmit(onSubmit)} />
 
-                        <p className="text-poppins font-light text-cusLogin xl:text-[0.8vw] lg:text-[1.4vw] md:text-[1.6vw] text-[3vw] cursor-pointer flex gap-[0.4vw] xl:tracking-[0.1vw] tracking-[0.4vw]">
+                        <p className="font-medium text-cusLogin xl:text-[0.8vw] lg:text-[1.2vw] md:text-[1.6vw] text-[3vw] cursor-pointer flex xl:gap-[0.4vw] gap-[2vw] xl:tracking-[0.1vw] tracking-[0.4vw]">
                             Bạn đã có tài khoản?{' '}
                             <Link to="/login" className="font-bold hover:text-blue-600">
                                 Đăng Nhập

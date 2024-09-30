@@ -41,8 +41,8 @@ const MenuList: React.FC = () => {
     const MenuListNavbar = useMemo(() => {
         return listMenu.map(({ link, title, isSearchParams }, index) => (
             <Link key={index} to={{ pathname: `/${link}`, search: isSearchParams ? `?tabPayment=${link}` : '' }} onClick={handleClose}>
-                <li className="xl:py-[0.5vw] py-[2.5vw] bai-jamjuree flex xl:gap-[0.5vw] gap-[2vw] items-center text-[#000] xl:px-[1vw] px-[4vw] hover:bg-[#f1f1f1] rounded-lg font-medium">
-                    <img src={images[`Menu${index + 1}`]} alt="icon menu" className="scale-icon xl:w-[2vw] sm:w-[4vw] w-[9vw]" />
+                <li className="xl:py-[0.5vw] py-[2.5vw] fredoka flex xl:gap-[0.5vw] gap-[2vw] items-center text-[#000] xl:px-[1vw] px-[4vw] hover:bg-[#f1f1f1] rounded-lg ">
+                    <img src={images[`Menu${index + 1}`]} alt="icon menu" className="scale-icon xl:w-[2vw] lg:w-[8vw] sm:w-[4vw] w-[9vw]" />
                     <p className="text-title">{title}</p>
                 </li>
             </Link>
@@ -60,19 +60,19 @@ const MenuList: React.FC = () => {
                 <Link to={'/profile'} className="cursor-pointer">
                     <div className="bg-[#f5f6fa] border border-[#e5e9f2] xl:rounded-t-[1vw] rounded-t-[3vw]">
                         <div className="xl:p-[1.2vw] p-[4vw] flex items-center gap-[1vw]">
-                            <img src={images.Avatar} alt="avatar" className="rounded-full xl:w-[2vw] sm:w-[4vw] w-[10vw] xl:border-[0.2vw] border-[1vw] border-orange" />
-                            <div className="bai-jamjuree">
+                            <img src={images.Avatar} alt="avatar" className="rounded-full xl:border-[0.2vw] sm:border-[0.7vw] border-[1vw] xl:w-[2vw] lg:w-[10vw] sm:w-[7vw] w-[10vw] border-orange" />
+                            <div className="fredoka">
                                 <p className="text-username">{username}</p>
                                 <p className="text-phone">0{phone}</p>
                             </div>
                         </div>
                     </div>
                 </Link>
-                <ul className="text-base py-[0.7vw] px-[0.2vw]">{MenuListNavbar}</ul>
-                <div className="text-base border-t border-[#e5e9f2]">
+                <ul className=" py-[0.7vw] px-[0.2vw]">{MenuListNavbar}</ul>
+                <div className=" border-t border-[#e5e9f2]">
                     <div onClick={handleLogout}>
-                        <li className="flex xl:gap-[0.5vw] gap-[2vw] bai-jamjuree items-center text-[#474747] hover:text-[#000] xl:py-[0.7vw] xl:px-[1.5vw] py-[2.5vw] px-[6vw] hover:bg-[#f1f1f1] hover:rounded-b-[1vw] cursor-pointer">
-                            <img src={images.IconLogOutt} alt="Sign Out" className="xl:w-[1.3vw] sm:w-[4vw] w-[7vw]" />
+                        <li className="flex xl:gap-[0.5vw] gap-[2vw] fredoka items-center text-[#474747] hover:text-[#000] xl:py-[0.7vw] lg:py-[3vw] xl:px-[1.5vw] py-[2.5vw] px-[6vw] hover:bg-[#f1f1f1] hover:rounded-b-[1vw] cursor-pointer">
+                            <img src={images.IconLogOutt} alt="Sign Out" className="xl:w-[1.3vw]  lg:w-[6vw] sm:w-[4vw] w-[7vw]" />
                             <p className="text-title">Đăng xuất</p>
                         </li>
                     </div>

@@ -17,7 +17,7 @@ const ButtonSign = ({ title, onClick, type, disabled }: IButton) => {
             <div className="container-login-form-btn">
                 <div className="wrap-login-form-btn">
                     <div className="login-form-bgbtn" />
-                    <div className="login-form-btn xl:h-[3vw] lg:h-[4.5vw] md:h-[5.5vw] sm:h-[6.5vw] h-[10vw] xl:text-[1vw] lg:text-[2vw] sm:text-[3vw] text-[4vw]">{title}</div>
+                    <div className="login-form-btn xl:h-[3vw] lg:h-[7vw] md:h-[5.5vw] sm:h-[6.5vw] h-[10vw] xl:text-[1vw] lg:text-[2.5vw] sm:text-[3vw] text-[4vw]">{title}</div>
                 </div>
             </div>
         </button>

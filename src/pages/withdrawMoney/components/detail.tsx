@@ -24,7 +24,7 @@ const WithdrawMoney = () => {
     };
 
     const handleAmountChange = (value: string) => {
-        setAmount(formatNumber(value));
+        setAmount(value);
     };
 
     const handlePassBankChange = (value: string) => {
@@ -32,7 +32,7 @@ const WithdrawMoney = () => {
     };
 
     const handleButtonClick = (value: string) => {
-        setAmount(formatNumber(value));
+        setAmount(value);
     };
 
     const handleWithdraw = async () => {

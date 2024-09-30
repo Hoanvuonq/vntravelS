@@ -50,9 +50,9 @@ const Sidebar: React.FC = () => {
         <>
             {isMobile && isOpenSidebar && <div className="overlay-sidebar active-overlay" />}
             <div ref={sidebarRef} className={sidebarClass}>
-                <div className="w-fulll all-center xl:h-[6vw] sm:h-[10vw] h-[24vw]">
+                <div className="w-fulll all-center xl:h-[6vw] sm:h-[20w] h-[24vw]">
                     <Link to={'#'}>
-                        <img src={images.logoTravelS} alt="Logo Travel" className="xl:w-[8vw] sm:w-[12vw] w-[32vw]" />
+                        <img src={images.logoTravelS} alt="Logo Travel" className="xl:w-[8vw] sm:w-[40vw] w-[32vw] object-cover" />
                     </Link>
                 </div>
                 <div className="p-[0.5vw]">

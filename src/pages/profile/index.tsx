@@ -6,7 +6,11 @@ import PopupAboutUs from 'layouts/popup/aboutUs';
 import PopupRequest from 'layouts/popup/requets';
 import PopupTerms from 'layouts/popup/terms';
 import { useMemo, useState } from 'react';
-
+import { logOutUser } from '../../redux/reducer/apiRequest';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, AppDispatch } from 'redux/store';
+import ToastProvider from 'hooks/useToastProvider';
 interface IInfoButton {
     img: string;
     alt: string;
@@ -27,6 +31,8 @@ const Profile = () => {
     const journeyComplete = userInfo?.journeyComplete || 0;
     const journeys = userInfo?.journeys?.length || 0;
     const [activePopup, setActivePopup] = useState<string | null>(null);
+    const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
 
     const handleOpenPopup = (popupType: string) => {
         setActivePopup(popupType);
@@ -70,9 +76,24 @@ const Profile = () => {
                 description: 'Về Chúng Tôi',
                 popupType: 'aboutUs',
             },
+            {
+                icon: images.IconLogOutt,
+                title: 'Đăng Xuất',
+                description: 'Đăng Xuất',
+                popupType: 'handleLogout',
+            },
         ],
         [],
     );
+
+    const handleLogout = async () => {
+        try {
+            await logOutUser(dispatch, navigate);
+            ToastProvider('success', 'Đã đăng xuất thành công');
+        } catch (error) {
+            ToastProvider('error', 'Không thể đăng xuất');
+        }
+    };
 
     return (
         <div className="all-center xl:px-0 px-[1vw]">
@@ -83,7 +104,7 @@ const Profile = () => {
                 <div className="all-center flex-col xl:gap-[2vw] gap-[8vw] lg:px-[5vw] px-[1vw]">
                     <div className="bg-editUser relative xl:rounded-[1vw] rounded-[2vw] xl:h-[8vw] h-[26vw] ">
                         <div className="all-center cursor-pointer xl:h-[14vw] h-[46vw]">
-                            <img src={images.Avatar} alt="Avatar" className="rounded-full border-[0.3vw] border-orange xl:w-[6vw] w-[18vw] scale-icon" />
+                            <img src={images.Avatar} alt="Avatar" className="rounded-full xl:border-[0.2vw] sm:border-[0.7vw] border-[1vw] xl:w-[6vw] sm:w-[7vw] w-[18vw] border-orange" />
                             <div className="absolute top-[1vw]  !text-white box-total">
                                 <p className="text-titleLevel">{userInfo?.phone || '0987654321'}</p>
                             </div>
@@ -115,7 +136,9 @@ const Profile = () => {
                                 <div
                                     key={index}
                                     onClick={() => {
-                                        if (popupType) {
+                                        if (popupType === 'handleLogout') {
+                                            handleLogout();
+                                        } else if (popupType) {
                                             handleOpenPopup(popupType);
                                         } else if (link) {
                                             window.location.href = link;

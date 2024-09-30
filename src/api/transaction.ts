@@ -3,22 +3,6 @@ import { ITransaction } from './type';
 
 const url = '/transaction';
 
-export const depositMoney = async (amount: number): Promise<ITransaction> => {
-    try {
-        const res = await Api.post<{ status: boolean; message: string; data: ITransaction }>(`${url}/deposit`, { amount });
-
-        if (res.data.status && res.data.data) {
-            return res.data.data;
-        } else {
-            console.error('Unexpected response structure:', res.data);
-            throw new Error('Unexpected response structure');
-        }
-    } catch (error: any) {
-        console.error('Error in deposit:', error);
-        throw error;
-    }
-};
-
 export const withdrawMoney = async (amount: number, passBank: number): Promise<ITransaction> => {
     try {
         const res = await Api.post<{ status: boolean; message: string; data: ITransaction }>(`${url}/withdraw`, { amount, passBank });
@@ -54,7 +38,7 @@ export const getDepositHistory = async (limit: number = 20): Promise<ITransactio
 
 export const getWithdrawHistory = async (limit: number = 20): Promise<ITransaction[]> => {
     try {
-        const res = await Api.get<{ status: boolean; message: string; data: ITransaction[] }>(`${url}/withdraw/history`, { params: { limit } });
+        const res = await Api.get<{ status: boolean; message: string; data: ITransaction[] }>(`${url}/history/withdraw`, { params: { limit } });
 
         if (res.data.status && res.data.data) {
             return res.data.data;

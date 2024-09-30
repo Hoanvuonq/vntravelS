@@ -27,6 +27,7 @@ module.exports = withMT({
         green: "#d2ffd8",
         yellow: "#fff7d2",
         red: "#ffd2d2",
+        alert: "#ff0000",
       },
       backgroundColor: {
         overlayLoading: "rgba(0, 0, 0, 0.5)",

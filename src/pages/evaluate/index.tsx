@@ -38,7 +38,6 @@ const Evaluate = () => {
         { title: 'Tổng Hành Trình', money: journeyComplete.toString() },
     ];
 
-
     const handlePreviewJourney = async () => {
         try {
             const result = await previewJourney();
@@ -50,7 +49,7 @@ const Evaluate = () => {
                     setShowFomEvaluate(true);
                     const difference = result.data.journeyAmount - balance;
                     if (balance < result.data.journeyAmount) {
-                        setPopupMessage(`Chúc Mừng Bạn Đã Nhận Được Đơn Hành Trình Kết Nối, Đơn Hành Trình Này Có Thể Nhận Được Nhiều Hoa Hồng Hơn và Cần Phải Bù Phần Chênh Lệch ${formatNumber(difference)} VNĐ`);
+                        setPopupMessage(`Chúc Mừng Bạn Đã Nhận Được Đơn Hành Trình Kết Nối, Đơn Hành Trình Này Có Thể Nhận Được Nhiều Hoa Hồng Hơn và Cần Phải Bù Phần Chênh Lệch ${formatNumber(difference)}`);
                     }
                 }
             } else {
@@ -84,7 +83,7 @@ const Evaluate = () => {
                     ))}
                 </div>
             </div>
-            <div className="w-full all-center m-auto gap-[2vw] xl:max-w-[25vw] max-w-[80vw]">
+            <div className="w-full all-center m-auto gap-[2vw] xl:max-w-[25vw] lg:max-w-[60vw] max-w-[80vw]">
                 <Button title="GỬI HÀNH TRÌNH TỰ ĐỘNG" onClick={handlePreviewJourney} />
                 <img src={images.historyEvaluate} alt="History Evaluate" className="xl:w-[3vw] w-[10vw] cursor-pointer" onClick={() => setShowHistoryPopup(true)} />
             </div>
@@ -96,7 +95,7 @@ const Evaluate = () => {
             </div>
             <ExploreTours />
             {showHistoryPopup && <HistoryEvaluate onClose={() => setShowHistoryPopup(false)} />}
-            {showFomEvaluate && previewData && <FomEvaluate onClose={() => setShowFomEvaluate(false)} previewData={previewData} onShowHistory={handleShowHistoryPopup} />}
+            {showFomEvaluate && previewData && <FomEvaluate onClose={() => setShowFomEvaluate(false)} previewData={previewData} />}
             {popupMessage && <MessagePopup message={popupMessage} onClose={handleClosePopup} />}
         </div>
     );

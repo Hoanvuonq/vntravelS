@@ -5,6 +5,9 @@ import BoxTotal from 'components/boxTotal';
 import TextTitle from 'components/textTitle';
 import { Link } from 'react-router-dom';
 import { useUserInfo } from 'hooks/UserContext';
+const formatNumber = (num: string) => {
+    return num.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+};
 
 const Wallet = () => {
     const { userInfo } = useUserInfo();
@@ -64,7 +67,7 @@ const Wallet = () => {
                         <div className="xl:w-[20vw] w-auto"></div>
                         <div className="bg-white all-start flex-col xl:gap-[1vw] gap-[3vw] xl:w-[40vw] w-full shadow-custom-5 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[2vw]">
                             <div className="border-b-[0.2vw] pb-[1vw] border-[#E2E8F0] w-full">
-                                <h1 className="font-bold">Thông Tin Chi Tiết Quỹ</h1>
+                                <TextTitle title="Thông Tin Chi Tiết Quỹ" />
                             </div>
                             <div className="flex flex-col xl:gap-[1vw] gap-[5vw] w-full">
                                 {fundDetails.map(({ icon, title, link, description }, index) => (

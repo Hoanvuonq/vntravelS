@@ -70,14 +70,14 @@ const Login = () => {
     return (
         <div className="bg-login">
             <div className="all-center flex-wrap min-h-screen py-0 relative z-20">
-                <div className="bg-white xl:w-[26vw] lg:w-[40vw] md:w-[50vw] sm:w-[60vw] w-[80vw] xl:rounded-[1vw] lg:rounded-[1.6vw] md:rounded-[2vw] sm:rounded-[2.4vw] rounded-[3vw] xl:py-[3vw] py-[7vw] xl:px-[3vw] lg:px-[5vw] md:px-[9vw] px-[10vw]">
+                <div className="bg-white xl:w-[26vw] lg:w-[46vw] md:w-[58vw] sm:w-[60vw] w-[80vw] xl:rounded-[1vw] lg:rounded-[1.6vw] md:rounded-[2vw] sm:rounded-[2.4vw] rounded-[3vw] xl:py-[3vw] lg:py-[6vw] md:py-[5vw] sm:py-[6vw] py-[12vw] xl:px-[3vw] lg:px-[5vw] md:px-[9vw] px-[10vw]">
                     <div className="flex-col all-center w-full xl:gap-[1.5vw] lg:gap-[2.5vw] md:gap-[3vw] sm:gap-[3.5vw] gap-[4vw]">
-                        <img src={images.logoTravel} alt="logo VN-Travel" className="xl:w-[14vw] lg:w-[17vw] md:w-[21vw] sm:w-[27vw] w-[31vw] rounded-[1vw] shadow-xl" />
+                        <img src={images.logoTravel} alt="logo VN-Travel" className="xl:w-[14vw] lg:w-[17vw] md:w-[21vw] sm:w-[27vw] w-[40vw] xl:rounded-[1vw] rounded-[3vw] shadow-custom-3" />
                         <Input
                             icon="user"
                             type="text"
-                            Label="Ten / So Dien Thoai"
-                            placeholder="Ten / So Dien Thoai"
+                            Label="Tên / Số điện thoại"
+                            placeholder="Tên / Số điện thoại"
                             hasError={!!errors.username || !!errors.phone}
                             register={register}
                             name="username"
@@ -86,20 +86,20 @@ const Login = () => {
                         <Input
                             icon="lock"
                             type="password"
-                            Label="Mat Khau"
-                            placeholder="Mat Khau"
+                            Label="Mật khẩu"
+                            placeholder="Mật khẩu"
                             hasError={!!errors.password}
                             register={register}
                             name="password"
                             error={errors.password?.message}
                             value={watch('password')}
                         />
-                        <p className="text-poppins xl:text-[0.8vw] lg:text-[1.4vw] md:text-[1.6vw] text-[2vw] text-cusLogin w-full text-end hover:text-blue font-medium cursor-pointer hover:text-blue-600">
+                        <p className="text-poppins xl:text-[0.8vw] lg:text-[1.4vw] md:text-[1.6vw] text-[3vw] text-cusLogin w-full text-end hover:text-blue font-medium cursor-pointer hover:text-blue-600">
                             Quên mật khẩu ?
                         </p>
 
                         <Button title="Đăng Nhập" onClick={handleSubmit(onSubmit)} />
-                        <p className="text-poppins font-light text-cusLogin xl:text-[0.8vw] lg:text-[1.4vw] md:text-[1.6vw] text-[3vw] cursor-pointer flex gap-[0.4vw] xl:tracking-[0.1vw] tracking-[0.4vw]">
+                        <p className="font-medium text-cusLogin xl:text-[0.8vw] lg:text-[1.6vw] md:text-[1.8vw] text-[3vw] cursor-pointer flex xl:gap-[0.4vw] gap-[2vw] xl:tracking-[0.1vw] tracking-[0.4vw]">
                             Bạn chưa có tài khoản?
                             <Link to="/register" className="font-bold hover:text-blue-600">
                                 Đăng ký

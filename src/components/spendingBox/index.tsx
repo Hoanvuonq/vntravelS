@@ -5,7 +5,7 @@ interface ISpendingBox {
 }
 const SpendingBox = ({ title, money, img }: ISpendingBox) => {
     return (
-        <div className="bg-white xl:py-[1.4vw] py-[2vw] xl:px-[1vw] sm:px-[1.4vw] px-[6vw] rounded-xl xl:w-[20vw] sm:w-[45.5vw] w-[46.6vw] shadow-custom-5 bai-jamjuree box-total">
+        <div className="bg-white xl:py-[1.4vw] py-[2vw] xl:px-[1vw] sm:px-[2vw] px-[6vw] rounded-xl xl:w-[20vw] sm:w-[45.5vw] w-[46.6vw] shadow-custom-5 bai-jamjuree box-total">
             <div className="flex flex-col justify-between h-full">
                 <h1 className="text-title text-[#334155] uppercase truncate mb-[0.2vw]">{title}</h1>
                 <div className="flex gap-2 justify-between items-center w-full">

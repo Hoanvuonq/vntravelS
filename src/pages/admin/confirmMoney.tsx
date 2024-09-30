@@ -14,8 +14,8 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'redux/store';
 import CustomSlider from './components/custonSlider';
 
-const DepositHistory = lazy(() => import('./components/depositHistory'));
-const WithdrawHistory = lazy(() => import('./components/withdrawHistory'));
+const DepositUser = lazy(() => import('./components/depositUser'));
+const DepositHistory = lazy(() => import('./components/depositHistoryUser'));
 
 interface IVip {
     title: string;
@@ -47,7 +47,7 @@ const tabItems: ITabs[] = [
     },
     {
         key: 'withdraw',
-        title: 'Rút Tiền',
+        title: 'Lịch Sử Nạp Tiền',
         classActive: 'border-colorBorder text-[#147ed9]',
         classUnactive: 'border-[#b5b5c3] text-[#b5b5c3]',
     },
@@ -169,6 +169,27 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
         };
     }, [onClose]);
 
+    useEffect(() => {
+        const inputs = document.querySelectorAll('input');
+
+        const handleFocus = (event: FocusEvent) => {
+            const target = event.target as HTMLElement;
+            setTimeout(() => {
+                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+        };
+
+        inputs.forEach((input) => {
+            input.addEventListener('focus', handleFocus);
+        });
+
+        return () => {
+            inputs.forEach((input) => {
+                input.removeEventListener('focus', handleFocus);
+            });
+        };
+    }, []);
+
     return (
         <>
             <div className="overlay-sidebar active-overlay" />
@@ -187,7 +208,7 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
                                     <div className="w-full xl:flex-row flex-col flex justify-start items-center xl:gap-[2vw] gap-[5vw]">
                                         <div className="bg-editUser flex items-center px-[2vw] xl:rounded-[1vw] rounded-[2vw] xl:h-[8vw] xl:!w-[20vw] !w-full h-[26vw] ">
                                             <div className="flex items-center gap-[0.1vw]">
-                                                <img src={images.Avatar} alt="Avatar" className="rounded-full border-[0.3vw] border-orange xl:w-[5vw] w-[18vw] scale-icon" />
+                                                <img src={images.Avatar} alt="Avatar" className="rounded-full xl:border-[0.2vw] sm:border-[0.7vw] border-[1vw] xl:w-[2vw] sm:w-[7vw] w-[10vw] border-orange" />
                                                 <div className="!text-white box-total w-full">
                                                     <div className="flex items-center box-total">
                                                         <img src={images[`Level${userVipLevel}`]} alt={`Level ${userVipLevel}`} className="xl:w-[4vw] w-[16vw]" />
@@ -257,9 +278,18 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
                                                 ))}
                                             </div>
                                             <div className="flex-1 overflow-y-auto custom-scrollbar">
-                                                <Suspense fallback={<div>Loading...</div>}>
-                                                    {activeTab === 'deposit' && <DepositHistory user={user} />}
-                                                    {activeTab === 'withdraw' && <WithdrawHistory user={user} />}
+                                                <Suspense
+                                                    fallback={
+                                                        <div className="loader-ellipsis mt-[1vw]">
+                                                            <div className="!bg-black"></div>
+                                                            <div className="!bg-black"></div>
+                                                            <div className="!bg-black"></div>
+                                                            <div className="!bg-black"></div>
+                                                        </div>
+                                                    }
+                                                >
+                                                    {activeTab === 'deposit' && <DepositUser user={user} />}
+                                                    {activeTab === 'withdraw' && <DepositHistory user={user} />}
                                                 </Suspense>
                                             </div>
                                         </div>

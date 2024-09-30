@@ -30,6 +30,9 @@ const SliderComponent: React.FC = () => {
             } else if (window.innerWidth < 768) {
                 setSlidesToShow(3);
                 setCenterMode(true);
+            } else if (window.innerWidth <= 1024) {
+                setSlidesToShow(4);
+                setCenterMode(true);
             } else {
                 setSlidesToShow(5);
                 setCenterMode(true);
@@ -91,7 +94,7 @@ const SliderComponent: React.FC = () => {
                 <Slider {...settings} className="all-center">
                     {tripImages.map((tripImage, index) => (
                         <div key={index} className="px-1 all-center flex-col relative focus:outline-none">
-                            <img src={images[tripImage]} alt={`Trip ${index + 1}`} className="object-cover xl:w-[18vw] w-full lg:h-[10vw] h-[30vw] lg:rounded-[0.5vw] rounded-[2vw]" />
+                            <img src={images[tripImage]} alt={`Trip ${index + 1}`} className="object-cover xl:w-[18vw] lg:w-[40vw] w-full lg:h-[20vw] h-[30vw] lg:rounded-[0.5vw] rounded-[2vw]" />
                         </div>
                     ))}
                 </Slider>

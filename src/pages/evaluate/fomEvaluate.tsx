@@ -18,10 +18,9 @@ interface IPopupProps {
         createdAt: string;
         rating: number;
     };
-    onShowHistory: () => void;
 }
 
-const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData, onShowHistory }) => {
+const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
     const popupRef = useRef<HTMLDivElement>(null);
     const { userInfo, fetchUserInfo } = useUserInfo();
     const { setLoading } = useLoading();
@@ -48,7 +47,7 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData, onShowHistor
         setLoading(true);
 
         try {
-            await new Promise((resolve) => setTimeout(resolve, 2000));
+            // await new Promise((resolve) => setTimeout(resolve, 100));
             const backgroundImageKey = Object.keys(images).find((key) => images[key] === randomTrip.backgroundImage);
 
             if (!backgroundImageKey) {
@@ -70,7 +69,6 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData, onShowHistor
                 ToastProvider('success', 'Gửi hành trình thành công');
                 fetchUserInfo();
                 onClose();
-                onShowHistory();
             } else {
                 ToastProvider('error', result.message || 'Gửi hành trình thất bại');
             }
@@ -83,8 +81,6 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData, onShowHistor
     };
 
     const getRandomTrip = (): ITripData => tripData[Math.floor(Math.random() * tripData.length)];
-
-    const formatAmount = (amount: number) => amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {

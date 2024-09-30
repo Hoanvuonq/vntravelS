@@ -7,6 +7,7 @@ import { IUserInfo } from 'api/type';
 import EditUser from './editUser';
 import ConfirmMoney from './confirmMoney';
 import { useUserInfo } from 'hooks/UserContext';
+import { formatNumber } from 'hooks/useColorStatus';
 
 interface IUserInfoWithAction extends IUserInfo {
     action: 'edit' | 'confirmMoney';
@@ -27,7 +28,7 @@ const TABS = [
     },
 ];
 
-const TABLE_HEAD = ['Thông Tin', 'VIP', 'Đăng Ký', 'Trạng Thái', '', '', '', ''];
+const TABLE_HEAD = ['Thông Tin', 'VIP', 'Số Dư', 'Đăng Ký', 'Trạng Thái', ''];
 
 const Dashboard = () => {
     const { fetchUserInfo } = useUserInfo();
@@ -106,60 +107,59 @@ const Dashboard = () => {
     const memoizedTableRows = useMemo(() => {
         return filteredUsers.map((user, index) => {
             const isLast = index === filteredUsers.length - 1;
-            const classes = isLast ? 'xl:p-[1vw] p-[2vw]' : 'xl:p-[1vw] p-[2vw] border-b border-blue-gray-50 level';
+            const classes = isLast ? 'xl:p-[1vw] p-[4vw]' : 'xl:p-[1vw] p-[4vw] border-b border-blue-gray-50 level text-left';
 
             return (
                 <tr key={user._id}>
-                    <td className={classes}>
-                        <div className="flex items-center gap-3">
-                            <img src={images.Avatar} alt="Avatar" className="rounded-full xl:border-[0.2vw] border-[1vw] xl:w-[3vw] sm:w-[4vw] w-[10vw] border-orange" />
+                    <td className={`${classes} `}>
+                        <div className="flex items-center xl:gap-[0.7vw] gap-[3vw]">
+                            <img src={images.Avatar} alt="Avatar" className="rounded-full xl:border-[0.2vw] sm:border-[0.7vw] border-[1vw] xl:w-[2vw] sm:w-[7vw] w-[12vw] border-orange" />
                             <div className="flex flex-col">
-                                <Typography variant="small" color="blue-gray" className="font-bold" {...({} as any)}>
+                                <Typography variant="small" color="blue-gray" className="text-username" {...({} as any)}>
                                     {user.username}
                                 </Typography>
-                                <Typography variant="small" color="blue-gray" className="font-normal opacity-70" {...({} as any)}>
+                                <Typography variant="small" color="blue-gray" className="text-phone " {...({} as any)}>
                                     0{user.phone}
                                 </Typography>
                             </div>
                         </div>
                     </td>
-                    <td className={classes}>
-                        <div className="flex items-center gap-3 -ml-[2vw]">
-                            <img src={images[`Level${user.vipLevel}`]} alt={user.username} className="xl:w-[3vw] w-[12vw] " />
-                            <Typography variant="small" color="blue-gray" className="font-bold" {...({} as any)}>
+                    <td className={`${classes}`}>
+                        <div className="flex items-center -ml-[1vw]">
+                            <img src={images[`Level${user.vipLevel}`]} alt={user.username} className="xl:w-[3vw] w-[12vw]" />
+                            <Typography variant="small" color="blue-gray" className="text-vip " {...({} as any)}>
                                 VIP {user.vipLevel}
                             </Typography>
                         </div>
                     </td>
-                    <td className={`${classes} hidden md:table-cell`}>
-                        <Typography variant="small" color="blue-gray" className="font-normal" {...({} as any)}>
+                    <td className={`${classes}`}>
+                        <div className="flex items-center gap-3">
+                            <Typography variant="small" color="blue-gray" className="text-content" {...({} as any)}>
+                                {formatNumber(user.balance)}
+                            </Typography>
+                        </div>
+                    </td>
+                    <td className={`${classes} xl:!w-[4vw] !w-[10vw]`}>
+                        <Typography variant="small" color="blue-gray" className="text-content" {...({} as any)}>
                             {new Date(user.createdAt).toLocaleDateString()}
                         </Typography>
                     </td>
-                    <td className={`${classes} hidden md:table-cell`}>
+                    <td className={`${classes} xl:!w-[4vw] !w-[10vw]`}>
                         <div className="w-max">
-                            <Typography variant="small" color="blue-gray" className="font-normal" {...({} as any)}>
+                            <Typography variant="small" color="blue-gray" className="text-status" {...({} as any)}>
                                 {user.isBlocked ? 'Blocked' : 'Active'}
                             </Typography>
                         </div>
                     </td>
                     <td className={`${classes} xl:!w-[4vw] !w-[10vw]`}>
-                        <Tooltip content="Chỉnh Sửa User">
-                            <img src={images.Edit} alt="Eidt" className="hover-items cursor-pointer xl:w-[2vw] w-[12vw]" onClick={() => handleEditUser(user._id)} />
-                        </Tooltip>
-                    </td>
-                    <td className={`${classes} xl:!w-[4vw] !w-[10vw]`}>
-                        <Tooltip content="Chỉnh Sửa Hành Trình">
-                            <img src={images.editPayment} alt="Edit Evaluate" className="hover-items cursor-pointer xl:w-[2vw] w-[12vw]" onClick={() => handleConfirmMoney(user._id)} />
-                        </Tooltip>
-                    </td>
-                    <td className={`${classes} xl:!w-[4vw] !w-[10vw]`}>
-                        <Tooltip content="Edit User">
-                            <div className="relative hover-items ">
-                                <img src={images.NotificationIcon} alt="Notification" className="relative cursor-pointer xl:w-[2vw] w-[12vw]" />
-                                <span className="absolute bg-red p-[0.4vw] w-[1.3vw] h-[1.3vw] all-center text-white rounded-full -top-[0.2vw] -right-[0.4vw]">0</span>
-                            </div>
-                        </Tooltip>
+                        <div className="grid grid-cols-3 gap-2">
+                            <Tooltip content="Chỉnh Sửa User">
+                                <img src={images.Edit} alt="Edit" className="hover-items cursor-pointer xl:w-[2vw] w-[12vw]" onClick={() => handleEditUser(user._id)} />
+                            </Tooltip>
+                            <Tooltip content="Chỉnh Sửa Hành Trình">
+                                <img src={images.editPayment} alt="Edit Evaluate" className="hover-items cursor-pointer xl:w-[2vw] w-[12vw]" onClick={() => handleConfirmMoney(user._id)} />
+                            </Tooltip>
+                        </div>
                     </td>
                 </tr>
             );
@@ -167,19 +167,33 @@ const Dashboard = () => {
     }, [filteredUsers]);
 
     if (isLoading) {
-        return <div>loading ...</div>;
+        return (
+            <div className="w-full all-center xl:h-[40vw] h-screen">
+                <div className="loader-ellipsis mt-[1vw]">
+                    <div className="!bg-black"></div>
+                    <div className="!bg-black"></div>
+                    <div className="!bg-black"></div>
+                    <div className="!bg-black"></div>
+                </div>
+            </div>
+        );
     }
 
     if (error) {
-        return <div>Error: {error}</div>;
+        return (
+            <div className="w-full xl:h-[40vw] h-screen all-center flex-col xl:gap-[1vw] gap-[3vw] notes">
+                <img src={images.logoTravelS} alt="No Data" className="xl:w-[10vw] sm:w-[40vw] w-[50vw] object-cover" />
+                <p className="text-titleNote !font-semibold">Không tìm thấy lịch sử rút tiền của User nào cả</p>
+            </div>
+        );
     }
 
     return (
-        <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw]">
+        <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw] admin">
             <div className="rounded-xl w-full h-full p-[1vw] flex flex-col gap-5 level">
                 <TextTitle title="Danh Sách Khách Hàng" />
                 <div className="">
-                    <Card className="h-full w-full" {...({} as any)}>
+                    <Card className="h-full w-full  overflow-scroll" {...({} as any)}>
                         <CardHeader floated={false} shadow={false} className="rounded-none" {...({} as any)}>
                             <div className="mb-8 flex items-center justify-between gap-8">
                                 <div />
@@ -208,20 +222,27 @@ const Dashboard = () => {
                             </div>
                         </CardHeader>
                         <CardBody className="overflow-scroll px-0" {...({} as any)}>
-                            <table className="mt-[1vw] w-full min-w-max table-auto text-left">
-                                <thead>
-                                    <tr>
-                                        {TABLE_HEAD.map((head, index) => (
-                                            <th key={head} className={`border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 ${index > 1 && index < 4 ? 'hidden md:table-cell' : ''}`}>
-                                                <Typography variant="small" color="blue-gray" className="font-bold leading-none" {...({} as any)}>
-                                                    {head}
-                                                </Typography>
-                                            </th>
-                                        ))}
-                                    </tr>
-                                </thead>
-                                <tbody>{memoizedTableRows}</tbody>
-                            </table>
+                            <div className="overflow-x-auto">
+                                <table className="mt-[1vw] w-full min-w-max table-auto text-left">
+                                    <thead>
+                                        <tr>
+                                            {TABLE_HEAD.map((head, index) => (
+                                                <th
+                                                    key={head}
+                                                    className={`border-y border-blue-gray-100 bg-blue-gray-50/50 xl:p-[1vw] p-[4vw] ${index > 1 && index < 5 ? '' : ''} ${
+                                                        index === 0 ? 'xl:w-[8vw] w-[50vw]' : 'xl:w-[6vw] w-[30vw]'
+                                                    }`}
+                                                >
+                                                    <Typography variant="small" color="blue-gray" className="font-bold leading-none" {...({} as any)}>
+                                                        {head}
+                                                    </Typography>
+                                                </th>
+                                            ))}
+                                        </tr>
+                                    </thead>
+                                    <tbody>{memoizedTableRows}</tbody>
+                                </table>
+                            </div>
                         </CardBody>
                         <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4" {...({} as any)}>
                             <Typography variant="small" color="blue-gray" className="font-normal" {...({} as any)}>

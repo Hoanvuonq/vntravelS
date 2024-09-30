@@ -1,10 +1,21 @@
 .bg-login {
     width: 100%;
     margin: 0 auto;
-    background-image: url(../assets/img/bg-login.jpg);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+}
+
+@media (min-width: 768px) {
+    .bg-login {
+        background-image: url(../assets/img/bg-login-pc.jpg);
+    }
+}
+
+@media (max-width: 767px) {
+    .bg-login {
+        background-image: url(../assets/img/bg-login.jpg);
+    }
 }
 
 .container-login-form-btn {
@@ -15,13 +26,13 @@
         cursor: pointer;
         position: absolute;
         z-index: 1;
-        width: 340%;
+        width: 320%;
         height: 100%;
         background: #514bf4;
-        background: -webkit-linear-gradient(right, #00dbde, #fc00ff, #00dbde, #fc00ff);
-        background: -o-linear-gradient(right, #00dbde, #fc00ff, #00dbde, #fc00ff);
-        background: -moz-linear-gradient(right, #00dbde, #fc00ff, #00dbde, #fc00ff);
-        background: linear-gradient(260deg, #00dbde, #fc00ff, #00dbde, #fc00ff);
+        background: -webkit-linear-gradient(right, #59f0f3, #07c9cc, #59f0f3, #07c9cc);
+        background: -o-linear-gradient(right, #59f0f3, #07c9cc, #59f0f3, #07c9cc);
+        background: -moz-linear-gradient(right, #59f0f3, #07c9cc, #59f0f3, #07c9cc);
+        background: linear-gradient(260deg, #59f0f3, #07c9cc, #59f0f3, #07c9cc);
         top: 0;
         left: -100%;
         transition: all 0.4s;

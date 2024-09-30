@@ -46,9 +46,9 @@ const Input = ({ Label, icon, type, placeholder, hasError, name, error, register
     };
 
     return (
-        <div className="flex flex-col w-full gap-[2vw]" ref={inputRef}>
+        <div className="flex flex-col w-full inputLogin gap-[2vw]" ref={inputRef}>
             <div className={`relative xl:border-b-[0.1vw] border-b-[0.2vw] border-cusLogin ${isFocused ? 'focus' : ''}`}>
-                <label className="font-semibold xl:text-[0.9vw] lg:text-[1.4vw] md:text-[2vw] sm:text-[2.4vw] text-[3.4vw] color-cusLogin">{Label}</label>
+                <label className="text-label color-cusLogin">{Label}</label>
                 <div className="flex items-center">
                     <span className="absolute xl:pl-[0.4vw] lg:pl-[0.6vw] xl:-mt-[0.3vw] lg:-mt-[0.4vw] md:-mt-[1vw] sm:-mt-[2vw] -mt-[3vw]">
                         <Icon color={isFocused ? '#4b8ef4' : '#adadad'} size="inherit" icon={icon} className="xl:w-[1.2vw] lg:w-[2vw] md:w-[3.4vw] sm:w-[4vw] w-[5vw]" />
@@ -57,12 +57,12 @@ const Input = ({ Label, icon, type, placeholder, hasError, name, error, register
                         type={showPassword ? 'text' : type}
                         name={name}
                         placeholder={isFocused ? '' : placeholder}
-                        className="input-log outline-none w-full xl:h-[3vw] lg:h-[4vw] h-[10vw] text-input font-normal color-cusLogin xl:text-[0.8vw] text-[1.8vw] xl:pl-[2vw] pl-[6vw] xl:tracking-[0.1vw] tracking-[0.4vw]"
+                        className="input-log rounded-[0.5vw] outline-none w-full xl:h-[3vw] lg:h-[4vw] h-[10vw] text-input font-normal color-cusLogin xl:pl-[2vw] pl-[6vw] xl:tracking-[0.1vw] tracking-[0.4vw]"
                         onFocus={handleFocus}
                         onBlur={handleBlur}
                         {...register(name)}
                     />
-                    <div className="border-red border-2 title-alert all-center gap-[0.7vw] w-[22vw] py-[0.2vw] px-[1vw]" style={{ display: isHovered ? 'flex' : 'none' }}>
+                    <div className="border-red border-2 text-alert font-bold all-center gap-[0.7vw] w-[22vw] py-[0.2vw] px-[1vw]" style={{ display: isHovered ? 'flex' : 'none' }}>
                         <div className="text-bungee text-[0.6vw] font-bold">{error}</div>
                     </div>
                     {hasError && error && (

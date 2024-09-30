@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react';
 import { images } from 'assets';
 import Input from 'components/input/inputProfile';
 import Button from 'components/button';
-import { depositMoney } from 'api/transaction';
 import ToastProvider from 'hooks/useToastProvider';
 
 const notes = [
@@ -34,12 +33,9 @@ const PaymentDetail = () => {
             return;
         }
         try {
-            const response = await depositMoney(numericAmount);
-            console.log('Deposit successful:', response);
-            ToastProvider('success', 'Yêu Cầu Nạp Tiền Thành Công');
+            ToastProvider('warning', 'Vui Lòng Liên Hệ Admin Để Nạp Tiền');
         } catch (error) {
-            console.error('Deposit failed:', error);
-            ToastProvider('error', 'Yêu Cầu Nạp Tiền Thất Bại !!');
+            ToastProvider('warning', 'Vui Lòng Liên Hệ Admin Để Nạp Tiền');
         }
     };
 

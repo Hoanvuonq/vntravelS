@@ -5,7 +5,7 @@ interface IBoxTotal {
 }
 const BoxTotal = ({ title, money, img }: IBoxTotal) => {
     return (
-        <div className="bg-white xl:py-[1vw] py-[2vw] xl:px-[1vw] sm:px-[1.4vw] px-[6vw] xl:rounded-[1vw] rounded-[3vw] xl:w-[20vw] sm:w-[45.5vw] w-[46.6vw] shadow-custom-3 bai-jamjuree box-total">
+        <div className="bg-white xl:py-[1vw] py-[2vw] xl:px-[2vw] sm:px-[1.4vw] px-[6vw] xl:rounded-[1vw] rounded-[3vw] xl:w-[20vw] sm:w-[45.5vw] w-[46.6vw] shadow-custom-3 bai-jamjuree box-total">
             <div className="flex flex-col justify-between h-full">
                 <h1 className="text-title text-[#334155] uppercase truncate mb-[0.2vw]">{title}</h1>
                 <div className="flex gap-2 justify-between items-center w-full">

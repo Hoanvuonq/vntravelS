@@ -247,11 +247,11 @@ const EditUser: React.FC<PopupProps> = ({ onClose, user }) => {
                     <div className="flex-1 overflow-y-auto custom-scrollbar">
                         <div className="all-center xl:px-0 px-[1vw]">
                             <div className="w-full h-full py-[2vw] px-[1vw]">
-                                <div className="all-center flex-col xl:gap-[0.5vw] gap-[6vw] lg:px-[5vw] px-[1vw]">
+                                <div className="all-center flex-col xl:gap-[2vw] gap-[6vw] lg:px-[5vw] px-[1vw]">
                                     <div className="w-full xl:flex-row flex-col flex items-center xl:gap-[2vw] gap-[5vw]">
-                                        <div className="bg-editUser relative flex items-center px-[2vw] xl:rounded-[1vw] rounded-[2vw] xl:h-[8vw] xl:!w-[30vw] !w-full h-[26vw] ">
+                                        <div className="bg-editUser relative flex items-center px-[2vw] xl:rounded-[1vw] rounded-[2vw] xl:h-[8vw] xl:!w-[19vw] !w-full ">
                                             <div className="flex items-center gap-[0.1vw]">
-                                                <img src={images.Avatar} alt="Avatar" className="rounded-full border-[0.3vw] border-orange xl:w-[5vw] w-[18vw] scale-icon" />
+                                                <img src={images.Avatar} alt="Avatar" className="rounded-full xl:border-[0.2vw] sm:border-[0.7vw] border-[1vw] xl:w-[8vw] sm:w-[7vw] w-[10vw] border-orange" />
                                                 <div className="!text-white box-total w-full">
                                                     <div className="flex items-center box-total">
                                                         <img src={images[`Level${userVipLevel}`]} alt={`Level ${userVipLevel}`} className="xl:w-[4vw] w-[16vw]" />
@@ -267,16 +267,16 @@ const EditUser: React.FC<PopupProps> = ({ onClose, user }) => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <JourneyProgress className="xl:w-[30vw] w-full" journeys={journeys} journeyComplete={journeyComplete} />
-                                        <div className="shadow-custom-3 bg-white xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:gap-[1vw] flex flex-col gap-[3vw] xl:w-[10vw] w-full">
-                                            <div className="flex items-center gap-[1vw]">
+                                        <div className="shadow-custom-3 bg-white xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:gap-[1vw] flex flex-col gap-[3vw] xl:w-[10vw] w-[36vw]">
+                                            <div className="flex items-center xl:gap-[1vw] gap-[3vw]">
                                                 {listTool.map(({ label, images, action }, index) => (
                                                     <Tooltip key={index} content={label}>
-                                                        <img src={images} alt={label} className="hover-items cursor-pointer xl:w-[1.5vw] w-[12vw]" onClick={() => handleUserAction(action)} />
+                                                        <img src={images} alt={label} className="hover-items cursor-pointer xl:w-[1.5vw] w-[8vw]" onClick={() => handleUserAction(action)} />
                                                     </Tooltip>
                                                 ))}
                                             </div>
                                         </div>
+                                        <JourneyProgress className="xl:w-[30vw] w-full" journeys={journeys} journeyComplete={journeyComplete} />
                                     </div>
                                     <div className="flex xl:flex-row flex-col items-center w-full xl:gap-[1.5vw] gap-[6vw]">
                                         <div className="bg-white shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] w-full">

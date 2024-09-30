@@ -1,11 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500;600&family=Roboto:ital,wght@0,300;1,300&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
 body {
     background: #f8f7fa;
-    // font-family: "Roboto", sans-serif;
-    font-family: 'Bai Jamjuree', sans-serif;
+    font-family: "Roboto", sans-serif;
 }
 
 .all-center {
@@ -20,8 +19,7 @@ body {
 }
 
 .input-log::placeholder {
-    font-weight: bold;
-    font-family: "Poppins", sans-serif;
+    font-family: "Roboto", sans-serif;
     color: rgba(114, 132, 154, 0.4);
     @media (max-width: 1140px) {
         font-size: 1.3vw;
@@ -32,8 +30,8 @@ body {
         line-height: 2vw;
     }
     @media (max-width: 512px) {
-        font-size: 3.5vw;
-        line-height: 3.5vw;
+        font-size: 3vw;
+        line-height: 3vw;
     }
 }
 
@@ -205,17 +203,14 @@ body {
 
 .success {
     color: #1adf31;
-    font-weight: 600;
 }
 
 .error {
     color: #f70707;
-    font-weight: 600;
 }
 
-.warning {
-    color: #d4e20d;
-    font-weight: 600;
+.pending {
+    color: #e65a0a;
 }
 
 @keyframes spin {
@@ -303,7 +298,7 @@ body {
             border: 2px solid #4CAF50;
             cursor: pointer;
             border-radius: 50%;
-            margin-top: -6px; /* Adjust to align thumb with track */
+            margin-top: -6px;
         }
 
         &::-moz-range-track {

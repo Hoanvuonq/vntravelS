@@ -54,13 +54,13 @@ const Sidebar: React.FC = () => {
         <>
             {isMobile && isOpenSidebar && <div className="overlay-sidebar active-overlay" />}
             <div ref={sidebarRef} className={sidebarClass}>
-                <div className="w-fulll all-center xl:h-[6vw] sm:h-[10vw] h-[24vw]">
-                    <Link to={'#'}>
-                        <img src={images.logoTravelS} alt="Logo Travel" className="xl:w-[8vw] sm:w-[12vw] w-[32vw]" />
+                <div className="w-fulll all-center xl:h-[6vw] sm:h-[10vw] lg:h-[22vw] h-[24vw]">
+                    <Link to={'/'}>
+                        <img src={images.logoTravelS} alt="Logo Travel" className="xl:w-[8vw] lg:w-[40vw] sm:w-[12vw] w-[32vw]" />
                     </Link>
                 </div>
                 <UserInfo />
-                <div className="p-[0.5vw]">
+                <div className="xl:p-[0.5vw] lg:p-[2vw] sm:p-[0.5vw] p-[1.5vw]">
                     <Link to={'/'} className="font-bold flex gap-[0.4vw] items-center item-sidebar xl:p-[0.5vw] p-[1.5vw] xl:rounded-[0.5vw] rounded-[2vw] text-menu active-items" onClick={handleMenuClick}>
                         <img src={images.DashBoard} alt="Logo DashBoard" className="xl:w-[2.5vw] w-[10vw]" />
                         <p className="text-overview">Tổng quan</p>
