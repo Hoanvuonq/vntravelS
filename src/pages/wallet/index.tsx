@@ -79,7 +79,7 @@ const Wallet = () => {
                                             onMouseEnter={() => setHoveredItem(index)}
                                             onMouseLeave={() => setHoveredItem(null)}
                                         >
-                                            <img src={icon} alt={`icon ${title}`} className="xl:w-[2vw] w-[14vw]" />
+                                            <img src={icon} alt={`icon ${title}`} className="xl:w-[1.5vw] w-[14vw]" />
                                             <div className="flex flex-col xl:gap-[0.5vw] gap-[1vw]">
                                                 <p className="text-title">{title}</p>
                                                 <p className="text-content">{description}</p>

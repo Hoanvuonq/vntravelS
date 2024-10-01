@@ -34,7 +34,7 @@ const PopupRequest: React.FC<PopupProps> = ({ onClose }) => {
                         </div>
                     </div>
                     <div className="flex-1 overflow-y-auto custom-scrollbar">
-                        <div className="xl:p-[2vw] p-[6vw]">
+                        <div className="xl:p-[2vw] p-[8vw]">
                             <ol className="space-y-[1vw] flex flex-col xl:gap-[1vw] gap-[2vw] list-disc">
                                 <li>
                                     <span className="font-bold">LƯU Ý:</span> Vui lòng KHÔNG sử dụng cùng một thông tin địa chỉ ví để đăng ký nhiều tài khoản người dùng trên nền tảng, nếu bị hệ thống phát hiện, ID tài

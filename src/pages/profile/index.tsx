@@ -77,7 +77,7 @@ const Profile = () => {
                 popupType: 'aboutUs',
             },
             {
-                icon: images.IconLogOutt,
+                icon: images.Logout,
                 title: 'Đăng Xuất',
                 description: 'Đăng Xuất',
                 popupType: 'handleLogout',
@@ -97,21 +97,21 @@ const Profile = () => {
 
     return (
         <div className="all-center xl:px-0 px-[1vw]">
-            <div className="bg-white shadow-custom-3 rounded-[1vw] w-full h-full py-[2vw] px-[1vw] flex flex-col gap-[1.5vw]">
+            <div className="bg-white shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] w-full h-full py-[2vw] px-[1vw] flex flex-col gap-[1.5vw]">
                 <div className=" w-full px-[2vw] level">
                     <TextTitle title="Thông Tin Cá Nhân" />
                 </div>
                 <div className="all-center flex-col xl:gap-[2vw] gap-[8vw] lg:px-[5vw] px-[1vw]">
                     <div className="bg-editUser relative xl:rounded-[1vw] rounded-[2vw] xl:h-[8vw] h-[26vw] ">
                         <div className="all-center cursor-pointer xl:h-[14vw] h-[46vw]">
-                            <img src={images.Avatar} alt="Avatar" className="rounded-full xl:border-[0.2vw] sm:border-[0.7vw] border-[1vw] xl:w-[6vw] sm:w-[7vw] w-[18vw] border-orange" />
+                            <img src={images.Avatar} alt="Avatar" className="rounded-full xl:border-[0.2vw] sm:border-[0.7vw] border-[1vw] xl:w-[6vw] lg:w-[12vw] sm:w-[20vw] w-[18vw] border-green" />
                             <div className="absolute top-[1vw]  !text-white box-total">
-                                <p className="text-titleLevel">{userInfo?.phone || '0987654321'}</p>
+                                <p className="text-titleLevel">0{userInfo?.phone || 'Số Điện Thoại'}</p>
                             </div>
                         </div>
                     </div>
                     <div className="pt-[1vw] box-total">
-                        <p className="text-titleLevel">{userInfo?.username || 'Hoanvuonq'}</p>
+                        <p className="text-titleLevel">{userInfo?.username || 'Tên Người Dùng'}</p>
                     </div>
                     <div className="flex justify-between w-full items-center">
                         <div className="flex items-center box-total">
@@ -127,7 +127,7 @@ const Profile = () => {
                         </div>
                     </div>
                     <JourneyProgress className="w-full" journeys={journeys} journeyComplete={journeyComplete} />
-                    <div className="bg-white all-start flex-col xl:gap-[1vw] gap-[3vw] w-full shadow-custom-5 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[2vw]">
+                    <div className="bg-white all-start flex-col xl:gap-[1vw] gap-[3vw] w-full shadow-custom-5 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] lg:p-[4vw] p-[5vw]">
                         <div className="border-b-[0.2vw] pb-[1vw] border-[#E2E8F0] w-full">
                             <TextTitle title="Thiết Lập Cá Nhân" />
                         </div>

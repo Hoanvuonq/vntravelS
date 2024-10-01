@@ -10,7 +10,7 @@ const ExploreTours = () => {
     return (
         <div className="grid xl:grid-cols-3 grid-cols-2 xl:gap-[2vw] gap-[3vw] exploreTours">
             {ListPost.map(({ title, content }, index) => (
-                <div key={index} className="px-[1vw] all-center flex-col relative focus:outline-none shadow-custom-5 bg-white xl:rounded-[1vw] rounded-[2vw] py-[1vw]">
+                <div key={index} className="xl:px-[1vw] lg:px-[1.5vw] px-[2vw] all-center flex-col relative focus:outline-none shadow-custom-5 bg-white xl:rounded-[1vw] rounded-[2vw] xl:py-[1vw] lg:py-[1.5vw] py-[2vw]">
                     <img src={images[`Post${index + 1}`]} alt="Post List" className="object-cover shadow-custom-3 xl:w-[26vw] w-[50vw] xl:h-[16vw] h-[40vw] xl:rounded-[1vw] rounded-[2vw]" />
                     <p className="text-title">{title}</p>
                     <p className="text-content xl:block hidden">{truncateContent(content, 140)}</p>

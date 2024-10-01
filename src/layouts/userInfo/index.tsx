@@ -27,7 +27,7 @@ const UserInfo = () => {
 
     return (
         <div className="all-center flex-col w-full user-info">
-            <img src={images.Avatar} alt="avatar" className="rounded-full xl:border-[0.2vw] sm:border-[0.7vw] border-[1vw] xl:w-[2vw] lg:w-[14vw] sm:w-[7vw] w-[10vw] border-orange" />
+            <img src={images.Avatar} alt="avatar" className="rounded-full xl:border-[0.2vw] sm:border-[0.7vw] border-[1vw] xl:w-[2vw] lg:w-[14vw] sm:w-[7vw] w-[10vw] border-green" />
             <div className="flex items-center xl:gap-[0.4vw] lg:gap-[0.4vw] sm:gap-[0.4vw] gap-[2vw] py-[0.5vw]">
                 <h1 className="text-username fredoka">{username}</h1>
                 <span className="text-username">-</span>

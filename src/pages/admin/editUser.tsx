@@ -251,7 +251,7 @@ const EditUser: React.FC<PopupProps> = ({ onClose, user }) => {
                                     <div className="w-full xl:flex-row flex-col flex items-center xl:gap-[2vw] gap-[5vw]">
                                         <div className="bg-editUser relative flex items-center px-[2vw] xl:rounded-[1vw] rounded-[2vw] xl:h-[8vw] xl:!w-[19vw] !w-full ">
                                             <div className="flex items-center gap-[0.1vw]">
-                                                <img src={images.Avatar} alt="Avatar" className="rounded-full xl:border-[0.2vw] sm:border-[0.7vw] border-[1vw] xl:w-[8vw] sm:w-[7vw] w-[10vw] border-orange" />
+                                                <img src={images.Avatar} alt="Avatar" className="rounded-full xl:border-[0.2vw] sm:border-[0.7vw] border-[1vw] xl:w-[8vw] sm:w-[7vw] w-[10vw] border-green" />
                                                 <div className="!text-white box-total w-full">
                                                     <div className="flex items-center box-total">
                                                         <img src={images[`Level${userVipLevel}`]} alt={`Level ${userVipLevel}`} className="xl:w-[4vw] w-[16vw]" />

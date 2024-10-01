@@ -34,7 +34,7 @@ const PopupAboutUs: React.FC<PopupProps> = ({ onClose }) => {
                         </div>
                     </div>
                     <div className="flex-1 overflow-y-auto custom-scrollbar">
-                        <div className="xl:p-[2vw] p-[6vw]">
+                        <div className="xl:p-[2vw] p-[8vw]">
                             <ol className="space-y-[1vw] flex flex-col xl:gap-[1vw] gap-[2vw]">
                                 <li>Copyright © 2020 - CÔNG TY CỔ PHẦN DU LỊCH VIỆT NAM VNTRAVEL - Đăng ký kinh doanh số 0108886908 - do Sở Kế hoạch và Đầu tư thành phố Hà Nội cấp lần đầu ngày 04 tháng 09 năm 2019</li>
                             </ol>

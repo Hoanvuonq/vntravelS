@@ -33,7 +33,7 @@ const PopupTerms: React.FC<PopupProps> = ({ onClose }) => {
                         </div>
                     </div>
                     <div className="flex-1 overflow-y-auto custom-scrollbar">
-                        <div className="xl:p-[2vw] p-[6vw]">
+                        <div className="xl:p-[2vw] p-[8vw]">
                             <ol className="space-y-[1vw] flex flex-col xl:gap-[1vw] gap-[2vw] list-decimal">
                                 <li>Mỗi người dùng được yêu cầu hoàn thành tất cả các menu hành động trước khi có thể rút tiền.</li>
                                 <li>Mỗi số điện thoại được đăng ký chỉ một tài khoản.</li>

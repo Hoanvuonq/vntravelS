@@ -66,7 +66,7 @@ const Navbar: React.FC = () => {
                 <img src={images.logoTravelS} alt="Logo" className="xl:w-[10vw] lg:w-[30vw] sm:w-[30vw] w-[40vw] ml-[6vw] xl:hidden block object-cover" />
                 <div className="all-center">
                     <div className="flex items-center gap-1 cursor-pointer " onClick={handleToggleMenu}>
-                        <img src={images.Avatar} alt="avatar" className="rounded-full xl:border-[0.2vw] sm:border-[0.7vw] border-[1vw] xl:w-[2vw] sm:w-[7vw] w-[10vw] border-orange" onClick={handleLogout} />
+                        <img src={images.Avatar} alt="avatar" className="rounded-full xl:border-[0.2vw] sm:border-[0.7vw] border-[1vw] xl:w-[2vw] sm:w-[7vw] w-[10vw] border-green" onClick={handleLogout} />
                     </div>
                 </div>
             </div>

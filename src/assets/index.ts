@@ -11,9 +11,8 @@ export const images: any = {
     Confetti: require('./img/Confetti.gif'),
     Menu1: require('./img/card.png'),
     Menu2: require('./img/withdraw-money.png'),
-    Menu3: require('./img/card-info.png'),
+    Menu3: require('./img/card-info2.png'),
     Menu4: require('./img/password.png'),
-    IconLogOutt: require('./img/exit.png'),
     Post1: require('./img/post01.jpg'),
     Post2: require('./img/post02.jpg'),
     Post3: require('./img/post03.jpg'),
@@ -84,4 +83,6 @@ export const images: any = {
     banUser: require('./img/ban-user.png'),
     deleteUser: require('./img/garbage.png'),
     unbanUser: require('./img/unblock-user.png'),
+    CardInfo: require('./img/card-info.png'),
+    Logout: require('./img/log-out.png'),
 };

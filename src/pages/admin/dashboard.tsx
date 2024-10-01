@@ -113,7 +113,7 @@ const Dashboard = () => {
                 <tr key={user._id}>
                     <td className={`${classes} `}>
                         <div className="flex items-center xl:gap-[0.7vw] gap-[3vw]">
-                            <img src={images.Avatar} alt="Avatar" className="rounded-full xl:border-[0.2vw] sm:border-[0.7vw] border-[1vw] xl:w-[2vw] sm:w-[7vw] w-[12vw] border-orange" />
+                            <img src={images.Avatar} alt="Avatar" className="rounded-full xl:border-[0.2vw] sm:border-[0.7vw] border-[1vw] xl:w-[2vw] sm:w-[7vw] w-[12vw] border-green" />
                             <div className="flex flex-col">
                                 <Typography variant="small" color="blue-gray" className="text-username" {...({} as any)}>
                                     {user.username}

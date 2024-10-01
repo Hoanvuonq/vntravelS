@@ -54,10 +54,14 @@ const PaymentDetail = () => {
     return (
         <div className="flex flex-col gap-[4vw] notes">
             <div className="all-center !justify-between xl:flex-row flex-col xl:gap-[1vw] gap-[8vw] w-full p-[2vw] ">
-                <div className="all-center flex-col gap-[3vw]">
+                <div className="all-center flex-col gap-[3vw] w-full">
                     <div className="grid grid-cols-4 gap-4 xl:w-[35vw] w-full">
                         {amountButtons.map((value, index) => (
-                            <button key={index} className="bg-blue hover:bg-blueHover text-white font-bold xl:py-[0.4vw] py-[2vw] xl:rounded-[0.4vw] rounded-[1vw] hover-items" onClick={() => handleButtonClick(value)}>
+                            <button
+                                key={index}
+                                className="bg-blue amountButtons hover:bg-blueHover text-white font-bold xl:py-[0.4vw] py-[2vw] xl:rounded-[0.4vw] rounded-[1vw] hover-items"
+                                onClick={() => handleButtonClick(value)}
+                            >
                                 {value}
                             </button>
                         ))}
@@ -72,7 +76,7 @@ const PaymentDetail = () => {
                             onChange={(e) => handleAmountChange(e.target.value)}
                         />
                     </div>
-                    <div className="w-[15vw]">
+                    <div className="xl:w-[15vw] w-[30vw]">
                         <Button title="Nạp Tiền" onClick={handleDeposit} />
                     </div>
                 </div>
@@ -83,13 +87,6 @@ const PaymentDetail = () => {
                     </div>
                     {GroupNote}
                 </div>
-            </div>
-            <div className="bg-[#ffe2e5be] text-[#f64e60] xl:mx-[3vw] mx-[1vw] xl:p-[1vw] p-[4vw] xl:rounded-[1vw] rounded-[2vw] flex flex-col xl:gap-[1vw] gap-[2vw]">
-                <h1 className="text-titleNote">Chú ý *</h1>
-                <p className="text-note">
-                    - Nạp sai cú pháp hoặc sai số tài khoản sẽ bị trừ 10% phí giao dịch Ví dụ nạp sai 100.000 trừ 10.000, 200.000 trừ 20.000, 500.000 trừ 50.000, 1 triệu trừ 50.000, 10 triệu trừ 50.000...
-                </p>
-                <p className="text-note">- Mức nạp tối thiểu 50.000 VNĐ</p>
             </div>
         </div>
     );

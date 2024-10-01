@@ -89,7 +89,11 @@ const WithdrawMoney = () => {
                 <div className="all-center w-full flex-col xl:gap-[3vw] gap-[5vw]">
                     <div className="grid grid-cols-4 gap-4 xl:w-[35vw] w-full">
                         {amountButtons.map((value, index) => (
-                            <button key={index} className="bg-blue hover:bg-blueHover text-white font-bold xl:py-[0.4vw] py-[2vw] xl:rounded-[0.4vw] rounded-[1vw] hover-items" onClick={() => handleButtonClick(value)}>
+                            <button
+                                key={index}
+                                className="bg-blue amountButtons hover:bg-blueHover text-white font-bold xl:py-[0.4vw] py-[2vw] xl:rounded-[0.4vw] rounded-[1vw] hover-items"
+                                onClick={() => handleButtonClick(value)}
+                            >
                                 {value}
                             </button>
                         ))}
