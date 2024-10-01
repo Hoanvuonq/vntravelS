@@ -31,7 +31,7 @@ module.exports = withMT({
         alert: "#ff0000",
       },
       backgroundColor: {
-        overlayLoading: "rgba(0, 0, 0, 0.5)",
+        overlayLoading: "rgba(0, 0, 0, 0.32)",
       },
 
       maxWidth: {

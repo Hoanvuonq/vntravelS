@@ -190,7 +190,7 @@ const Dashboard = () => {
 
     return (
         <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw] admin">
-            <div className="rounded-xl w-full h-full p-[1vw] flex flex-col gap-5 level">
+            <div className="rounded-xl w-full h-full p-[1vw] flex flex-col xl:gap-[1vw] gap-[2vw] level">
                 <TextTitle title="Danh Sách Khách Hàng" />
                 <div className="">
                     <Card className="h-full w-full  overflow-scroll" {...({} as any)}>
@@ -206,7 +206,7 @@ const Dashboard = () => {
                                     </Button>
                                 </div>
                             </div>
-                            <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+                            <div className="flex flex-col items-center justify-between xl:gap-[1vw] gap-[2vw] md:flex-row">
                                 <Tabs value="all" className="w-full md:w-max">
                                     <TabsHeader {...({} as any)}>
                                         {TABS.map(({ label, value }) => (
@@ -233,7 +233,7 @@ const Dashboard = () => {
                                                         index === 0 ? 'xl:w-[8vw] w-[50vw]' : 'xl:w-[6vw] w-[30vw]'
                                                     }`}
                                                 >
-                                                    <Typography variant="small" color="blue-gray" className="font-bold leading-none" {...({} as any)}>
+                                                    <Typography variant="small" color="blue-gray" className="text-username uppercase" {...({} as any)}>
                                                         {head}
                                                     </Typography>
                                                 </th>
@@ -244,11 +244,11 @@ const Dashboard = () => {
                                 </table>
                             </div>
                         </CardBody>
-                        <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4" {...({} as any)}>
+                        <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 xl:p-[1vw] p-[2vw]" {...({} as any)}>
                             <Typography variant="small" color="blue-gray" className="font-normal" {...({} as any)}>
                                 Page 1 of 10
                             </Typography>
-                            <div className="flex gap-2">
+                            <div className="flex xl:gap-[0.5vw] gap-[1vw]">
                                 <Button variant="outlined" size="sm" {...({} as any)}>
                                     Previous
                                 </Button>

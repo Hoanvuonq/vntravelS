@@ -4,6 +4,7 @@ import Input from 'components/input/inputProfile';
 import ToastProvider from 'hooks/useToastProvider';
 import { useState } from 'react';
 import { IUserInfo } from 'api/type';
+import { images } from 'assets';
 
 interface PopupProps {
     user: IUserInfo;
@@ -36,7 +37,7 @@ const DepositHistory: React.FC<PopupProps> = ({ user }) => {
         }
         setLoading(true);
         try {
-            await new Promise((resolve) => setTimeout(resolve, 20000000));
+            await new Promise((resolve) => setTimeout(resolve, 1000));
             await adminDeposit(user._id, numericAmount);
             ToastProvider('success', 'Yêu Cầu Nạp Tiền Thành Công');
         } catch (error) {
@@ -50,12 +51,13 @@ const DepositHistory: React.FC<PopupProps> = ({ user }) => {
         <div className="w-full">
             <div className="all-center flex-col xl:gap-[1vw] gap-[3vw]">
                 {loading ? (
-                    <div className="xl:!w-[30vw] h-[15vw] mt-[1vw] all-center  bg-overlayLoading/20">
+                    <div className="xl:!w-[30vw] h-[15vw] mt-[1vw] all-center  bg-overlayLoading/10 flex flex-col ">
+                        <img src={images.logoTravelS} alt="No Data" className="xl:w-[10vw] sm:w-[40vw] w-[50vw] object-cover" />
                         <div className="loader-ellipsis">
-                            <div className="!bg-white"></div>
-                            <div className="!bg-white"></div>
-                            <div className="!bg-white"></div>
-                            <div className="!bg-white"></div>
+                            <div className="!bg-black"></div>
+                            <div className="!bg-black"></div>
+                            <div className="!bg-black"></div>
+                            <div className="!bg-black"></div>
                         </div>
                     </div>
                 ) : (

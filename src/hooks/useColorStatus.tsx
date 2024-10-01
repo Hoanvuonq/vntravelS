@@ -73,3 +73,16 @@ export const formatNumber = (number: number): string => {
         maximumFractionDigits: 2,
     }).format(number);
 };
+
+export const getStatusText = (status: string) => {
+    switch (status) {
+        case 'success':
+            return 'Thành Công';
+        case 'error':
+            return 'Thất Bại';
+        case 'pending':
+            return 'Đang Giao Dịch';
+        default:
+            return status;
+    }
+};

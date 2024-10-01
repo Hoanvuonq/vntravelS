@@ -249,11 +249,11 @@ const WithDrawAllUsuer = () => {
                                 </table>
                             </div>
                         </CardBody>
-                        <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4" {...({} as any)}>
+                        <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 xl:p-[1vw] p-[4vw]" {...({} as any)}>
                             <Typography variant="small" color="blue-gray" className="font-normal" {...({} as any)}>
                                 Page 1 of 10
                             </Typography>
-                            <div className="flex gap-2">
+                            <div className="flex xl:gap-[0.5vw] gap-[1vw]">
                                 <Button variant="outlined" size="sm" {...({} as any)}>
                                     Previous
                                 </Button>

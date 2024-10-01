@@ -3,7 +3,7 @@ import { images } from 'assets';
 import TextTitle from 'components/textTitle';
 import { ITransaction } from 'api/type';
 import { getDepositHistory } from 'api/transaction';
-import { getStatusClassName, getStatusBgColor, getStatusBorderColor, getStatusImage, formatDate, formatAmount } from 'hooks/useColorStatus';
+import { getStatusClassName, getStatusBgColor, getStatusBorderColor, getStatusImage, formatDate, formatAmount, getStatusText } from 'hooks/useColorStatus';
 
 const HistoryPayment = () => {
     const [historyPayment, setHistoryPayment] = useState<ITransaction[]>([]);
@@ -27,32 +27,19 @@ const HistoryPayment = () => {
 
     const hasData = historyPayment.length > 0;
 
-    const getStatusText = (status: string) => {
-        switch (status) {
-            case 'success':
-                return 'Thành Công';
-            case 'error':
-                return 'Thất Bại';
-            case 'pending':
-                return 'Đang Giao Dịch';
-            default:
-                return status;
-        }
-    };
-
     const HistoryPaymentMemo = useMemo(() => {
         return historyPayment.map(({ amount, status, createdAt, _id }, index) => (
-            <div key={index} className={`${getStatusBgColor(status)} rounded-lg p-4 mb-4  flex items-center justify-between`}>
-                <div className="flex items-center">
+            <div key={index} className={`${getStatusBgColor(status)} xl:rounded-[1vw] rounded-[3vw] p-[1vw] mb-[1vw]  flex items-center justify-between history-transaction`}>
+                <div className="flex items-center xl:gap-[2vw] gap-[6vw]">
                     <div className={`bg-white border-2 ${getStatusBorderColor(status)} rounded-full all-center xl:p-[0.5vw] p-[2vw] mr-[1vw]`}>
                         <img src={getStatusImage(status)} alt={status} className={`xl:w-[1.2vw] w-[5vw] xl:h-[1.2vw] h-[5vw] ${status === 'pending' ? 'animate-spin' : ''}`} />
                     </div>
                     <div>
-                        <p className={`${getStatusClassName(status)} font-bold`}>{getStatusText(status)}</p>
-                        <p className="text-sm text-gray-700">Số Lệnh : {_id.slice(-6)}</p>
-                        <p className="text-sm text-gray-700">Số Điểm : {formatAmount(amount)}</p>
-                        <p className="text-sm text-gray-700">Số Tiền : {formatAmount(amount * 5000)} </p>
-                        <p className="text-sm text-gray-700">Thời Gian : {formatDate(createdAt)}</p>
+                        <p className={`${getStatusClassName(status)} !font-bold text-infoBill`}>{getStatusText(status)}</p>
+                        <p className="text-infoBill text-gray-700">Số Lệnh : {_id.slice(-6)}</p>
+                        <p className="text-infoBill text-gray-700">Số Điểm : {formatAmount(amount)}</p>
+                        <p className="text-infoBill text-gray-700">Số Tiền : {formatAmount(amount * 5000)} </p>
+                        <p className="text-infoBill text-gray-700">Thời Gian : {formatDate(createdAt)}</p>
                     </div>
                 </div>
             </div>

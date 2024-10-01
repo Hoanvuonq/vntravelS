@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { images } from 'assets';
 import { getUserTransactionHistory } from 'api/admin';
 import { ITransaction, IUserInfo } from 'api/type';
-import { formatAmount } from 'hooks/useColorStatus';
+import { formatAmount, getStatusBgColor, getStatusBorderColor, getStatusClassName, getStatusText } from 'hooks/useColorStatus';
 
 interface PopupProps {
     user: IUserInfo;
@@ -31,13 +31,21 @@ const DepositHistoryUser: React.FC<PopupProps> = ({ user }) => {
 
     const HistoryPaymentMemo = useMemo(() => {
         return deposits.map((transaction) => (
-            <div key={transaction._id} className="flex items-center justify-between gap-[1vw] border-t-[0.1vw] border-gray-300 pt-[0.5vw]">
-                <div className="flex items-center xl:gap-[2vw] gap-[6vw]">
+            <div key={transaction._id} className={`xl:rounded-[1vw] rounded-[3vw] p-[1vw] flex items-center justify-between shadow-custom-3 history-transaction`}>
+                <div className="flex items-center xl:gap-[1vw] gap-[6vw]">
                     <img src={images.Total1} alt="withdraw" className="xl:w-[3vw] w-[10vw] hover-items" />
-                    <p>{transaction.amount}</p>
-                    <p>{formatAmount(transaction.amount * 5000)}</p>
-                    <p>{new Date(transaction.requestTime).toLocaleString()}</p>
-                    <p>{transaction.status}</p>
+                    <div className="">
+                        <p className="text-infoBill text-gray-700">
+                            <span className="font-bold">Số Điểm :</span> {transaction.amount}
+                        </p>
+                        <p className="text-infoBill text-gray-700">
+                            <span className="font-bold">Số Tiền :</span> {formatAmount(transaction.amount * 5000)}
+                        </p>
+                        <p className="text-infoBill text-gray-700">
+                            <span className="font-bold">Thời Gian :</span> {new Date(transaction.requestTime).toLocaleString()}
+                        </p>
+                        <p className={`${getStatusClassName(transaction.status)} !font-bold text-infoBill`}>{getStatusText(transaction.status)}</p>
+                    </div>
                 </div>
             </div>
         ));
@@ -46,7 +54,7 @@ const DepositHistoryUser: React.FC<PopupProps> = ({ user }) => {
     const hasData = deposits.length > 0;
 
     return (
-        <div className="flex flex-col gap-[1vw]">
+        <div className="flex flex-col gap-[1vw] p-[0.2vw]">
             {loading ? (
                 <div className="w-full all-center ">
                     <div className="loader-ellipsis mt-[1vw]">
