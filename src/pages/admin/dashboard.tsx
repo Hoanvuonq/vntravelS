@@ -15,23 +15,15 @@ interface IUserInfoWithAction extends IUserInfo {
 
 const TABS = [
     {
-        label: 'All',
-        value: 'all',
-    },
-    {
-        label: 'Online',
-        value: 'online',
-    },
-    {
-        label: 'Offline',
-        value: 'offline',
+        label: 'FETCH',
+        value: 'fetch',
     },
 ];
 
 const TABLE_HEAD = ['Thông Tin', 'VIP', 'Số Dư', 'Đăng Ký', 'Trạng Thái', ''];
 
 const Dashboard = () => {
-    const { fetchUserInfo } = useUserInfo();
+    const { fetchAdminUserInfo } = useUserInfo();
     const [users, setUsers] = useState<IUserInfo[]>([]);
     const [filteredUsers, setFilteredUsers] = useState<IUserInfo[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -43,7 +35,7 @@ const Dashboard = () => {
         try {
             const userInfo = await getUserInfo(userId);
             setSelectedUser({ ...userInfo, action: 'edit' });
-            await fetchUserInfo();
+            await fetchAdminUserInfo();
         } catch (error) {
             console.error('Failed to fetch user info:', error);
         }
@@ -53,7 +45,7 @@ const Dashboard = () => {
         try {
             const userInfo = await getUserInfo(userId);
             setSelectedUser({ ...userInfo, action: 'confirmMoney' });
-            await fetchUserInfo();
+            await fetchAdminUserInfo();
         } catch (error) {
             console.error('Failed to fetch user info:', error);
         }
@@ -210,7 +202,7 @@ const Dashboard = () => {
                                 <Tabs value="all" className="w-full md:w-max">
                                     <TabsHeader {...({} as any)}>
                                         {TABS.map(({ label, value }) => (
-                                            <Tab key={value} value={value} {...({} as any)}>
+                                            <Tab key={value} value={value} onClick={() => fetchAdminUserInfo()} {...({} as any)}>
                                                 &nbsp;&nbsp;{label}&nbsp;&nbsp;
                                             </Tab>
                                         ))}

@@ -102,9 +102,7 @@ const EditUser: React.FC<PopupProps> = ({ onClose, user }) => {
         bankName: user.information.bankName || '',
         bankNumber: user.information.bankNumber || '',
     });
-    const formatNumber = (num: string) => {
-        return num.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    };
+
     const [accountData, setAccountData] = useState({
         username: user.username || '',
         phone: user.phone ? `0${user.phone}` : '',
@@ -249,7 +247,7 @@ const EditUser: React.FC<PopupProps> = ({ onClose, user }) => {
                             <div className="w-full h-full py-[2vw] px-[1vw]">
                                 <div className="all-center flex-col xl:gap-[2vw] gap-[6vw] lg:px-[5vw] px-[1vw]">
                                     <div className="w-full xl:flex-row flex-col flex items-center xl:gap-[2vw] gap-[5vw]">
-                                        <div className="bg-editUser relative flex items-center px-[2vw] xl:rounded-[1vw] rounded-[2vw] xl:h-[8vw] xl:!w-[19vw] !w-full h-[26vw]">
+                                        <div className="bg-editUser relative flex items-center px-[2vw] xl:rounded-[1vw] rounded-[2vw] xl:h-[8vw] xl:!w-[25vw] !w-full h-[26vw]">
                                             <div className="flex items-center gap-[0.1vw]">
                                                 <img src={images.Avatar} alt="Avatar" className="rounded-full xl:border-[0.2vw] sm:border-[0.7vw] border-[1vw] xl:w-[8vw] sm:w-[7vw] w-[16vw] border-green" />
                                                 <div className="!text-white box-total w-full">

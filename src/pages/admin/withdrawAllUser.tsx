@@ -18,7 +18,6 @@ interface IUserWithTransactions extends IUserInfo {
 }
 
 const WithDrawAllUsuer = () => {
-    const { fetchUserInfo } = useUserInfo();
     const [users, setUsers] = useState<IUserInfo[]>([]);
     const [filteredUsers, setFilteredUsers] = useState<IUserInfo[]>([]);
     const [isLoading, setIsLoading] = useState(true);

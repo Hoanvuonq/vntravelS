@@ -5,9 +5,6 @@ import BoxTotal from 'components/boxTotal';
 import TextTitle from 'components/textTitle';
 import { Link } from 'react-router-dom';
 import { useUserInfo } from 'hooks/UserContext';
-const formatNumber = (num: string) => {
-    return num.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-};
 
 const Wallet = () => {
     const { userInfo } = useUserInfo();

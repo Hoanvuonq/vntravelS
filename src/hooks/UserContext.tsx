@@ -10,6 +10,7 @@ import { logOutUser } from 'redux/reducer/apiRequest';
 interface UserContextType {
     userInfo: IUserInfo | null;
     fetchUserInfo: () => Promise<void>;
+    fetchAdminUserInfo: () => Promise<void>;
     isLoading: boolean;
 }
 
@@ -24,21 +25,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const accessToken = localStorage.getItem('accessToken');
         const adminToken = localStorage.getItem('adminToken');
 
-        if (!accessToken && !adminToken) {
-            console.log('No token found, skipping user info fetch');
-            return;
-        }
+        if (!accessToken && !adminToken) return;
 
         setIsLoading(true);
         try {
-            let fetchedUserInfo: IUserInfo | IUserInfo[] | null = null;
-            if (accessToken) {
-                fetchedUserInfo = await getUserInformationByToken();
-            } else if (adminToken) {
-                fetchedUserInfo = await getAllUsers();
-            }
+            const fetchedUserInfo = accessToken ? await getUserInformationByToken() : await getAllUsers();
 
-            console.log('Fetched User Info:', fetchedUserInfo);
             if (fetchedUserInfo && !Array.isArray(fetchedUserInfo) && Object.keys(fetchedUserInfo).length > 0) {
                 if (fetchedUserInfo.isBlocked) {
                     alert('Your account has been blocked. Logging out.');
@@ -47,8 +39,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 } else {
                     dispatch(setUserInfo(fetchedUserInfo));
                 }
-            } else {
-                console.error('User info is empty or invalid');
             }
         } catch (error) {
             console.error('Failed to fetch user information:', error);
@@ -57,23 +47,32 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     }, [dispatch]);
 
+    const fetchAdminUserInfo = useCallback(async () => {
+        setIsLoading(true);
+        try {
+            const fetchedUserInfo = await getAllUsers();
+            dispatch(setUserInfo(fetchedUserInfo[0]));
+        } catch (error) {
+            console.error('Failed to fetch admin user information:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    }, [dispatch]);
+
     useEffect(() => {
         const accessToken = localStorage.getItem('accessToken');
         const adminToken = localStorage.getItem('adminToken');
-        if (accessToken || adminToken) {
-            fetchUserInfo();
-        }
+        if (accessToken || adminToken) fetchUserInfo();
 
         const intervalId = setInterval(() => {
-            if (accessToken || adminToken) {
-                fetchUserInfo();
-            }
-        }, 60000);
+            fetchUserInfo();
+            fetchAdminUserInfo(); // Ensure this is called to update admin data
+        }, 60000); // Fetch every 60 seconds
 
         return () => clearInterval(intervalId);
-    }, [fetchUserInfo]);
+    }, [fetchUserInfo, fetchAdminUserInfo]);
 
-    return <UserContext.Provider value={{ userInfo: reduxUserInfo, fetchUserInfo, isLoading }}>{children}</UserContext.Provider>;
+    return <UserContext.Provider value={{ userInfo: reduxUserInfo, fetchUserInfo, fetchAdminUserInfo, isLoading }}>{children}</UserContext.Provider>;
 };
 
 export const useUserInfo = () => {

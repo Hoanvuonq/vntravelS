@@ -77,15 +77,16 @@ export const updateBankInfo = async (userId: string, bankData: any): Promise<any
 };
 
 export const updateUserInfo = async (userId: string, userData: any): Promise<any> => {
+    console.log('Calling updateUserInfo with:', { userId, userData }); // Log để kiểm tra dữ liệu
     try {
         const response = await Api.post(`${url}/updateUserInfo/${userId}`, userData);
+        console.log('Response from API:', response.data); // Log phản hồi từ API
         return response.data;
     } catch (error) {
-        console.error('Error in updateUserInfo :', error);
+        console.error('Error in updateUserInfo:', error);
         throw error;
     }
 };
-
 export const banUser = async (userId: string): Promise<any> => {
     try {
         const response = await Api.post(`${url}/blockUser/${userId}`);
@@ -212,6 +213,35 @@ export const interveneJourney = async (userId: string, journeyIndex: number, add
         }
     } catch (error) {
         console.error('Lỗi trong interveneJourney:', error);
+        throw error;
+    }
+};
+export const getAllInterventions = async (userId: string): Promise<any> => {
+    try {
+        const response = await Api.get(`${url}/getAllInterventions/${userId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error in getAllInterventions:', error);
+        throw error;
+    }
+};
+
+export const editIntervention = async (interventionId: string, journeyIndex: number, additionalPoints: number): Promise<any> => {
+    try {
+        const response = await Api.post(`${url}/editIntervention/${interventionId}`, { journeyIndex, additionalPoints });
+        return response.data;
+    } catch (error) {
+        console.error('Error in editIntervention:', error);
+        throw error;
+    }
+};
+
+export const deleteAllInterventions = async (userId: string): Promise<any> => {
+    try {
+        const response = await Api.delete(`${url}/deleteAllInterventions/${userId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error in deleteAllInterventions:', error);
         throw error;
     }
 };

@@ -1,10 +1,9 @@
 import { images } from 'assets';
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toggleSidebar } from 'redux/slice/sidebarSlice';
-import { RootState } from 'redux/store';
-import { AppDispatch } from 'redux/store';
+import { AppDispatch, RootState } from 'redux/store';
 
 const SidebarMenu = [{ title: 'Danh Sách Rút Tiền', icon: images.wallet, link: '/withdraw-all-user' }];
 const Sidebar: React.FC = () => {

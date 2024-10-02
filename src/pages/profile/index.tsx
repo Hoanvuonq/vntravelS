@@ -1,16 +1,16 @@
-import JourneyProgress from 'components/journeyProgress';
 import { images } from 'assets';
+import JourneyProgress from 'components/journeyProgress';
 import TextTitle from 'components/textTitle';
 import { useUserInfo } from 'hooks/UserContext';
+import ToastProvider from 'hooks/useToastProvider';
 import PopupAboutUs from 'layouts/popup/aboutUs';
 import PopupRequest from 'layouts/popup/requets';
 import PopupTerms from 'layouts/popup/terms';
 import { useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { AppDispatch } from 'redux/store';
 import { logOutUser } from '../../redux/reducer/apiRequest';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState, AppDispatch } from 'redux/store';
-import ToastProvider from 'hooks/useToastProvider';
 interface IInfoButton {
     img: string;
     alt: string;

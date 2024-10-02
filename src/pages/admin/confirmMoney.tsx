@@ -1,4 +1,4 @@
-import { interveneJourney, updateUserInfo } from 'api/admin';
+import { interveneJourney, updateUserInfo, deleteAllInterventions } from 'api/admin';
 import { IUserInfo } from 'api/type';
 import { images } from 'assets';
 import Button from 'components/button';
@@ -13,9 +13,12 @@ import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'redux/store';
 import CustomSlider from './components/custonSlider';
+import { formatNumber } from 'hooks/useColorStatus';
+import { Tooltip } from '@material-tailwind/react';
 
 const DepositUser = lazy(() => import('./components/depositUser'));
 const DepositHistory = lazy(() => import('./components/depositHistoryUser'));
+const LuckyJourney = lazy(() => import('./components/luckyHistoryUser'));
 
 interface IVip {
     title: string;
@@ -46,8 +49,14 @@ const tabItems: ITabs[] = [
         classUnactive: 'border-[#b5b5c3] text-[#b5b5c3]',
     },
     {
-        key: 'withdraw',
+        key: 'historyDeposit',
         title: 'Lịch Sử Nạp Tiền',
+        classActive: 'border-colorBorder text-[#147ed9]',
+        classUnactive: 'border-[#b5b5c3] text-[#b5b5c3]',
+    },
+    {
+        key: 'luckyJourney',
+        title: 'Nhật Ký Đơn May Mắn',
         classActive: 'border-colorBorder text-[#147ed9]',
         classUnactive: 'border-[#b5b5c3] text-[#b5b5c3]',
     },
@@ -67,6 +76,7 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
     const [points, setpoints] = useState<number>(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isFormValid, setIsFormValid] = useState<boolean>(false);
+    const balance = user.balance || 0;
     const userVipLevel = user.vipLevel || 0;
     const journeyComplete = user.journeyComplete || 0;
     const journeys = user.journeys?.length || 0;
@@ -74,6 +84,15 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
     const totalWithdrawn = user.totalWithdrawn || 0;
     const [sliderValue, setSliderValue] = useState<number>(journeys);
     const popupRef = useRef<HTMLDivElement>(null);
+    const { fetchAdminUserInfo } = useUserInfo();
+
+    const validateForm = () => {
+        if (journeyCompleteValue > 0 && selectVip > 0) {
+            setIsFormValid(true);
+        } else {
+            setIsFormValid(false);
+        }
+    };
 
     const handleVipChange = (value: number) => {
         setSelectVip(value);
@@ -90,16 +109,14 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
         validateForm();
     };
 
-    const validateForm = () => {
-        if (journeyCompleteValue > 0 && points > 0 && selectVip > 0) {
-            setIsFormValid(true);
-        } else {
-            setIsFormValid(false);
+    const handleDeleteAllInterventions = async () => {
+        try {
+            await deleteAllInterventions(user._id);
+            ToastProvider('success', 'Đã xóa tất cả đơn may mắn');
+            await fetchUserInfo();
+        } catch (error) {
+            ToastProvider('error', 'Không thể xóa tất cả đơn may mắn');
         }
-    };
-
-    const formatNumber = (num: string) => {
-        return num.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     };
 
     const handleUpdateUserInfo = async () => {
@@ -117,13 +134,13 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
             const response = await updateUserInfo(user._id, updatedData);
             if (response.status) {
                 await fetchUserInfo();
-                ToastProvider('success', 'User information updated successfully');
+                ToastProvider('success', 'Cập Nhật Thành Công');
             } else {
-                ToastProvider('error', response.message || 'Failed to update user information');
+                ToastProvider('error', response.message || 'Không Thể Cập Nhật Thông Tin');
             }
         } catch (error) {
-            ToastProvider('error', 'Error updating user info:', String(error));
-            ToastProvider('error', 'Failed to update user information');
+            ToastProvider('error', 'Lỗi cập nhật thông tin người dùng:', String(error));
+            ToastProvider('error', 'Không Thể Cập Nhật Thông Tin');
         } finally {
             setIsLoading(false);
         }
@@ -139,7 +156,7 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
             const journeyIndex = sliderValue;
             const additionalPoints = points;
 
-            if (journeyIndex >= journeyComplete) {
+            if (journeyIndex > journeyComplete) {
                 ToastProvider('warning', 'Người dùng đã hoàn thành hành trình của mình');
                 setIsLoading(false);
                 return;
@@ -149,8 +166,7 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
             await fetchUserInfo();
             ToastProvider('success', 'Cập Nhật Thành Công');
         } catch (error) {
-            console.error('Cập Nhật Thất Bại:', error);
-            ToastProvider('error', 'Cập Nhật Thất Bại');
+            ToastProvider('error', 'Không Thể Setup Đơn May Mắn');
         } finally {
             setIsLoading(false);
         }
@@ -206,7 +222,7 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
                             <div className="w-full h-full py-[2vw] px-[1vw]">
                                 <div className="all-center flex-col xl:gap-[1vw] gap-[6vw] lg:px-[5vw] px-[1vw]">
                                     <div className="w-full xl:flex-row flex-col flex justify-start items-center xl:gap-[2vw] gap-[5vw]">
-                                        <div className="bg-editUser flex items-center px-[2vw] xl:rounded-[1vw] rounded-[2vw] xl:h-[8vw] xl:!w-[20vw] !w-full h-[26vw] ">
+                                        <div className="bg-editUser flex items-center px-[2vw] xl:rounded-[1vw] rounded-[2vw] xl:h-[8vw] xl:!w-[25vw] !w-full h-[26vw] ">
                                             <div className="flex items-center gap-[0.1vw]">
                                                 <img src={images.Avatar} alt="Avatar" className="rounded-full xl:border-[0.2vw] sm:border-[0.7vw] border-[1vw] xl:w-[8vw] sm:w-[7vw] w-[16vw] border-green" />
                                                 <div className="!text-white box-total w-full">
@@ -217,14 +233,36 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="shadow-custom-3 bg-white xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:gap-[1vw] flex flex-col gap-[3vw] xl:w-[20vw] w-full">
+                                        <Tooltip content="Fetch">
+                                            <img
+                                                src={images.fetch}
+                                                alt="fetch"
+                                                className="hover-items cursor-pointer xl:w-[1.5vw] w-[12vw] icon-fetch"
+                                                onClick={async () => {
+                                                    try {
+                                                        await fetchAdminUserInfo();
+                                                        ToastProvider('success', 'Dữ liệu đã được cập nhật thành công');
+                                                    } catch (error) {
+                                                        console.error('Lỗi khi cập nhật dữ liệu:', error);
+                                                        ToastProvider('error', 'Có lỗi xảy ra khi cập nhật dữ liệu');
+                                                    }
+                                                }}
+                                            />
+                                        </Tooltip>
+                                        <div className="shadow-custom-3 bg-white xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:gap-[1vw] flex flex-col gap-[3vw] xl:w-[18vw] w-full">
                                             <div className="flex items-center xl:gap-[0.5vw] gap-[1vw] wallet-item">
                                                 <p className="text-title xl:w-[4vw] w-[18vw]">Đã Nạp: </p>
-                                                <p className="text-title ">{formatNumber(totalDeposited.toString())}</p>
+                                                <p className="text-title ">{formatNumber(totalDeposited)}</p>
                                             </div>
                                             <div className="flex items-center xl:gap-[0.5vw] gap-[1vw] wallet-item">
                                                 <p className="text-title xl:w-[4vw] w-[18vw]">Đã rút: </p>
-                                                <p className="text-title ">{formatNumber(totalWithdrawn.toString())}</p>
+                                                <p className="text-title ">{formatNumber(totalWithdrawn)}</p>
+                                            </div>
+                                        </div>
+                                        <div className="shadow-custom-3 bg-white xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:gap-[1vw] flex flex-col gap-[3vw] xl:w-[18vw] w-full">
+                                            <div className="flex items-center xl:gap-[0.5vw] gap-[1vw] wallet-item">
+                                                <p className="text-title xl:w-[4vw] w-[18vw]">Số Dư: </p>
+                                                <p className="text-title ">{formatNumber(balance)}</p>
                                             </div>
                                         </div>
                                         <JourneyProgress className="xl:w-[40vw] w-full" journeys={journeys} journeyComplete={journeyComplete} />
@@ -266,16 +304,23 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
                                             </div>
                                         </div>
                                         <div className="bg-white flex flex-col gap-[1vw] shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:w-[36vw] w-full xl:h-[20vw] h-full">
-                                            <div className="payment flex items-center xl:gap-[1vw] gap-[3vw]">
-                                                {tabItems.map((tab) => (
-                                                    <div
-                                                        key={tab.key}
-                                                        className={`text-content hover-items xl:border-b-[0.2vw] border-b-[0.5vw] ${activeTab === tab.key ? tab.classActive : tab.classUnactive}`}
-                                                        onClick={() => setActiveTab(tab.key)}
-                                                    >
-                                                        {tab.title}
-                                                    </div>
-                                                ))}
+                                            <div className="payment flex items-center w-full justify-between">
+                                                <div className="flex items-center xl:gap-[1vw] gap-[3vw]">
+                                                    {tabItems.map((tab) => (
+                                                        <div
+                                                            key={tab.key}
+                                                            className={`text-content hover-items xl:border-b-[0.2vw] border-b-[0.5vw] ${activeTab === tab.key ? tab.classActive : tab.classUnactive}`}
+                                                            onClick={() => setActiveTab(tab.key)}
+                                                        >
+                                                            {tab.title}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                {activeTab === 'luckyJourney' && (
+                                                    <Tooltip content="Xóa Tất Cả Đơn May Mắn">
+                                                        <img src={images.deleteUser} alt="Delete" className="hover-items cursor-pointer xl:w-[1.5vw] w-[12vw]" onClick={handleDeleteAllInterventions} />
+                                                    </Tooltip>
+                                                )}
                                             </div>
                                             <div className="flex-1 overflow-y-auto custom-scrollbar">
                                                 <Suspense
@@ -289,7 +334,8 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
                                                     }
                                                 >
                                                     {activeTab === 'deposit' && <DepositUser user={user} />}
-                                                    {activeTab === 'withdraw' && <DepositHistory user={user} />}
+                                                    {activeTab === 'historyDeposit' && <DepositHistory user={user} />}
+                                                    {activeTab === 'luckyJourney' && <LuckyJourney user={user} />}
                                                 </Suspense>
                                             </div>
                                         </div>

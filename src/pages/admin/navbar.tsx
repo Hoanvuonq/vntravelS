@@ -1,11 +1,11 @@
 import { images } from 'assets';
+import ToastProvider from 'hooks/useToastProvider';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { logOutAdmin } from 'redux/reducer/apiRequest';
 import { toggleMenuNavbar } from 'redux/slice/menuNavbarSlice';
 import { toggleSidebar } from 'redux/slice/sidebarSlice';
-import { logOutAdmin } from 'redux/reducer/apiRequest';
-import ToastProvider from 'hooks/useToastProvider';
-import { Navigate, useNavigate } from 'react-router-dom';
 import { AppDispatch } from 'redux/store';
 
 const useClickOutside = (ref: React.RefObject<HTMLDivElement>, callback: () => void) => {

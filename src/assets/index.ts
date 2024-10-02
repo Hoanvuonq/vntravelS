@@ -85,4 +85,7 @@ export const images: any = {
     unbanUser: require('./img/unblock-user.png'),
     CardInfo: require('./img/card-info.png'),
     Logout: require('./img/log-out.png'),
+    Star: require('./img/falling-star.png'),
+    Send: require('./img/send.png'),
+    fetch: require('./img/reload.png'),
 };

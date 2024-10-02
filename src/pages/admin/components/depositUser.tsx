@@ -5,12 +5,13 @@ import ToastProvider from 'hooks/useToastProvider';
 import { useState } from 'react';
 import { IUserInfo } from 'api/type';
 import { images } from 'assets';
-
+import { useUserInfo } from 'hooks/UserContext';
 interface PopupProps {
     user: IUserInfo;
 }
 
 const DepositHistory: React.FC<PopupProps> = ({ user }) => {
+    const { fetchUserInfo } = useUserInfo();
     const [amount, setAmount] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -39,6 +40,7 @@ const DepositHistory: React.FC<PopupProps> = ({ user }) => {
         try {
             await new Promise((resolve) => setTimeout(resolve, 1000));
             await adminDeposit(user._id, numericAmount);
+            await fetchUserInfo();
             ToastProvider('success', 'Yêu Cầu Nạp Tiền Thành Công');
         } catch (error) {
             ToastProvider('error', 'Yêu Cầu Nạp Tiền Thất Bại !!');
