@@ -109,7 +109,7 @@ const WithDrawAllUsuer = () => {
                     <tr key={transaction._id}>
                         <td className={`${classes}`}>
                             <div className="flex items-center xl:gap-[1vw] gap-[3vw]">
-                                <img src={images.Avatar} alt="Avatar" className="rounded-full xl:border-[0.2vw] sm:border-[0.7vw] border-[1vw] xl:w-[2vw] sm:w-[7vw] w-[12vw] border-green" />
+                                <img src={images.Avatar} alt="Avatar" className="xl:w-[2vw] sm:w-[7vw] w-[12vw]" />
                                 <div className="flex flex-col">
                                     <Typography variant="small" color="blue-gray" className="text-username" {...({} as any)}>
                                         {user.username}
@@ -128,7 +128,7 @@ const WithDrawAllUsuer = () => {
                             </div>
                         </td>
                         <td className={`${classes} `}>
-                            <div className="flex flex-col text-center -ml-[1vw] ">
+                            <div className="flex flex-col ">
                                 <Typography variant="small" color="blue-gray" className="text-content !font-medium" {...({} as any)}>
                                     {user.information.bankName}
                                 </Typography>
@@ -147,8 +147,7 @@ const WithDrawAllUsuer = () => {
                                 </Typography>
                             </div>
                         </td>
-
-                        <td className={`${classes}`}>
+                        <td className={`${classes} !px-[2vw]`}>
                             <Typography variant="small" color="blue-gray" className="text-content" {...({} as any)}>
                                 {formatNumber(transaction.pointsEquivalent || 0)}
                             </Typography>
@@ -170,10 +169,10 @@ const WithDrawAllUsuer = () => {
                             <td className={`${classes} xl!:w-[8vw] w-[30vw]`} key={transaction._id}>
                                 <div className="flex items-center gap-[1vw]">
                                     <Tooltip content="Xác Nhận">
-                                        <img src={images.checkIcon} alt="check" className="w-[1vw] hover-items" onClick={() => handleConfirm(transaction._id)} />
+                                        <img src={images.checkIcon} alt="check" className="w-[2vw] hover-items" onClick={() => handleConfirm(transaction._id)} />
                                     </Tooltip>
                                     <Tooltip content="Hủy Đơn">
-                                        <img src={images.errorIcon} alt="reject" className="w-[1vw] hover-items" onClick={() => handleReject(transaction._id)} />
+                                        <img src={images.errorIcon} alt="reject" className="w-[2vw] hover-items" onClick={() => handleReject(transaction._id)} />
                                     </Tooltip>
                                 </div>
                             </td>
@@ -216,7 +215,7 @@ const WithDrawAllUsuer = () => {
             <div className="rounded-xl w-full h-full p-[1vw] flex flex-col gap-5 level">
                 <TextTitle title="Danh Sách Rút Tiền" />
                 <div className="">
-                    <Card className="h-full w-full overflow-scroll" {...({} as any)}>
+                    <Card className="h-full w-full" {...({} as any)}>
                         <CardHeader floated={false} shadow={false} className="rounded-none" {...({} as any)}>
                             <div className="flex flex-col items-center justify-between gap-4 py-[1vw] md:flex-row">
                                 <div className="w-full md:w-max"></div>
@@ -225,7 +224,7 @@ const WithDrawAllUsuer = () => {
                                 </div>
                             </div>
                         </CardHeader>
-                        <CardBody className="overflow-scroll px-0" {...({} as any)}>
+                        <CardBody className="overflow-scroll px-0 custom-scrollbar" {...({} as any)}>
                             <div className="overflow-x-auto">
                                 <table className="mt-[1vw] w-full min-w-max table-auto text-left">
                                     <thead>
@@ -233,8 +232,8 @@ const WithDrawAllUsuer = () => {
                                             {TABLE_HEAD.map((head, index) => (
                                                 <th
                                                     key={head}
-                                                    className={`border-y border-blue-gray-100 bg-blue-gray-50/50 xl:p-[1vw] p-[2vw] ${index > 1 && index < 4 ? 'hidden md:table-cell' : ''} ${
-                                                        index === 0 ? 'xl:w-[14vw] w-[50vw]' : 'xl:w-[12vw] w-[30vw]'
+                                                    className={`border-y border-blue-gray-100 bg-blue-gray-50/50 xl:p-[1vw] p-[2vw] ${index > 1 ? ' md:table-cell' : ''} ${
+                                                        index === 0 ? 'xl:w-[14vw]  md:w-[40vw] w-[50vw]' : index === 2 ? 'xl:w-[12vw] md:w-[40vw] w-[65vw] ' : 'xl:w-[12vw]  md:w-[40vw] w-[50vw]'
                                                     }`}
                                                 >
                                                     <Typography variant="small" className="text-username uppercase" {...({} as any)}>

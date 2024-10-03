@@ -81,18 +81,14 @@
 }
 
 .custom-scrollbar {
-    // Ẩn thanh cuộn mặc định
     &::-webkit-scrollbar {
       width: 4px;
       background-color: transparent;
     }
-  
-    // Ẩn track
     &::-webkit-scrollbar-track {
       background: transparent;
     }
   
-    // Tùy chỉnh thumb
     &::-webkit-scrollbar-thumb {
       background-color: rgba(0, 0, 0, 0.2);
       border-radius: 4px;
@@ -102,23 +98,28 @@
       }
     }
   
-    // Ẩn các nút mũi tên
     &::-webkit-scrollbar-button {
       display: none;
     }
   
-    // Hỗ trợ Firefox
     scrollbar-width: thin;
     scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
   
-    // Tạo hiệu ứng hover cho container
     &:hover {
       &::-webkit-scrollbar-thumb {
         background-color: rgba(0, 0, 0, 0.3);
       }
     }
   }
-// Navbar
+
+  .scrollbar-hidden {
+    -ms-overflow-style: none;  /* Internet Explorer and Edge */
+    scrollbar-width: none;      /* Firefox */
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+    display: none;              /* Safari and Chrome */
+}
 
 .header {
     width: calc(100% - 16.4vw);

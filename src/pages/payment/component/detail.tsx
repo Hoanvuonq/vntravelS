@@ -59,7 +59,7 @@ const PaymentDetail = () => {
                         {amountButtons.map((value, index) => (
                             <button
                                 key={index}
-                                className="bg-blue amountButtons hover:bg-blueHover text-white font-bold xl:py-[0.4vw] py-[2vw] xl:rounded-[0.4vw] rounded-[1vw] hover-items"
+                                className="bg-blue amountButtons hover:bg-blueHover text-white font-bold xl:py-[0.4vw] py-[2vw] xl:rounded-[0.4vw] rounded-[2vw] hover-items"
                                 onClick={() => handleButtonClick(value)}
                             >
                                 {value}

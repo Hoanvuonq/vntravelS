@@ -8,4 +8,5 @@ export const formSchema = Yup.object().shape({
         .required('Xác nhận mật khẩu là bắt buộc'),
     passBank_user: Yup.string().required('Mật Khẩu Rút Tiền là bắt buộc'),
     phone_user: Yup.string().matches(/^\d+$/, 'Số điện thoại phải là số').required('Số điện thoại là bắt buộc'),
+    invitationCode_user: Yup.string().required('Mã mời là bắt buộc'),
 });

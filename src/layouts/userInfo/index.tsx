@@ -27,14 +27,14 @@ const UserInfo = () => {
 
     return (
         <div className="all-center flex-col w-full user-info">
-            <img src={images.Avatar} alt="avatar" className="rounded-full xl:border-[0.2vw] sm:border-[0.7vw] border-[1vw] xl:w-[2vw] lg:w-[14vw] sm:w-[7vw] w-[10vw] border-green" />
+            <img src={images.Avatar} alt="avatar" className="xl:w-[2vw] lg:w-[14vw] md:w-[16vw] sm:w-[7vw] w-[16vw] object-cover" />
             <div className="flex items-center xl:gap-[0.4vw] lg:gap-[0.4vw] sm:gap-[0.4vw] gap-[2vw] py-[0.5vw]">
                 <h1 className="text-username fredoka">{username}</h1>
                 <span className="text-username">-</span>
                 <p className="text-[#8094ae] text-level fredoka">Khách hàng</p>
             </div>
-            <div className="flex xl:gap-[0.2vw] sm:gap-[0.4vw] gap-[1.6vw] items-center">
-                <img src={images.Coin} alt="Coin" className="rounded-full xl:w-[1.2vw] lg:w-[6vw] sm:w-[2vw] w-[4vw]" />
+            <div className="flex xl:gap-[0.2vw] lg:gap-[0.4vw] md:gap-[0.4vw] sm:gap-[0.4vw] gap-[1.6vw] items-center">
+                <img src={images.Coin} alt="Coin" className="rounded-full xl:w-[1.2vw] lg:w-[6vw] md:w-[6vw] sm:w-[2vw] w-[6vw]" />
                 <p className="font-medium text-balance text-[#c8982f] fredoka">{formatNumber(balance)}</p>
             </div>
         </div>

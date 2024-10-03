@@ -252,18 +252,62 @@
             line-height: 5vw;
         }
     }
+    .text-titleBalance {
+        font-size: 1vw;
+        line-height: 1vw;
+        font-weight: 600;
+        font-family: "Fredoka", sans-serif;
+        @media (max-width: 1024px) {
+            font-size: 4vw;
+            line-height: 5vw;
+        }
+        @media (max-width: 512px) {
+            font-size: 5vw;
+            line-height: 7vw;
+        }
+    }
 
     .text-content {
         font-size: 0.8vw;
         line-height: 0.8vw;
         color: #166be0;
+        font-family: "Fredoka", sans-serif;
         @media (max-width: 1024px) {
             font-size: 3vw;
             line-height: 4vw;
         }
         @media (max-width: 512px) {
+            font-size: 3.5vw;
+            line-height: 5vw;
+        }
+    }
+    .text-titleUser {
+        font-size: 1vw;
+        line-height: 1vw;
+        font-weight: 700;
+        text-transform: uppercase;
+        @media (max-width: 1024px) {
+            font-size: 3.2vw;
+            line-height: 5vw;
+        }
+        @media (max-width: 512px) {
+            font-size: 4vw;
+            line-height: 5vw;
+        }
+    }
+    .text-contentUser {
+        font-size: 1vw;
+        line-height: 1vw;
+        color: #0950b3;
+        font-weight: 600;
+        font-family: "Fredoka", sans-serif;
+        @media (max-width: 1024px) {
             font-size: 3vw;
             line-height: 4vw;
+        }
+        @media (max-width: 512px) {
+            font-size: 4vw;
+            line-height: 5vw;
         }
     }
 }
@@ -364,6 +408,19 @@
         }
     }
 }
+.text-noteLogin {
+    font-size: 0.8vw;
+    line-height: 1.5vw;
+    font-weight: 400;
+    @media (max-width: 1024px) {
+        font-size: 2.5vw;
+        line-height: 4vw;
+    }
+    @media (max-width: 512px) {
+        font-size: 3.5vw;
+        line-height: 5vw;
+    }
+}
 
 .payment {
     .text-title {
@@ -436,14 +493,14 @@
     .text-title {
         font-size: 1.5vw;
         line-height: 2vw;
-        font-weight: 500;
+        font-weight: 600;
         font-family: "Fredoka", sans-serif;
         @media (max-width: 1024px) {
             font-size: 3.5vw;
             line-height: 5vw;
         }
         @media (max-width: 521px) {
-            font-size: 4vw;
+            font-size: 4.4vw;
             line-height: 7vw;
         }
     }
@@ -453,7 +510,7 @@
         line-height: 0.8vw;
         font-weight: 400;
         @media (max-width: 1024px) {
-            font-size: 3vw;
+            font-size: 3.2vw;
             line-height: 5vw;
         }
     }
@@ -538,8 +595,8 @@
         font-weight: 600;
         font-family: "Fredoka", sans-serif;
         @media (max-width: 1024px) {
-            font-size: 4vw;
-            line-height: 5vw;
+            font-size: 2.5vw;
+            line-height: 4vw    
         }
         @media (max-width: 512px) {
             font-size: 3.2vw;
@@ -552,8 +609,8 @@
         font-weight: 400;
         font-family: "Fredoka", sans-serif;
         @media (max-width: 1024px) {
-            font-size: 4vw;
-            line-height: 5vw;
+            font-size: 2.5vw;
+            line-height: 4vw;
         }
         @media (max-width: 512px) {
             font-size: 3.2vw;
@@ -567,8 +624,8 @@
         font-weight: 600;
         font-family: "Fredoka", sans-serif;
         @media (max-width: 1024px) {
-            font-size: 4vw;
-            line-height: 5vw;
+            font-size: 2.5vw;
+            line-height: 4vw    
         }
         @media (max-width: 512px) {
             font-size: 3.2vw;

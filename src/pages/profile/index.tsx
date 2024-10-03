@@ -104,7 +104,7 @@ const Profile = () => {
                 <div className="all-center flex-col xl:gap-[2vw] gap-[8vw] lg:px-[5vw] px-[1vw]">
                     <div className="bg-editUser relative xl:rounded-[1vw] rounded-[2vw] xl:h-[8vw] h-[26vw] ">
                         <div className="all-center cursor-pointer xl:h-[14vw] h-[46vw]">
-                            <img src={images.Avatar} alt="Avatar" className="rounded-full xl:border-[0.2vw] sm:border-[0.7vw] border-[1vw] xl:w-[6vw] lg:w-[12vw] sm:w-[20vw] w-[18vw] border-green" />
+                            <img src={images.Avatar} alt="Avatar" className="xl:w-[6vw] lg:w-[12vw] sm:w-[20vw] w-[18vw] " />
                             <div className="absolute top-[1vw]  !text-white box-total">
                                 <p className="text-titleLevel">0{userInfo?.phone || 'Số Điện Thoại'}</p>
                             </div>

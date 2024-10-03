@@ -65,17 +65,17 @@ const AccountInfo: IAccountInfo[] = [
 
 const listTool = [
     {
-        label: 'Ban User',
+        label: 'Chặn User',
         images: images.banUser,
         action: 'ban',
     },
     {
-        label: 'Unban User',
+        label: 'Bỏ Chặn User',
         images: images.unbanUser,
         action: 'unban',
     },
     {
-        label: 'Delete User',
+        label: 'Xóa User',
         images: images.deleteUser,
         action: 'delete',
     },
@@ -247,9 +247,9 @@ const EditUser: React.FC<PopupProps> = ({ onClose, user }) => {
                             <div className="w-full h-full py-[2vw] px-[1vw]">
                                 <div className="all-center flex-col xl:gap-[2vw] gap-[6vw] lg:px-[5vw] px-[1vw]">
                                     <div className="w-full xl:flex-row flex-col flex items-center xl:gap-[2vw] gap-[5vw]">
-                                        <div className="bg-editUser relative flex items-center px-[2vw] xl:rounded-[1vw] rounded-[2vw] xl:h-[8vw] xl:!w-[25vw] !w-full h-[26vw]">
+                                        <div className="bg-editUser relative flex items-center px-[2vw] xl:rounded-[1vw] rounded-[2vw] xl:h-[8vw] xl:!w-[25vw] !w-full h-[32vw] ">
                                             <div className="flex items-center gap-[0.1vw]">
-                                                <img src={images.Avatar} alt="Avatar" className="rounded-full xl:border-[0.2vw] sm:border-[0.7vw] border-[1vw] xl:w-[8vw] sm:w-[7vw] w-[16vw] border-green" />
+                                                <img src={images.Avatar} alt="Avatar" className="xl:w-[5vw] sm:w-[16vw] w-[18vw]" />
                                                 <div className="!text-white box-total w-full">
                                                     <div className="flex items-center box-total">
                                                         <img src={images[`Level${userVipLevel}`]} alt={`Level ${userVipLevel}`} className="xl:w-[4vw] w-[16vw]" />
@@ -265,7 +265,7 @@ const EditUser: React.FC<PopupProps> = ({ onClose, user }) => {
                                             <div className="flex items-center xl:gap-[1vw] gap-[3vw]">
                                                 {listTool.map(({ label, images, action }, index) => (
                                                     <Tooltip key={index} content={label}>
-                                                        <img src={images} alt={label} className="hover-items cursor-pointer xl:w-[1.5vw] w-[8vw]" onClick={() => handleUserAction(action)} />
+                                                        <img src={images} alt={label} className="hover-items cursor-pointer xl:w-[1.5vw] w-[6vw]" onClick={() => handleUserAction(action)} />
                                                     </Tooltip>
                                                 ))}
                                             </div>

@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import TextTitle from 'components/textTitle';
 import { Card, CardHeader, Input, Typography, Button, CardBody, CardFooter, Tabs, TabsHeader, Tab, Tooltip } from '@material-tailwind/react';
 import { images } from 'assets';
-import { getAllUsers, getUserInfo, searchUser } from 'api/admin';
+import { getAllUsers, getUserInfo, searchUser, getAllInvitationCodes } from 'api/admin';
 import { IUserInfo } from 'api/type';
 import EditUser from './editUser';
 import ConfirmMoney from './confirmMoney';
@@ -30,6 +30,31 @@ const Dashboard = () => {
     const [error, setError] = useState<string | null>(null);
     const [selectedUser, setSelectedUser] = useState<IUserInfoWithAction | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
+    const [invitationCodes, setInvitationCodes] = useState<string[]>([]);
+
+    useEffect(() => {
+        const fetchInvitationCodes = async () => {
+            try {
+                const codes = await getAllInvitationCodes();
+                setInvitationCodes(codes);
+            } catch (error) {
+                console.error('Failed to fetch invitation codes:', error);
+            }
+        };
+
+        fetchInvitationCodes();
+    }, []);
+
+    const handleCopyCode = (code: string) => {
+        navigator.clipboard
+            .writeText(code)
+            .then(() => {
+                alert(`Copied: ${code}`);
+            })
+            .catch((err) => {
+                console.error('Failed to copy code:', err);
+            });
+    };
 
     const handleEditUser = async (userId: string) => {
         try {
@@ -105,7 +130,7 @@ const Dashboard = () => {
                 <tr key={user._id}>
                     <td className={`${classes} `}>
                         <div className="flex items-center xl:gap-[0.7vw] gap-[3vw]">
-                            <img src={images.Avatar} alt="Avatar" className="rounded-full xl:border-[0.2vw] sm:border-[0.7vw] border-[1vw] xl:w-[2vw] sm:w-[7vw] w-[12vw] border-green" />
+                            <img src={images.Avatar} alt="Avatar" className="xl:w-[2vw] sm:w-[7vw] w-[12vw]" />
                             <div className="flex flex-col">
                                 <Typography variant="small" color="blue-gray" className="text-username" {...({} as any)}>
                                     {user.username}
@@ -118,7 +143,7 @@ const Dashboard = () => {
                     </td>
                     <td className={`${classes}`}>
                         <div className="flex items-center -ml-[1vw]">
-                            <img src={images[`Level${user.vipLevel}`]} alt={user.username} className="xl:w-[3vw] w-[12vw]" />
+                            <img src={images[`Level${user.vipLevel}`]} alt={user.username} className="xl:w-[3vw] lg:w-[5vw] md:w-[6.6vw] sm:w-[4vw] w-[12vw]" />
                             <Typography variant="small" color="blue-gray" className="text-vip " {...({} as any)}>
                                 VIP {user.vipLevel}
                             </Typography>
@@ -126,13 +151,13 @@ const Dashboard = () => {
                     </td>
                     <td className={`${classes}`}>
                         <div className="flex items-center gap-3">
-                            <Typography variant="small" color="blue-gray" className="text-content" {...({} as any)}>
+                            <Typography variant="small" color="blue-gray" className="text-content !font-semibold" {...({} as any)}>
                                 {formatNumber(user.balance)}
                             </Typography>
                         </div>
                     </td>
                     <td className={`${classes} xl:!w-[4vw] !w-[10vw]`}>
-                        <Typography variant="small" color="blue-gray" className="text-content" {...({} as any)}>
+                        <Typography variant="small" color="blue-gray" className="text-content !font-semibold" {...({} as any)}>
                             {new Date(user.createdAt).toLocaleDateString()}
                         </Typography>
                     </td>
@@ -144,12 +169,12 @@ const Dashboard = () => {
                         </div>
                     </td>
                     <td className={`${classes} xl:!w-[4vw] !w-[10vw]`}>
-                        <div className="grid grid-cols-3 gap-2">
+                        <div className="grid grid-cols-2 gap-2">
                             <Tooltip content="Chỉnh Sửa User">
-                                <img src={images.Edit} alt="Edit" className="hover-items cursor-pointer xl:w-[2vw] w-[12vw]" onClick={() => handleEditUser(user._id)} />
+                                <img src={images.Edit} alt="Edit" className="hover-items cursor-pointer xl:w-[2vw] lg:w-[5vw] md:w-[5vw] w-[8vw]" onClick={() => handleEditUser(user._id)} />
                             </Tooltip>
                             <Tooltip content="Chỉnh Sửa Hành Trình">
-                                <img src={images.editPayment} alt="Edit Evaluate" className="hover-items cursor-pointer xl:w-[2vw] w-[12vw]" onClick={() => handleConfirmMoney(user._id)} />
+                                <img src={images.editPayment} alt="Edit Evaluate" className="hover-items cursor-pointer xl:w-[2vw] lg:w-[5vw] md:w-[5vw] w-[8vw]" onClick={() => handleConfirmMoney(user._id)} />
                             </Tooltip>
                         </div>
                     </td>
@@ -185,7 +210,7 @@ const Dashboard = () => {
             <div className="rounded-xl w-full h-full p-[1vw] flex flex-col xl:gap-[1vw] gap-[2vw] level">
                 <TextTitle title="Danh Sách Khách Hàng" />
                 <div className="">
-                    <Card className="h-full w-full  overflow-scroll" {...({} as any)}>
+                    <Card className="h-full w-full" {...({} as any)}>
                         <CardHeader floated={false} shadow={false} className="rounded-none" {...({} as any)}>
                             <div className="mb-8 flex items-center justify-between gap-8">
                                 <div />
@@ -199,21 +224,19 @@ const Dashboard = () => {
                                 </div>
                             </div>
                             <div className="flex flex-col items-center justify-between xl:gap-[1vw] gap-[2vw] md:flex-row">
-                                <Tabs value="all" className="w-full md:w-max">
-                                    <TabsHeader {...({} as any)}>
-                                        {TABS.map(({ label, value }) => (
-                                            <Tab key={value} value={value} onClick={() => fetchAdminUserInfo()} {...({} as any)}>
-                                                &nbsp;&nbsp;{label}&nbsp;&nbsp;
-                                            </Tab>
-                                        ))}
-                                    </TabsHeader>
+                                <Tabs value="all" className="w-full md:w-max flex flex-wrap xl:gap-[1vw] gap-[2vw]">
+                                    {invitationCodes.map((code) => (
+                                        <div key={code} className="cursor-pointer p-1 border border-gray-300 rounded-md hover:bg-gray-100" onClick={() => handleCopyCode(code)} {...({} as any)}>
+                                            {code}
+                                        </div>
+                                    ))}
                                 </Tabs>
                                 <div className="w-full md:w-72">
                                     <Input label="Search" value={searchQuery} onChange={handleSearchInputChange} onKeyPress={handleSearch} {...({} as any)} />
                                 </div>
                             </div>
                         </CardHeader>
-                        <CardBody className="overflow-scroll px-0" {...({} as any)}>
+                        <CardBody className="overflow-scroll px-0 custom-scrollbar" {...({} as any)}>
                             <div className="overflow-x-auto">
                                 <table className="mt-[1vw] w-full min-w-max table-auto text-left">
                                     <thead>
@@ -222,7 +245,7 @@ const Dashboard = () => {
                                                 <th
                                                     key={head}
                                                     className={`border-y border-blue-gray-100 bg-blue-gray-50/50 xl:p-[1vw] p-[4vw] ${index > 1 && index < 5 ? '' : ''} ${
-                                                        index === 0 ? 'xl:w-[8vw] w-[50vw]' : 'xl:w-[6vw] w-[30vw]'
+                                                        index === 0 ? 'xl:w-[8vw] w-[50vw]' : 'xl:w-[6vw] w-[36vw]'
                                                     }`}
                                                 >
                                                     <Typography variant="small" color="blue-gray" className="text-username uppercase" {...({} as any)}>

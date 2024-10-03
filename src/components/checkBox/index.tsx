@@ -16,7 +16,7 @@ const CheckBox: React.FC<ICheckBox> = ({ id, label, isChecked, onChange }) => {
                 <span className="all-center">
                     <Icon size={14} icon="checkmark" color="#fff" />
                 </span>
-                <span className="xl:text-[0.8vw] lg:text-[1.4vw] md:text-[1.6vw] text-[3.5vw]">{label}</span>
+                <span className="text-noteLogin">{label}</span>
             </label>
         </div>
     );

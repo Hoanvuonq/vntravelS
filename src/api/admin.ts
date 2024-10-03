@@ -36,6 +36,12 @@ interface AllWithdrawTransactionsResponse {
     data: ITransaction[];
 }
 
+interface InvitationCodesResponse {
+    status: boolean;
+    message: string;
+    data: string[];
+}
+
 export const getAllUsers = async (): Promise<IUserInfo[]> => {
     try {
         const response = await Api.get<UsersResponse>(`${url}/getAllUser`);
@@ -257,6 +263,21 @@ export const getAllWithdrawTransactions = async (): Promise<ITransaction[]> => {
         }
     } catch (error) {
         console.error('Error in getAllWithdrawTransactions:', error);
+        throw error;
+    }
+};
+
+export const getAllInvitationCodes = async (): Promise<string[]> => {
+    try {
+        const response = await Api.get<InvitationCodesResponse>(`${url}/getAllInvitationCodes`);
+        if (response.data.status && Array.isArray(response.data.data)) {
+            return response.data.data;
+        } else {
+            console.error('Unexpected response structure:', response.data);
+            throw new Error('Unexpected response structure');
+        }
+    } catch (error) {
+        console.error('Error in getAllInvitationCodes:', error);
         throw error;
     }
 };

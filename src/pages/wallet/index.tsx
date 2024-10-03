@@ -47,9 +47,9 @@ const Wallet = () => {
                                 <BoxTotal title="Tổng Tài Sản" money={balance.toFixed(2)} img={images[`Total4`]} />
                             </div>
                             <div className="bg-white all-center flex-col xl:gap-[2vw] gap-[3vw] xl:w-[40vw] w-full shadow-custom-5 xl:rounded-[1vw] rounded-[3vw] xl:px-[1.5vw] px-[3vw] xl:py-[1.2vw] py-[5vw]">
-                                <div className="flex justify-between items-center w-full  wallet-item">
+                                <div className="flex justify-between items-center w-full wallet-item">
                                     <div className="flex flex-col xl:gap-[0.5vw] gap-[1vw] ">
-                                        <p className="text-title">{totalCommission.toFixed(2)}</p>
+                                        <p className="text-titleBalance">{totalCommission.toFixed(2)}</p>
                                         <p className="text-content">Thu Nhập Hoa Hồng</p>
                                     </div>
                                     <img src={images.Total1} alt="icon total" className="xl:w-[4vw] w-[14vw]" />
@@ -76,7 +76,7 @@ const Wallet = () => {
                                             onMouseEnter={() => setHoveredItem(index)}
                                             onMouseLeave={() => setHoveredItem(null)}
                                         >
-                                            <img src={icon} alt={`icon ${title}`} className="xl:w-[1.5vw] w-[14vw]" />
+                                            <img src={icon} alt={`icon ${title}`} className="xl:w-[1.5vw] w-[8vw]" />
                                             <div className="flex flex-col xl:gap-[0.5vw] gap-[1vw]">
                                                 <p className="text-title">{title}</p>
                                                 <p className="text-content">{description}</p>

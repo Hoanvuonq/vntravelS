@@ -108,11 +108,11 @@ const LuckyHistoryUser: React.FC<PopupProps> = ({ user }) => {
                     </div>
                     {editMode === intervention._id ? (
                         <Tooltip content="Gửi Đơn May Mắn">
-                            <img src={images.Send} alt="Send" className="hover-items cursor-pointer xl:w-[1.5vw] w-[12vw]" onClick={() => handleSendClick(intervention._id)} />
+                            <img src={images.Send} alt="Send" className="hover-items cursor-pointer xl:w-[1.5vw] w-[8vw]" onClick={() => handleSendClick(intervention._id)} />
                         </Tooltip>
                     ) : (
                         <Tooltip content="Chỉnh Sửa Đơn May Mắn">
-                            <img src={images.Edit} alt="Edit" className="hover-items cursor-pointer xl:w-[1.5vw] w-[12vw]" onClick={() => handleEditClick(intervention)} />
+                            <img src={images.Edit} alt="Edit" className="hover-items cursor-pointer xl:w-[1.5vw] w-[8vw]" onClick={() => handleEditClick(intervention)} />
                         </Tooltip>
                     )}
                 </div>

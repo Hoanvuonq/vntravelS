@@ -54,9 +54,9 @@ const Sidebar: React.FC = () => {
         <>
             {isMobile && isOpenSidebar && <div className="overlay-sidebar active-overlay" />}
             <div ref={sidebarRef} className={sidebarClass}>
-                <div className="w-fulll all-center xl:h-[6vw] sm:h-[10vw] lg:h-[22vw] h-[24vw]">
+                <div className="w-fulll all-center xl:h-[6vw] lg:h-[22vw] md:h-[22vw] sm:h-[10vw] h-[22vw]">
                     <Link to={'/'}>
-                        <img src={images.logoTravelS} alt="Logo Travel" className="xl:w-[8vw] lg:w-[40vw] sm:w-[12vw] w-[32vw]" />
+                        <img src={images.logoTravelS} alt="Logo Travel" className="xl:w-[8vw] lg:w-[40vw] md:w-[40vw] sm:w-[12vw] w-[32vw] object-cover" />
                     </Link>
                 </div>
                 <UserInfo />

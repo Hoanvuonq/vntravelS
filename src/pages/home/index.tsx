@@ -46,7 +46,7 @@ const Home = () => {
     const PostListMemo = useMemo(() => {
         return ListPost.map(({ title, content }, index) => (
             <div key={index} className="flex items-center gap-[4vw] destination">
-                <img src={images[`Post${index + 1}`]} alt={title} className="w-[25vw] h-[25vw] object-cover rounded-[3vw]" />
+                <img src={images[`Post${index + 1}`]} alt={title} className="xl:w-[30vw] w-[35vw] xl:h-[30vw] h-[35vw] object-cover rounded-[3vw]" />
                 <div className="flex flex-col">
                     <h3 className="text-title mb-[0.5vw]">{title}</h3>
                     <p className="text-content">{truncateContent(content, 80)}</p>

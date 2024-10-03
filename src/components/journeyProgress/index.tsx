@@ -8,7 +8,7 @@ interface JourneyProgressProps {
 
 const JourneyProgress: React.FC<JourneyProgressProps> = ({ journeys, journeyComplete, className }) => {
     return (
-        <div className={`shadow-custom-3 bg-white xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:gap-[1vw] flex flex-col gap-[3vw] ${className}`}>
+        <div className={`shadow-custom-3 bg-white xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[5vw] xl:gap-[1vw] flex flex-col gap-[3vw] ${className}`}>
             <div className="flex items-center xl:gap-[0.5vw] gap-[1vw] wallet-item">
                 <p className="text-title">Hành Trình Hôm Nay: </p>
                 <div className="flex items-center xl:gap-[0.5vw] gap-[1vw]">

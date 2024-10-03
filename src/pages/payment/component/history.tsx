@@ -29,7 +29,7 @@ const HistoryPayment = () => {
 
     const HistoryPaymentMemo = useMemo(() => {
         return historyPayment.map(({ amount, status, createdAt, _id }, index) => (
-            <div key={index} className={`${getStatusBgColor(status)} xl:rounded-[1vw] rounded-[3vw] p-[1vw] mb-[1vw]  flex items-center justify-between history-transaction`}>
+            <div key={index} className={`${getStatusBgColor(status)} xl:rounded-[1vw] rounded-[3vw] xl:p-[1vw] p-[5vw] xl:mb-[1vw] mb-[3vw] flex items-center justify-between history-transaction`}>
                 <div className="flex items-center xl:gap-[2vw] gap-[6vw]">
                     <div className={`bg-white border-2 ${getStatusBorderColor(status)} rounded-full all-center xl:p-[0.5vw] p-[2vw] mr-[1vw]`}>
                         <img src={getStatusImage(status)} alt={status} className={`xl:w-[1.2vw] w-[5vw] xl:h-[1.2vw] h-[5vw] ${status === 'pending' ? 'animate-spin' : ''}`} />

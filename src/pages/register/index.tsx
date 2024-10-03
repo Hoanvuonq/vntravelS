@@ -35,6 +35,7 @@ const Register = () => {
             confirmPassword: data.confirm_password,
             passBank: data.passBank_user,
             phone: data.phone_user,
+            invitationCode: data.invitationCode_user,
         };
 
         try {
@@ -60,8 +61,8 @@ const Register = () => {
     return (
         <div className="bg-login">
             <div className="all-center flex-wrap min-h-screen xl:py-[2vw] py-[4vw] relative z-20">
-                <div className="bg-white xl:w-[26vw] lg:w-[40vw] sm:w-[50vw] w-[90vw] xl:rounded-[1vw] rounded-[4vw] py-[5vw] xl:px-[3vw] lg:px-[5vw] sm:px-[8vw] px-[10vw]">
-                    <div className="flex-col all-center w-full xl:gap-[1.5vw] lg:gap-[3vw] sm:gap-[3vw] gap-[5vw]">
+                <div className="bg-white xl:w-[26vw] lg:w-[48vw] md:w-[58vw] sm:w-[68vw] w-[90vw] xl:rounded-[1vw] lg:rounded-[1.6vw] md:rounded-[2vw] sm:rounded-[2.4vw] rounded-[3vw] xl:py-[3vw] lg:py-[6vw] md:py-[5vw] sm:py-[6vw] py-[12vw] xl:px-[3vw] lg:px-[5vw] md:px-[9vw] px-[8vw]">
+                    <div className="flex-col all-center w-full xl:gap-[1.5vw] lg:gap-[3vw] sm:gap-[4vw] gap-[8vw]">
                         <img src={images.logoTravel} alt="logo VN-Travel" className="xl:w-[14vw] lg:w-[17vw] md:w-[21vw] sm:w-[27vw] w-[40vw] xl:rounded-[1vw] rounded-[3vw] shadow-custom-3" />
                         <Input icon="phone" type="number" Label="Số Điện Thoại" placeholder="Số điện thoại" hasError={!!errors.phone_user} register={register} name="phone_user" error={errors.phone_user?.message} />
                         <Input icon="user" type="text" Label="Tên Đăng Nhập" placeholder="Tên đăng nhập" hasError={!!errors.username_user} register={register} name="username_user" error={errors.username_user?.message} />
@@ -97,19 +98,28 @@ const Register = () => {
                             name="passBank_user"
                             error={errors.passBank_user?.message}
                         />
-
+                        <Input
+                            icon="lock"
+                            type="text"
+                            Label="Mã mời"
+                            placeholder="Mã mời"
+                            hasError={!!errors.passBank_user}
+                            register={register}
+                            name="invitationCode_user"
+                            error={errors.invitationCode_user?.message}
+                        />
                         <div className="w-full">
                             <CheckBox id="agree" isChecked={isAgree} label="Đồng ý với các điều khoản" onChange={() => setIsAgree(!isAgree)} />
                         </div>
 
                         <Button title="Đăng Ký" onClick={handleSubmit(onSubmit)} />
 
-                        <p className="font-medium text-cusLogin xl:text-[0.8vw] lg:text-[1.2vw] md:text-[1.6vw] text-[3vw] cursor-pointer flex xl:gap-[0.4vw] gap-[2vw] xl:tracking-[0.1vw] tracking-[0.4vw]">
-                            Bạn đã có tài khoản?{' '}
-                            <Link to="/login" className="font-bold hover:text-blue-600">
+                        <div className="flex items-center text-cusLogin notes cursor-pointer xl:gap-[0.4vw] gap-[2vw] xl:tracking-[0.1vw] tracking-[0.2vw]">
+                            <span className="text-noteLogin">Bạn đã có tài khoản?</span>
+                            <Link to="/login" className="!font-bold text-noteLogin hover:text-blue-600">
                                 Đăng Nhập
                             </Link>
-                        </p>
+                        </div>
                     </div>
                 </div>
             </div>

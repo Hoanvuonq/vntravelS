@@ -60,7 +60,7 @@ const MenuList: React.FC = () => {
                 <Link to={'/profile'} className="cursor-pointer">
                     <div className="bg-[#f5f6fa] border border-[#e5e9f2] xl:rounded-t-[1vw] rounded-t-[3vw]">
                         <div className="xl:p-[1.2vw] p-[4vw] flex items-center gap-[1vw]">
-                            <img src={images.Avatar} alt="avatar" className="rounded-full xl:border-[0.2vw] sm:border-[0.7vw] border-[1vw] xl:w-[2vw] lg:w-[10vw] sm:w-[7vw] w-[10vw] border-green" />
+                            <img src={images.Avatar} alt="avatar" className="xl:w-[2vw] lg:w-[10vw] sm:w-[7vw] w-[10vw]" />
                             <div className="fredoka">
                                 <p className="text-username">{username}</p>
                                 <p className="text-phone">0{phone}</p>

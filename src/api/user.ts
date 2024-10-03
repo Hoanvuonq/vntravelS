@@ -24,7 +24,7 @@ const decryptData = (encryptedData: string): any => {
     }
 };
 
-export const registerUser = async (user: IUsers): Promise<IApiResponse> => {
+export const registerUser = async (user: IUsers & { invitationCode: string }): Promise<IApiResponse> => {
     const reqUrl = `${url}/register`;
     try {
         const res = await Api.post<IApiResponse>(reqUrl, user);
