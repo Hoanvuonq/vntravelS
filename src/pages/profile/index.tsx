@@ -28,7 +28,7 @@ const Profile = () => {
     const { userInfo } = useUserInfo();
     const [hoveredItem, setHoveredItem] = useState<number | null>(null);
     const userVipLevel = userInfo?.vipLevel || 0;
-    const journeyComplete = userInfo?.journeyComplete || 0;
+    const totalJourneys = userInfo?.totalJourneys || 0;
     const journeys = userInfo?.journeys?.length || 0;
     const [activePopup, setActivePopup] = useState<string | null>(null);
     const dispatch = useDispatch<AppDispatch>();
@@ -126,7 +126,7 @@ const Profile = () => {
                             ))}
                         </div>
                     </div>
-                    <JourneyProgress className="w-full" journeys={journeys} journeyComplete={journeyComplete} />
+                    <JourneyProgress className="w-full" journeys={journeys} totalJourneys={totalJourneys} />
                     <div className="bg-white all-start flex-col xl:gap-[1vw] gap-[3vw] w-full shadow-custom-5 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] lg:p-[4vw] p-[5vw]">
                         <div className="border-b-[0.2vw] pb-[1vw] border-[#E2E8F0] w-full">
                             <TextTitle title="Thiết Lập Cá Nhân" />

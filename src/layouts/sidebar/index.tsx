@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { toggleSidebar } from 'redux/slice/sidebarSlice';
 import { RootState } from 'redux/store';
 import UserInfo from '../userInfo';
+import Loading from 'components/loading';
 
 const sidebarMenuItems = [
     { title: 'Đánh giá', icon: images.evaluate, link: '/evaluate' },
@@ -14,6 +15,7 @@ const sidebarMenuItems = [
 const Sidebar: React.FC = () => {
     const dispatch = useDispatch();
     const [isMobile, setIsMobile] = useState(window.innerWidth < 1025);
+    const [isLoading, setIsLoading] = useState(false);
     const isOpenSidebar = useSelector((state: RootState) => state.sidebar.isOpenSidebar);
     const sidebarRef = useRef<HTMLDivElement>(null);
 
@@ -21,6 +23,8 @@ const Sidebar: React.FC = () => {
         if (isMobile) {
             dispatch(toggleSidebar(false));
         }
+        setIsLoading(true);
+        setTimeout(() => setIsLoading(false), 1000);
     };
 
     const sidebarClass = `sidebar w-full xl:max-w-[15.8vw] max-w-[76vw] bg-white border-r overflow-y-auto border-[#e5e9f2] bai-jamjuree shadow-custom-4 rounded-[0.5vw] h-screen fixed z-30 ${
@@ -52,6 +56,7 @@ const Sidebar: React.FC = () => {
 
     return (
         <>
+            {isLoading && <Loading />}
             {isMobile && isOpenSidebar && <div className="overlay-sidebar active-overlay" />}
             <div ref={sidebarRef} className={sidebarClass}>
                 <div className="w-fulll all-center xl:h-[6vw] lg:h-[22vw] md:h-[22vw] sm:h-[10vw] h-[22vw]">

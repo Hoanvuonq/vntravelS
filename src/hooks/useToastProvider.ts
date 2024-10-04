@@ -5,8 +5,8 @@ const ToastProvider = (type: string, content: string, idLoading?: string, limit?
     let notify;
     const toastConfig: any = {
         position: 'top-right',
-        style: { top: '1vw', right: '1vw' },
-        autoClose: 1000,
+        style: { top: '1vw', right: '1vw', fontWeight: 'bold' },
+        autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

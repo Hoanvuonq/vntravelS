@@ -88,4 +88,6 @@ export const images: any = {
     Star: require('./img/falling-star.png'),
     Send: require('./img/send.png'),
     fetch: require('./img/reload.png'),
+    lockJourney: require('./img/lockJourney.png'),
+    unLockJourney: require('./img/unlockJourney.png'),
 };

@@ -97,7 +97,7 @@ const Bank = () => {
                     ))}
                 </div>
             </div>
-            <div className="flex justify-end w-full xl:max-w-[10vw] max-w-[30vw] m-auto">
+            <div className="flex justify-end w-full xl:max-w-[10vw] max-w-[40vw] m-auto">
                 <Button title="CẬP NHẬT" onClick={handleSubmit} disabled={isUpdated || !isFormFilled} />
             </div>
         </div>

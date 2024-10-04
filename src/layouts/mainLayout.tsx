@@ -11,7 +11,7 @@ const MainLayout = ({ children }: { children: ReactNode }) => {
                 <Sidebar />
                 <div className="w-full content-children ">
                     <Navbar />
-                    <div className="pl-[1vw] pr-[1vw] w-full xl:pt-[6vw] pt-[17vw] xl:pb-[1.5vw] pb-[26vw]">{children}</div>
+                    <div className="px-[1vw] w-full xl:pt-[6vw] pt-[17vw] xl:pb-[1.5vw] pb-[26vw]">{children}</div>
                 </div>
                 <div className="xl:hidden fixed z-10 bottom-0 w-full">
                     <Taskbar />

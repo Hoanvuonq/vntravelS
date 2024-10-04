@@ -281,3 +281,33 @@ export const getAllInvitationCodes = async (): Promise<string[]> => {
         throw error;
     }
 };
+
+export const toggleJourneyBlock = async (userId: string, block: boolean): Promise<IUserInfo> => {
+    try {
+        const response = await Api.post<UserResponse>(`${url}/toggleJourneyBlock/${userId}`, { block });
+        if (response.data.status && response.data.data) {
+            return response.data.data;
+        } else {
+            console.error('Unexpected response structure:', response.data);
+            throw new Error('Unexpected response structure');
+        }
+    } catch (error) {
+        console.error('Error in toggleJourneyBlock:', error);
+        throw error;
+    }
+};
+
+export const resetJourneyCount = async (userId: string): Promise<IUserInfo> => {
+    try {
+        const response = await Api.post<UserResponse>(`${url}/resetJourneyCount/${userId}`);
+        if (response.data.status && response.data.data) {
+            return response.data.data;
+        } else {
+            console.error('Unexpected response structure:', response.data);
+            throw new Error('Unexpected response structure');
+        }
+    } catch (error) {
+        console.error('Error in resetJourneyCount:', error);
+        throw error;
+    }
+};

@@ -28,14 +28,15 @@ const Evaluate = () => {
     const [popupMessage, setPopupMessage] = useState<string | null>(null);
     const balance = userInfo?.balance || 0;
     const totalCommission = userInfo?.totalCommission || 0;
-    const journeyComplete = userInfo?.journeyComplete || 0;
-    const journeys = userInfo?.journeys?.length || 0;
+    const totalJourneys = userInfo?.totalJourneys || 0;
+    const journeysTaken = userInfo?.journeysTaken || 0;
+    // const journeys = userInfo?.journeys?.length || 0;
 
     const totalSpending = [
         { title: 'Số Dư', money: formatNumber(balance) },
         { title: 'Hoa Hồng', money: formatNumber(totalCommission) },
-        { title: 'Hành Trình', money: journeys.toString() },
-        { title: 'Tổng Hành Trình', money: journeyComplete.toString() },
+        { title: 'Hành Trình', money: journeysTaken.toString() },
+        { title: 'Tổng Hành Trình', money: totalJourneys.toString() },
     ];
 
     const handlePreviewJourney = async () => {
@@ -53,22 +54,18 @@ const Evaluate = () => {
                     }
                 }
             } else {
-                console.error('Failed to preview journey:', result.message);
-                ToastProvider('error', result.message || 'Failed to preview journey');
+                console.error('Đã Xảy Ra Lỗi Trong Việc Gửi Hành Trình:', result.message);
+                ToastProvider('error', result.message || 'Đã Xảy Ra Lỗi Trong Việc Gửi Hành Trình');
             }
         } catch (error) {
-            console.error('Error previewing journey:', error);
-            ToastProvider('error', 'An error occurred while previewing journey');
+            console.error('Đã Xảy Ra Lỗi Trong Việc Gửi Hành Trình:', error);
+            ToastProvider('error', 'Đã Xảy Ra Lỗi Trong Việc Gửi Hành Trình');
         }
     };
 
     useEffect(() => {
         fetchUserInfo();
     }, [fetchUserInfo]);
-
-    const handleShowHistoryPopup = () => {
-        setShowHistoryPopup(true);
-    };
 
     const handleClosePopup = () => {
         setPopupMessage(null);

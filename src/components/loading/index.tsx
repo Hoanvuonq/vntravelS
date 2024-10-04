@@ -1,6 +1,6 @@
 const Loading = () => {
     return (
-        <div className="w-full h-screen all-center bg-overlayLoading absolute !z-[40]">
+        <div className="w-full h-screen all-center bg-overlayLoading/80 absolute !z-[40]">
             <div className="all-center flex-col relative !z-[90]">
                 <div className="flex items-center">
                     <div className="bg-red-600 w-4 h-4 mr-1"></div>
@@ -13,7 +13,7 @@ const Loading = () => {
                         <span className="text-white font-light text-xl">GROUP</span>
                     </div>
                 </div>
-                <div className="loader-ellipsis mt-4">
+                <div className="loader-ellipsis mt-[1vw]">
                     <div className=""></div>
                     <div className=""></div>
                     <div className=""></div>

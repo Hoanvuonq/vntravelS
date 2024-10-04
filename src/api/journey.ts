@@ -1,7 +1,5 @@
 import Api from './api';
 import { IJourneyPreviewResponse, ISendJourneyResponse, IJourneyHistoryResponse } from './type';
-
-// ... existing imports ...
 import CryptoJS from 'crypto-js';
 
 const url = '/user';

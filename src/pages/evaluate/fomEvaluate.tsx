@@ -73,7 +73,7 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
                 ToastProvider('error', result.message || 'Gửi hành trình thất bại');
             }
         } catch (error) {
-            setError('An error occurred while sending journey');
+            setError('Đã xảy ra lỗi khi gửi hành trình !');
         } finally {
             setIsSending(false);
             setLoading(false);

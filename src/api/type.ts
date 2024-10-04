@@ -37,11 +37,13 @@ export interface IUserInfo {
     withdrawalMoney: number;
     vipLevel: number;
     points: number;
-    journeyComplete: number;
+    journeysTaken: number;
+    totalJourneys: number;
     admin: boolean;
     totalJourneyEarnings: number;
     totalCommission: number;
     dailyProfit: number;
+    isJourneyBlocked: boolean;
     journeys: Journey[];
     createdAt: string;
     updatedAt: string;

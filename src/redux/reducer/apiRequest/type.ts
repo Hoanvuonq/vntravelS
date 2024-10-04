@@ -38,6 +38,8 @@ export interface UserInfo {
     username: string;
     phone: number;
     balance: number;
+    totalDeposited: number;
+    totalWithdrawn: number;
     passBank: number;
     loginTime: string | null;
     isBlocked: boolean;
@@ -46,7 +48,8 @@ export interface UserInfo {
     withdrawalMoney: number;
     vipLevel: number;
     points: number;
-    journeyComplete: number;
+    journeysTaken: number;
+    totalJourneys: number;
     admin: boolean;
     totalJourneyEarnings: number;
     totalCommission: number;

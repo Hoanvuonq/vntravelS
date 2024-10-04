@@ -90,8 +90,8 @@ const EditUser: React.FC<PopupProps> = ({ onClose, user }) => {
     const dispatch = useDispatch<AppDispatch>();
     const { fetchUserInfo } = useUserInfo();
     const userVipLevel = user.vipLevel || 0;
-    const journeyComplete = user.journeyComplete || 0;
-    const journeys = user.journeys?.length || 0;
+    const totalJourneys = user.totalJourneys || 0;
+    const journeysTaken = user.journeysTaken || 0;
     const isBlocked = user.isBlocked || false;
     const isVerified = user.isVerify || false;
     const popupRef = useRef<HTMLDivElement>(null);
@@ -270,7 +270,7 @@ const EditUser: React.FC<PopupProps> = ({ onClose, user }) => {
                                                 ))}
                                             </div>
                                         </div>
-                                        <JourneyProgress className="xl:w-[30vw] w-full" journeys={journeys} journeyComplete={journeyComplete} />
+                                        <JourneyProgress className="xl:w-[30vw] w-full" journeys={journeysTaken} totalJourneys={totalJourneys} />
                                     </div>
                                     <div className="flex xl:flex-row flex-col items-center w-full xl:gap-[1.5vw] gap-[6vw]">
                                         <div className="bg-white shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] w-full">

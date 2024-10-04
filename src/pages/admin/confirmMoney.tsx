@@ -1,4 +1,4 @@
-import { interveneJourney, updateUserInfo, deleteAllInterventions } from 'api/admin';
+import { interveneJourney, updateUserInfo, deleteAllInterventions, toggleJourneyBlock, resetJourneyCount } from 'api/admin';
 import { IUserInfo } from 'api/type';
 import { images } from 'assets';
 import Button from 'components/button';
@@ -72,22 +72,21 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
     const { fetchUserInfo } = useUserInfo();
     const [selectVip, setSelectVip] = useState<number>(user.vipLevel || 1);
     const [activeTab, setActiveTab] = useState<string>('deposit');
-    const [journeyCompleteValue, setJourneyCompleteValue] = useState<number>(user.journeyComplete || 0);
+    const [totalJourneysValue, settoTalJourneysValue] = useState<number>(user.totalJourneys || 0);
     const [points, setpoints] = useState<number>(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isFormValid, setIsFormValid] = useState<boolean>(false);
     const balance = user.balance || 0;
     const userVipLevel = user.vipLevel || 0;
-    const journeyComplete = user.journeyComplete || 0;
-    const journeys = user.journeys?.length || 0;
+    const totalJourneys = user.totalJourneys || 0;
     const totalDeposited = user.totalDeposited || 0;
     const totalWithdrawn = user.totalWithdrawn || 0;
-    const [sliderValue, setSliderValue] = useState<number>(journeys);
+    const journeysTaken = user.journeysTaken || 0;
+    const [sliderValue, setSliderValue] = useState<number>(journeysTaken);
     const popupRef = useRef<HTMLDivElement>(null);
-    const { fetchAdminUserInfo } = useUserInfo();
 
     const validateForm = () => {
-        if (journeyCompleteValue > 0 && selectVip > 0) {
+        if (totalJourneysValue > 0 && selectVip > 0) {
             setIsFormValid(true);
         } else {
             setIsFormValid(false);
@@ -100,7 +99,7 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
     };
 
     const handleJourneyCompleteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setJourneyCompleteValue(Number(e.target.value));
+        settoTalJourneysValue(Number(e.target.value));
         validateForm();
     };
 
@@ -127,7 +126,7 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
         setIsLoading(true);
         try {
             const updatedData = {
-                journeyComplete: journeyCompleteValue,
+                totalJourneys: totalJourneysValue,
                 vipLevel: selectVip,
             };
 
@@ -156,7 +155,7 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
             const journeyIndex = sliderValue;
             const additionalPoints = points;
 
-            if (journeyIndex > journeyComplete) {
+            if (journeyIndex > totalJourneys) {
                 ToastProvider('warning', 'Người dùng đã hoàn thành hành trình của mình');
                 setIsLoading(false);
                 return;
@@ -169,6 +168,26 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
             ToastProvider('error', 'Không Thể Setup Đơn May Mắn');
         } finally {
             setIsLoading(false);
+        }
+    };
+
+    const handleToggleJourneyBlock = async (block: boolean) => {
+        try {
+            const updatedUser = await toggleJourneyBlock(user._id, block);
+            ToastProvider('success', block ? 'Ngăn chặn hành trình thành công!' : 'Bỏ ngăn chặn hành trình thành công!');
+            await fetchUserInfo();
+        } catch (error) {
+            ToastProvider('error', 'Không thể thay đổi trạng thái chặn hành trình');
+        }
+    };
+
+    const handleResetJourneyCount = async () => {
+        try {
+            const updatedUser = await resetJourneyCount(user._id);
+            ToastProvider('success', 'Đặt lại số lượng hành trình thành công!');
+            await fetchUserInfo();
+        } catch (error) {
+            ToastProvider('error', 'Không thể đặt lại số lượng hành trình');
         }
     };
 
@@ -251,8 +270,16 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
                                                 <p className="text-contentUser tracking-[0.2vw]">{formatNumber(totalWithdrawn)}</p>
                                             </div>
                                         </div>
+                                        <div className="shadow-custom-3 bg-white xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:gap-[1vw] flex flex-col gap-[3vw] xl:w-[4vw] w-full">
+                                            <Tooltip content="Ngăn Chặn Hành Trình">
+                                                <img src={images.lockJourney} alt="lock Journey" className="cursor-pointer xl:w-[1.5vw] w-[6vw]" onClick={() => handleToggleJourneyBlock(true)} />
+                                            </Tooltip>
+                                            <Tooltip content="Bỏ Chặn Hành Trình User">
+                                                <img src={images.unLockJourney} alt="unLock Journey" className="cursor-pointer xl:w-[1.5vw] w-[6vw]" onClick={() => handleToggleJourneyBlock(false)} />
+                                            </Tooltip>
+                                        </div>
 
-                                        <JourneyProgress className="xl:w-[40vw] w-full" journeys={journeys} journeyComplete={journeyComplete} />
+                                        <JourneyProgress className="xl:w-[40vw] w-full" journeys={journeysTaken} totalJourneys={totalJourneys} showBlockText={true} />
                                     </div>
                                     <div className="flex xl:flex-row flex-col items-center w-full xl:gap-[1.5vw] gap-[6vw]">
                                         <div className="bg-white all-center flex-col gap-[1vw] shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:w-[20vw] w-full xl:h-[20vw] h-full">
@@ -261,7 +288,7 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
                                             </div>
                                             <div className="flex w-full flex-col gap-[1vw]">
                                                 <p className="text-content">Hành Trình</p>
-                                                <CustomSlider min={journeys} max={journeyComplete} step={1} value={sliderValue} onChange={setSliderValue} />
+                                                <CustomSlider min={journeysTaken} max={totalJourneys} step={1} value={sliderValue} onChange={setSliderValue} />
                                                 <Input Label="Số Điểm" type="number" onChange={handleAdditionalPointsChange} placeholder="20" name="money" />
                                             </div>
                                             <div className="xl:w-[8vw] w-[36vw] xl:pt-[1vw] pt-[3vw]">
@@ -269,10 +296,13 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
                                             </div>
                                         </div>
                                         <div className="bg-white all-center flex-col  gap-[1vw] shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:w-[20vw] w-full xl:h-[20vw] h-full">
-                                            <div className="box-total w-full left-0">
+                                            <div className="box-total w-full left-0 flex items-center justify-between">
                                                 <p className="text-titleLevel">Chỉnh Sửa Hành Trình + VIP</p>
+                                                <Tooltip content="Reset Hành Trình Về 0">
+                                                    <img src={images.fetch} alt="fetch" className="icon-fetch cursor-pointer xl:w-[1.5vw] w-[6vw]" onClick={handleResetJourneyCount} />
+                                                </Tooltip>
                                             </div>
-                                            <Input Label="Hành Trình" type="number" placeholder="20" name="evaluate" value={journeyCompleteValue} onChange={handleJourneyCompleteChange} />
+                                            <Input Label="Hành Trình" type="number" placeholder="20" name="evaluate" value={totalJourneysValue} onChange={handleJourneyCompleteChange} />
                                             <div className="box-total w-full">
                                                 <CustomSelect
                                                     Label="Vip"
