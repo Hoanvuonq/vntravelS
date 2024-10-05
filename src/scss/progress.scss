@@ -135,7 +135,7 @@
    
     @media (max-width: 768px) {
         position: fixed !important;
-        top: 80vw !important;
+        top: 70vw !important;
         height: 30vw !important;
         left: 5vw !important;
         font-size: 4vw !important;
@@ -143,6 +143,12 @@
         text-align: center;
         width: 90%;
         max-width: 400px; 
+    }
+
+    .Toastify__toast-icon {
+        @media (max-width: 768px) {
+            width: 8vw !important;
+        }
     }
 }
 

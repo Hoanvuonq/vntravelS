@@ -29,6 +29,7 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
     const [rating, setRating] = useState(previewData.rating);
     const [isSending, setIsSending] = useState(false);
     const userBalance = userInfo?.balance || 0;
+    const [canClickOutside, setCanClickOutside] = useState(false);
 
     const handleRatingChange = (value: number) => setRating(value);
 
@@ -84,6 +85,7 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
+            if (!canClickOutside) return;
             if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
                 onClose();
             }
@@ -91,10 +93,12 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
 
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [onClose]);
+    }, [onClose, canClickOutside]);
 
     useEffect(() => {
         setRandomTrip(getRandomTrip());
+        const timer = setTimeout(() => setCanClickOutside(true), 2000);
+        return () => clearTimeout(timer);
     }, []);
 
     return (
