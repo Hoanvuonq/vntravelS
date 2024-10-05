@@ -80,9 +80,9 @@ const Evaluate = () => {
                     ))}
                 </div>
             </div>
-            <div className="w-full all-center m-auto gap-[2vw] xl:max-w-[25vw] lg:max-w-[60vw] max-w-[80vw]">
+            <div className="w-full all-center m-auto gap-[2vw] xl:max-w-[25vw] lg:max-w-[60vw] max-w-[70vw]">
                 <Button title="GỬI HÀNH TRÌNH TỰ ĐỘNG" onClick={handlePreviewJourney} />
-                <img src={images.historyEvaluate} alt="History Evaluate" className="xl:w-[3vw] w-[10vw] cursor-pointer" onClick={() => setShowHistoryPopup(true)} />
+                <img src={images.historyEvaluate} alt="History Evaluate" className="xl:w-[3vw] w-[10vw] cursor-pointer xl:relative absolute right-[1vw]" onClick={() => setShowHistoryPopup(true)} />
             </div>
             <div className="bg-white rounded-xl xl:py-[2vw] px-[3vw] py-[4vw] shadow-custom-5">
                 <SliderComponent />

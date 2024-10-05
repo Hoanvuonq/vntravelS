@@ -504,14 +504,22 @@
             font-size: 4vw;
             line-height: 5vw;
         }
+        @media (max-width: 512px) {
+            font-size: 3.6vw;
+            line-height: 7vw;
+        }
     }
     .text-place {
         font-size: 1vw;
         line-height: 1.2vw;
-        font-weight: 700;
+        font-weight: 400;
         @media (max-width: 1024px) {
             font-size: 4vw;
             line-height: 5vw;
+        }
+        @media (max-width: 512px) {
+            font-size: 3.6vw;
+            line-height: 7vw;
         }
     }
 
@@ -523,6 +531,10 @@
             font-size: 4vw;
             line-height: 5vw;
         }
+        @media (max-width: 512px) {
+            font-size: 3.6vw;
+            line-height: 7vw;
+        }
     }
 
     .text-title {
@@ -531,6 +543,10 @@
         @media (max-width: 1024px) {
             font-size: 4vw;
             line-height: 5vw;
+        }
+        @media (max-width: 512px) {
+            font-size: 4vw;
+            line-height: 7vw;
         }
     }
     

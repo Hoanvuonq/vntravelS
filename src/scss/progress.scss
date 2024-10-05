@@ -135,19 +135,29 @@
    
     @media (max-width: 768px) {
         position: fixed !important;
-        top: 70vw !important;
+        top: 90vw !important;
         height: 30vw !important;
-        left: 5vw !important;
+        left: 15vw !important;
         font-size: 4vw !important;
         position: fixed !important;
         text-align: center;
-        width: 90%;
+        width: 70%;
+        color: #000 !important;
+        border-radius: 4vw !important;
         max-width: 400px; 
     }
 
     .Toastify__toast-icon {
         @media (max-width: 768px) {
             width: 8vw !important;
+        }
+    }
+
+    .Toastify__progress-bar {
+        @media (max-width: 768px) {
+            height: 0vw !important;
+            opacity: 0 !important;
+            background: none !important;
         }
     }
 }

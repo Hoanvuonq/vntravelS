@@ -48,11 +48,22 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
 
     const handleVipChange = (value: number) => {
         setSelectVip(value);
+        const selectedVip = totalLevel.find((item) => item.vipLevel === value);
+        if (selectedVip) {
+            setTotalJourneysValue(Number(selectedVip.journey));
+        }
         validateForm();
     };
 
     const handleJourneyCompleteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setTotalJourneysValue(Number(e.target.value));
+        const newValue = Number(e.target.value);
+        setTotalJourneysValue(newValue);
+
+        const correspondingVip = totalLevel.find((item) => Number(item.journey) === newValue);
+        if (correspondingVip) {
+            setSelectVip(correspondingVip.vipLevel);
+        }
+
         validateForm();
     };
 
@@ -254,8 +265,8 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
                                             <div className="box-total w-full left-0">
                                                 <p className="text-titleLevel">Setup Đơn May Mắn</p>
                                             </div>
-                                            <div className="flex w-full flex-col gap-[1vw]">
-                                                <p className="text-content">Hành Trình Đã Đi</p>
+                                            <div className="flex w-full flex-col gap-[1vw] inputC">
+                                                <p className="text-label">Hành Trình Đã Đi</p>
                                                 <CustomSlider min={journeysTakenValue} max={totalJourneysValue} step={1} value={sliderValue} onChange={setSliderValue} />
                                                 <Input Label="Số Điểm" type="number" onChange={handleAdditionalPointsChange} placeholder="20" name="money" />
                                             </div>
@@ -271,6 +282,7 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
                                                 </Tooltip>
                                             </div>
                                             <Input Label="Hành Trình Hằng Ngày" type="number" placeholder="20" name="evaluate" value={totalJourneysValue} onChange={handleJourneyCompleteChange} />
+
                                             <div className="box-total w-full">
                                                 <CustomSelect
                                                     Label="Vip"

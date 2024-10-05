@@ -109,7 +109,7 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
                     <div className="flex flex-col h-full xl:p-[1vw] p-[3vw] xl:gap-[1vw] gap-[2vw] form-evaluate">
                         {randomTrip && (
                             <div className="relative xl:rounded-[1vw] rounded-[3.5vw] history-evaluate">
-                                <img src={randomTrip.backgroundImage} alt="Trip background" className="w-full xl:h-[19vw] h-[70vw] object-cover xl:rounded-[1vw] rounded-[2vw]" />
+                                <img src={randomTrip.backgroundImage} alt="Trip background" className="w-full xl:h-[19vw] h-[80vw] object-cover xl:rounded-[1vw] rounded-[2vw]" />
                                 <div className="absolute inset-0 bg-black xl:!rounded-[1vw] !rounded-[2vw] bg-opacity-50 xl:p-[1vw] p-[3vw] flex flex-col justify-between text-white">
                                     <div className="flex justify-between items-start">
                                         <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw]">

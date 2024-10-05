@@ -42,13 +42,7 @@ const Profile = () => {
         setActivePopup(null);
     };
 
-    const renderInfoButtons: IInfoButton[] = useMemo(
-        () => [
-            { img: images.QrRef, alt: 'QrRef' },
-            { img: images.iconChat, alt: 'IconChat' },
-        ],
-        [],
-    );
+    const renderInfoButtons: IInfoButton[] = useMemo(() => [{ img: images.iconChat, alt: 'IconChat' }], []);
 
     const fundDetails: FundDetail[] = useMemo(
         () => [
@@ -119,11 +113,10 @@ const Profile = () => {
                             <p className="text-titleLevel">Vip {userVipLevel}</p>
                         </div>
                         <div className="flex items-center xl:gap-[0.5vw] gap-[1vw]">
-                            {renderInfoButtons.map(({ img, alt }, index) => (
-                                <div key={index} className="xl:border-[0.1vw] border-[0.3vw] xl:rounded-[2vw] rounded-[6vw] xl:py-[0.5vw] py-[2vw] xl:px-[0.7vw] px-[3vw] all-center gap-[1vw] hover-items">
-                                    <img src={img} alt={alt} className="xl:w-[1.2vw] w-[6vw]" />
-                                </div>
-                            ))}
+                            <div className="xl:border-[0.1vw] border-[0.3vw] xl:rounded-[2vw] rounded-[6vw] xl:py-[0.5vw] py-[2vw] xl:px-[0.7vw] px-[3vw] all-center xl:gap-[1vw] gap-[2vw] hover-items box-total">
+                                <span className="text-titleLevel">CSKH</span>
+                                <img src={images.iconChat} alt="iconChat" className="xl:w-[1.2vw] w-[6vw]" />
+                            </div>
                         </div>
                     </div>
                     <JourneyProgress className="w-full" journeys={journeys} totalJourneys={totalJourneys} />

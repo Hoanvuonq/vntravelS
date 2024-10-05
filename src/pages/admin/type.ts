@@ -69,7 +69,7 @@ export const listTool = [
 
 interface IVip {
     title: string;
-    content: string;
+    journey: string;
     vipLevel: number;
 }
 export interface ITabs {
@@ -80,12 +80,12 @@ export interface ITabs {
 }
 
 export const totalLevel: IVip[] = [
-    { title: 'VIP1', content: '20%', vipLevel: 1 },
-    { title: 'VIP2', content: '20%', vipLevel: 2 },
-    { title: 'VIP3', content: '25%', vipLevel: 3 },
-    { title: 'VIP4', content: '30%', vipLevel: 4 },
-    { title: 'VIP5', content: '35%', vipLevel: 5 },
-    { title: 'VIP6', content: '40%', vipLevel: 6 },
+    { title: 'VIP1', journey: '20', vipLevel: 1 },
+    { title: 'VIP2', journey: '40', vipLevel: 2 },
+    { title: 'VIP3', journey: '60', vipLevel: 3 },
+    { title: 'VIP4', journey: '80', vipLevel: 4 },
+    { title: 'VIP5', journey: '100', vipLevel: 5 },
+    { title: 'VIP6', journey: '120', vipLevel: 6 },
 ];
 
 export const tabItems: ITabs[] = [

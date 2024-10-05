@@ -66,7 +66,7 @@ const HistoryEvaluate: React.FC<PopupProps> = ({ onClose }) => {
         const placeInfo = getPlaceInfo(journey.place.replace('Trip', ''));
         return (
             <div key={index} className="relative mb-[4vw] xl:rounded-[1vw] rounded-[3.5vw] overflow-hidden  history-evaluate">
-                <img src={placeInfo?.backgroundImage || images.defaultImage} alt="Trip background" className="w-full xl:h-[14vw] object-cover" />
+                <img src={placeInfo?.backgroundImage || images.defaultImage} alt="Trip background" className="w-full xl:h-[14vw] h-[60vw] object-cover" />
                 <div className="absolute inset-0 bg-black bg-opacity-50 xl:p-[1vw] p-[3vw] flex flex-col justify-between text-white">
                     <div className="flex justify-between items-start">
                         <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw]">
