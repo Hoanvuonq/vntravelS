@@ -33,10 +33,10 @@ const Evaluate = () => {
     // const journeys = userInfo?.journeys?.length || 0;
 
     const totalSpending = [
-        { title: 'Số Dư', money: formatNumber(balance) },
-        { title: 'Hoa Hồng', money: formatNumber(totalCommission) },
-        { title: 'Hành Trình', money: journeysTaken.toString() },
-        { title: 'Tổng Hành Trình', money: totalJourneys.toString() },
+        { title: 'TỔNG TÀI SẢN', money: formatNumber(balance) },
+        { title: 'Hoa Hồng Ngày Hôm Nay', money: formatNumber(totalCommission) },
+        { title: 'Hành Trình Đã Đi', money: journeysTaken.toString() },
+        { title: 'Hành Trình Hằng Ngày', money: totalJourneys.toString() },
     ];
 
     const handlePreviewJourney = async () => {

@@ -10,8 +10,8 @@ interface JourneyProgressProps {
 const JourneyProgress: React.FC<JourneyProgressProps> = ({ journeys, totalJourneys, className, showBlockText }) => {
     return (
         <div className={`shadow-custom-3 bg-white xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[5vw] xl:gap-[1vw] flex flex-col gap-[3vw] ${className}`}>
-            <div className="flex items-center justify-between">
-                <div className="flex items-center xl:gap-[0.5vw] gap-[1vw] wallet-item">
+            <div className="flex items-center justify-between wallet-item">
+                <div className="flex items-center xl:gap-[0.5vw] gap-[1vw] ">
                     <p className="text-title">Hành Trình Hôm Nay: </p>
                     <div className="flex items-center xl:gap-[0.5vw] gap-[1vw]">
                         <p className="text-title">{journeys}</p>
@@ -19,7 +19,7 @@ const JourneyProgress: React.FC<JourneyProgressProps> = ({ journeys, totalJourne
                         <p className="text-title">{totalJourneys}</p>
                     </div>
                 </div>
-                {showBlockText && <p>Block Hành Trình</p>}
+                {showBlockText && <p className="text-ban !text-error uppercase">Block Hành Trình</p>}
             </div>
             <div className="progress xl:w-full w-full xl:!h-[0.5vw] !h-[2vw]">
                 <div

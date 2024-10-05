@@ -131,3 +131,18 @@
     }
 }
 
+.toast-center-mobile {
+   
+    @media (max-width: 768px) {
+        position: fixed !important;
+        top: 80vw !important;
+        height: 30vw !important;
+        left: 5vw !important;
+        font-size: 4vw !important;
+        position: fixed !important;
+        text-align: center;
+        width: 90%;
+        max-width: 400px; 
+    }
+}
+

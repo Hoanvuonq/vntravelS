@@ -12,7 +12,7 @@ const ToastProvider = (type: string, content: string, idLoading?: string, limit?
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        className: customClassName,
+        className: `${customClassName} toast-center-mobile`,
     };
 
     switch (type) {

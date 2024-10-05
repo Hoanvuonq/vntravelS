@@ -311,3 +311,19 @@ export const resetJourneyCount = async (userId: string): Promise<IUserInfo> => {
         throw error;
     }
 };
+
+export const adjustUserJourneyCount = async (userId: string, journeyCount: number) => {
+    try {
+        const response = await Api.post(`${url}/adjustUserJourneyCount/${userId}`, { journeysTaken: journeyCount });
+        if (response.data.status) {
+            console.log('Success:', response.data.message);
+            return response.data.data;
+        } else {
+            console.error('Error:', response.data.message);
+            throw new Error(response.data.message);
+        }
+    } catch (error) {
+        console.error('API call failed:', error);
+        throw error;
+    }
+};

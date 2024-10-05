@@ -1,66 +1,27 @@
-import { interveneJourney, updateUserInfo, deleteAllInterventions, toggleJourneyBlock, resetJourneyCount } from 'api/admin';
+import React, { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from 'redux/store';
+import { interveneJourney, updateUserInfo, deleteAllInterventions, toggleJourneyBlock, resetJourneyCount, adjustUserJourneyCount } from 'api/admin';
 import { IUserInfo } from 'api/type';
 import { images } from 'assets';
 import Button from 'components/button';
 import CloseTabs from 'components/closeTabs';
 import Input from 'components/input/inputProfile';
+import InputSend from 'components/input/inputSend';
 import JourneyProgress from 'components/journeyProgress';
 import CustomSelect from 'components/selectItems';
 import TextTitle from 'components/textTitle';
 import { useUserInfo } from 'hooks/UserContext';
 import ToastProvider from 'hooks/useToastProvider';
-import { lazy, Suspense, useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from 'redux/store';
 import CustomSlider from './components/custonSlider';
 import { formatNumber } from 'hooks/useColorStatus';
 import { Tooltip } from '@material-tailwind/react';
+import UserAvatar from './components/avatar';
+import { totalLevel, tabItems } from './type';
 
 const DepositUser = lazy(() => import('./components/depositUser'));
 const DepositHistory = lazy(() => import('./components/depositHistoryUser'));
 const LuckyJourney = lazy(() => import('./components/luckyHistoryUser'));
-
-interface IVip {
-    title: string;
-    content: string;
-    vipLevel: number;
-}
-export interface ITabs {
-    key: string;
-    title: string;
-    classActive: string;
-    classUnactive: string;
-}
-
-const totalLevel: IVip[] = [
-    { title: 'VIP1', content: '20%', vipLevel: 1 },
-    { title: 'VIP2', content: '20%', vipLevel: 2 },
-    { title: 'VIP3', content: '25%', vipLevel: 3 },
-    { title: 'VIP4', content: '30%', vipLevel: 4 },
-    { title: 'VIP5', content: '35%', vipLevel: 5 },
-    { title: 'VIP6', content: '40%', vipLevel: 6 },
-];
-
-const tabItems: ITabs[] = [
-    {
-        key: 'deposit',
-        title: 'Nạp Tiền',
-        classActive: 'border-colorBorder text-[#147ed9]',
-        classUnactive: 'border-[#b5b5c3] text-[#b5b5c3]',
-    },
-    {
-        key: 'historyDeposit',
-        title: 'Lịch Sử Nạp Tiền',
-        classActive: 'border-colorBorder text-[#147ed9]',
-        classUnactive: 'border-[#b5b5c3] text-[#b5b5c3]',
-    },
-    {
-        key: 'luckyJourney',
-        title: 'Nhật Ký Đơn May Mắn',
-        classActive: 'border-colorBorder text-[#147ed9]',
-        classUnactive: 'border-[#b5b5c3] text-[#b5b5c3]',
-    },
-];
 
 interface PopupProps {
     onClose: () => void;
@@ -72,25 +33,17 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
     const { fetchUserInfo } = useUserInfo();
     const [selectVip, setSelectVip] = useState<number>(user.vipLevel || 1);
     const [activeTab, setActiveTab] = useState<string>('deposit');
-    const [totalJourneysValue, settoTalJourneysValue] = useState<number>(user.totalJourneys || 0);
-    const [points, setpoints] = useState<number>(0);
+    const [totalJourneysValue, setTotalJourneysValue] = useState<number>(user.totalJourneys || 0);
+    const [points, setPoints] = useState<number>(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isFormValid, setIsFormValid] = useState<boolean>(false);
-    const balance = user.balance || 0;
-    const userVipLevel = user.vipLevel || 0;
-    const totalJourneys = user.totalJourneys || 0;
-    const totalDeposited = user.totalDeposited || 0;
-    const totalWithdrawn = user.totalWithdrawn || 0;
-    const journeysTaken = user.journeysTaken || 0;
-    const [sliderValue, setSliderValue] = useState<number>(journeysTaken);
+    const [sliderValue, setSliderValue] = useState<number>(user.journeysTaken || 0);
+    const [journeysTakenValue, setJourneysTakenValue] = useState<number>(user.journeysTaken || 0);
+    const [isJourneyBlocked, setIsJourneyBlocked] = useState<boolean>(false);
     const popupRef = useRef<HTMLDivElement>(null);
 
     const validateForm = () => {
-        if (totalJourneysValue > 0 && selectVip > 0) {
-            setIsFormValid(true);
-        } else {
-            setIsFormValid(false);
-        }
+        setIsFormValid(totalJourneysValue > 0 && selectVip > 0);
     };
 
     const handleVipChange = (value: number) => {
@@ -99,12 +52,16 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
     };
 
     const handleJourneyCompleteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        settoTalJourneysValue(Number(e.target.value));
+        setTotalJourneysValue(Number(e.target.value));
         validateForm();
     };
 
+    const handleJourneysTakenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setJourneysTakenValue(Number(e.target.value));
+    };
+
     const handleAdditionalPointsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setpoints(Number(e.target.value));
+        setPoints(Number(e.target.value));
         validateForm();
     };
 
@@ -155,7 +112,7 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
             const journeyIndex = sliderValue;
             const additionalPoints = points;
 
-            if (journeyIndex > totalJourneys) {
+            if (journeyIndex > totalJourneysValue) {
                 ToastProvider('warning', 'Người dùng đã hoàn thành hành trình của mình');
                 setIsLoading(false);
                 return;
@@ -174,6 +131,7 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
     const handleToggleJourneyBlock = async (block: boolean) => {
         try {
             const updatedUser = await toggleJourneyBlock(user._id, block);
+            setIsJourneyBlocked(block);
             ToastProvider('success', block ? 'Ngăn chặn hành trình thành công!' : 'Bỏ ngăn chặn hành trình thành công!');
             await fetchUserInfo();
         } catch (error) {
@@ -188,6 +146,20 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
             await fetchUserInfo();
         } catch (error) {
             ToastProvider('error', 'Không thể đặt lại số lượng hành trình');
+        }
+    };
+
+    const handleAdjustJourneyCount = async () => {
+        try {
+            if (journeysTakenValue < 0) {
+                ToastProvider('error', 'Số lượng hành trình không hợp lệ');
+                return;
+            }
+            const updatedUser = await adjustUserJourneyCount(user._id, journeysTakenValue);
+            ToastProvider('success', 'Điều chỉnh số lượng hành trình thành công!');
+            await fetchUserInfo();
+        } catch (error) {
+            ToastProvider('error', 'Không thể điều chỉnh số lượng hành trình');
         }
     };
 
@@ -229,7 +201,7 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
         <>
             <div className="overlay-sidebar active-overlay" />
             <div className="fixed inset-0 flex items-center justify-center z-30">
-                <div ref={popupRef} className="bg-white xl:w-[90vw] w-[90vw] xl:h-[40vw] h-[90%] xl:rounded-[0.5vw] rounded-[2vw] shadow-custom-4 border border-[#e5e9f2] bai-jamjuree flex flex-col">
+                <div ref={popupRef} className="bg-white xl:w-[94vw] w-[90vw] xl:h-[40vw] h-[90%] xl:rounded-[0.5vw] rounded-[2vw] shadow-custom-4 border border-[#e5e9f2] bai-jamjuree flex flex-col">
                     <div className="border-b-[0.2vw] border-[#E2E8F0] w-full">
                         <div className="w-full all-center !justify-between xl:px-[2vw] px-[4vw] xl:py-[0.8vw] py-[4vw]">
                             <TextTitle title={`Hành Trình + Nạp Rút Tiền :  ${user.username}`} />
@@ -239,56 +211,52 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
                     <div className="flex-1 overflow-y-auto custom-scrollbar">
                         <div className="all-center xl:px-0 px-[1vw]">
                             <div className="w-full h-full py-[2vw] px-[1vw]">
-                                <div className="all-center flex-col xl:gap-[1vw] gap-[6vw] lg:px-[5vw] px-[1vw]">
+                                <div className="all-center flex-col xl:gap-[1vw] gap-[6vw] lg:px-[4vw] px-[1vw]">
                                     <div className="w-full xl:flex-row flex-col flex justify-start items-center xl:gap-[2vw] gap-[5vw]">
-                                        <div className="bg-editUser flex items-center px-[2vw] xl:rounded-[1vw] rounded-[2vw] xl:h-[8vw] xl:!w-[25vw] !w-full h-[32vw] ">
-                                            <div className="flex items-center gap-[0.1vw]">
-                                                <img src={images.Avatar} alt="Avatar" className="xl:w-[5vw] sm:w-[16vw] w-[18vw]" />
-                                                <div className="!text-white box-total w-full">
-                                                    <div className="flex items-center box-total">
-                                                        <img src={images[`Level${userVipLevel}`]} alt={`Level ${userVipLevel}`} className="xl:w-[4vw] w-[16vw]" />
-                                                        <p className="text-titleLevel">Vip {userVipLevel}</p>
-                                                    </div>
+                                        <UserAvatar avatarSrc={images.Avatar} vipLevel={user.vipLevel} />
+                                        <div className="shadow-custom-3 bg-white xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:gap-[1vw] flex flex-col gap-[3vw] xl:w-[16vw] w-full">
+                                            {[
+                                                { label: 'Số Dư', value: user.balance },
+                                                { label: 'Đã Nạp', value: user.totalDeposited },
+                                                { label: 'Đã rút', value: user.totalWithdrawn },
+                                            ].map((item, index) => (
+                                                <div key={index} className="flex items-center xl:gap-[0.5vw] gap-[1vw] wallet-item">
+                                                    <p className="text-titleUser xl:w-[4vw] w-[18vw]">{item.label}</p>
+                                                    <span className="text-titleUser">:</span>
+                                                    <p className="text-contentUser tracking-[0.2vw]">{formatNumber(item.value)}</p>
                                                 </div>
-                                            </div>
+                                            ))}
                                         </div>
-
-                                        <div className="shadow-custom-3 bg-white xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:gap-[1vw] flex flex-col gap-[3vw] xl:w-[18vw] w-full">
-                                            <div className="flex items-center xl:gap-[0.5vw] gap-[1vw] wallet-item">
-                                                <p className="text-titleUser xl:w-[4vw] w-[18vw]">Số Dư </p>
-                                                <span className="text-titleUser">:</span>
-                                                <p className="text-contentUser tracking-[0.2vw]">{formatNumber(balance)}</p>
-                                            </div>
-                                            <div className="flex items-center xl:gap-[0.5vw] gap-[1vw] wallet-item">
-                                                <p className="text-titleUser xl:w-[4vw] w-[18vw]">Đã Nạp</p>
-                                                <span className="text-titleUser">:</span>
-                                                <p className="text-contentUser tracking-[0.2vw]">{formatNumber(totalDeposited)}</p>
-                                            </div>
-                                            <div className="flex items-center xl:gap-[0.5vw] gap-[1vw] wallet-item">
-                                                <p className="text-titleUser xl:w-[4vw] w-[18vw]">Đã rút </p>
-                                                <span className="text-titleUser">:</span>
-                                                <p className="text-contentUser tracking-[0.2vw]">{formatNumber(totalWithdrawn)}</p>
-                                            </div>
-                                        </div>
-                                        <div className="shadow-custom-3 bg-white xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:gap-[1vw] flex flex-col gap-[3vw] xl:w-[4vw] w-full">
+                                        <JourneyProgress className="xl:w-[30vw] w-full" journeys={journeysTakenValue} totalJourneys={totalJourneysValue} showBlockText={isJourneyBlocked} />
+                                        <div className="shadow-custom-3 bg-white xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:gap-[2vw] flex xl:flex-col flex-row gap-[10vw] xl:w-[4vw] w-auto">
                                             <Tooltip content="Ngăn Chặn Hành Trình">
-                                                <img src={images.lockJourney} alt="lock Journey" className="cursor-pointer xl:w-[1.5vw] w-[6vw]" onClick={() => handleToggleJourneyBlock(true)} />
+                                                <img src={images.lockJourney} alt="lock Journey" className="cursor-pointer xl:w-[1.5vw] w-[8vw]" onClick={() => handleToggleJourneyBlock(true)} />
                                             </Tooltip>
                                             <Tooltip content="Bỏ Chặn Hành Trình User">
-                                                <img src={images.unLockJourney} alt="unLock Journey" className="cursor-pointer xl:w-[1.5vw] w-[6vw]" onClick={() => handleToggleJourneyBlock(false)} />
+                                                <img src={images.unLockJourney} alt="unLock Journey" className="cursor-pointer xl:w-[1.5vw] w-[8vw]" onClick={() => handleToggleJourneyBlock(false)} />
                                             </Tooltip>
                                         </div>
-
-                                        <JourneyProgress className="xl:w-[40vw] w-full" journeys={journeysTaken} totalJourneys={totalJourneys} showBlockText={true} />
+                                        <div className="bg-white all-center flex-col  gap-[1vw] shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:w-[20vw] w-full ">
+                                            <InputSend
+                                                Label="Edit Hành Trình Đã Đi"
+                                                type="number"
+                                                placeholder="20"
+                                                name="evaluate"
+                                                value={journeysTakenValue}
+                                                onChange={handleJourneysTakenChange}
+                                                buttonText="Send"
+                                                onButtonClick={handleAdjustJourneyCount}
+                                            />
+                                        </div>
                                     </div>
-                                    <div className="flex xl:flex-row flex-col items-center w-full xl:gap-[1.5vw] gap-[6vw]">
+                                    <div className="flex xl:flex-row justify-center flex-col items-center w-full xl:gap-[1.5vw] gap-[6vw]">
                                         <div className="bg-white all-center flex-col gap-[1vw] shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:w-[20vw] w-full xl:h-[20vw] h-full">
                                             <div className="box-total w-full left-0">
                                                 <p className="text-titleLevel">Setup Đơn May Mắn</p>
                                             </div>
                                             <div className="flex w-full flex-col gap-[1vw]">
-                                                <p className="text-content">Hành Trình</p>
-                                                <CustomSlider min={journeysTaken} max={totalJourneys} step={1} value={sliderValue} onChange={setSliderValue} />
+                                                <p className="text-content">Hành Trình Đã Đi</p>
+                                                <CustomSlider min={journeysTakenValue} max={totalJourneysValue} step={1} value={sliderValue} onChange={setSliderValue} />
                                                 <Input Label="Số Điểm" type="number" onChange={handleAdditionalPointsChange} placeholder="20" name="money" />
                                             </div>
                                             <div className="xl:w-[8vw] w-[36vw] xl:pt-[1vw] pt-[3vw]">
@@ -302,13 +270,13 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
                                                     <img src={images.fetch} alt="fetch" className="icon-fetch cursor-pointer xl:w-[1.5vw] w-[6vw]" onClick={handleResetJourneyCount} />
                                                 </Tooltip>
                                             </div>
-                                            <Input Label="Hành Trình" type="number" placeholder="20" name="evaluate" value={totalJourneysValue} onChange={handleJourneyCompleteChange} />
+                                            <Input Label="Hành Trình Hằng Ngày" type="number" placeholder="20" name="evaluate" value={totalJourneysValue} onChange={handleJourneyCompleteChange} />
                                             <div className="box-total w-full">
                                                 <CustomSelect
                                                     Label="Vip"
                                                     name="vip"
                                                     value={selectVip}
-                                                    onChange={(value) => handleVipChange(value)}
+                                                    onChange={handleVipChange}
                                                     options={totalLevel.map((item) => ({
                                                         value: item.vipLevel,
                                                         label: item.title,
@@ -320,6 +288,7 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
                                                 <Button title="CẬP NHẬT" onClick={handleUpdateUserInfo} disabled={isLoading || !isFormValid} />
                                             </div>
                                         </div>
+
                                         <div className="bg-white flex flex-col gap-[1vw] shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:w-[36vw] w-full xl:h-[20vw] h-full">
                                             <div className="payment flex items-center w-full justify-between">
                                                 <div className="flex items-center xl:gap-[1vw] gap-[5vw] xl:h-auto h-[10vw] overflow-x-auto custom-scrollbar scrollbar-hidden whitespace-nowrap">
@@ -352,7 +321,6 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
                                                 >
                                                     {activeTab === 'deposit' && <DepositUser user={user} />}
                                                     {activeTab === 'historyDeposit' && <DepositHistory user={user} />}
-
                                                     {activeTab === 'luckyJourney' && <LuckyJourney user={user} />}
                                                 </Suspense>
                                             </div>

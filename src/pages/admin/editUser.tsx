@@ -13,73 +13,8 @@ import { useUserInfo } from 'hooks/UserContext';
 import JourneyProgress from 'components/journeyProgress';
 import CloseTabs from 'components/closeTabs';
 import { Tooltip } from '@material-tailwind/react';
-
-interface IAccountInfo {
-    label: string;
-    type: string;
-    placeholder: string;
-    name: string;
-}
-
-const BankInfo: IAccountInfo[] = [
-    {
-        label: 'Tên tài khoản',
-        type: 'text',
-        placeholder: 'Tên tài khoản',
-        name: 'bankAccount',
-    },
-    {
-        label: 'Ngân Hàng',
-        type: 'text',
-        placeholder: 'Ngân Hàng',
-        name: 'bankName',
-    },
-    {
-        label: 'Số Tài Khoản',
-        type: 'number',
-        placeholder: 'Số Tài Khoản',
-        name: 'bankNumber',
-    },
-];
-
-const AccountInfo: IAccountInfo[] = [
-    {
-        label: 'Tên đăng nhập',
-        type: 'text',
-        placeholder: 'Tên đăng nhập',
-        name: 'username',
-    },
-    {
-        label: 'Số điện thoại',
-        type: 'tel',
-        placeholder: 'Số điện thoại',
-        name: 'phone',
-    },
-    {
-        label: 'Mật khẩu ngân hàng',
-        type: 'text',
-        placeholder: 'Mật khẩu ngân hàng',
-        name: 'passBank',
-    },
-];
-
-const listTool = [
-    {
-        label: 'Chặn User',
-        images: images.banUser,
-        action: 'ban',
-    },
-    {
-        label: 'Bỏ Chặn User',
-        images: images.unbanUser,
-        action: 'unban',
-    },
-    {
-        label: 'Xóa User',
-        images: images.deleteUser,
-        action: 'delete',
-    },
-];
+import UserAvatar from './components/avatar';
+import { listTool, BankInfo, AccountInfo } from './type';
 
 interface PopupProps {
     onClose: () => void;
@@ -247,20 +182,7 @@ const EditUser: React.FC<PopupProps> = ({ onClose, user }) => {
                             <div className="w-full h-full py-[2vw] px-[1vw]">
                                 <div className="all-center flex-col xl:gap-[2vw] gap-[6vw] lg:px-[5vw] px-[1vw]">
                                     <div className="w-full xl:flex-row flex-col flex items-center xl:gap-[2vw] gap-[5vw]">
-                                        <div className="bg-editUser relative flex items-center px-[2vw] xl:rounded-[1vw] rounded-[2vw] xl:h-[8vw] xl:!w-[25vw] !w-full h-[32vw] ">
-                                            <div className="flex items-center gap-[0.1vw]">
-                                                <img src={images.Avatar} alt="Avatar" className="xl:w-[5vw] sm:w-[16vw] w-[18vw]" />
-                                                <div className="!text-white box-total w-full">
-                                                    <div className="flex items-center box-total">
-                                                        <img src={images[`Level${userVipLevel}`]} alt={`Level ${userVipLevel}`} className="xl:w-[4vw] w-[16vw]" />
-                                                        <p className="text-titleLevel">Vip {userVipLevel}</p>
-                                                    </div>
-                                                </div>
-                                                <div className="absolute top-[1vw] right-[1vw]">
-                                                    {isBlocked ? <img src={images.errorIcon} alt="Error" className="xl:w-[1.5vw] w-[8vw]" /> : <img src={images.checkIcon} alt="Check" className="xl:w-[1.5vw] w-[8vw]" />}
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <UserAvatar avatarSrc={images.Avatar} vipLevel={userVipLevel} isBlocked={isBlocked} />
                                         <div className="shadow-custom-3 bg-white xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:gap-[1vw] flex flex-col gap-[3vw] xl:w-[10vw] w-[36vw]">
                                             <div className="flex items-center xl:gap-[1vw] gap-[3vw]">
                                                 {listTool.map(({ label, images, action }, index) => (
