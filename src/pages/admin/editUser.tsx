@@ -194,7 +194,7 @@ const EditUser: React.FC<PopupProps> = ({ onClose, user }) => {
         <>
             <div className="overlay-sidebar active-overlay" />
             <div className="fixed inset-0 flex items-center justify-center z-30">
-                <div ref={popupRef} className="bg-white xl:w-[80vw] w-[90vw] xl:h-[40vw] h-[90%] xl:rounded-[0.5vw] rounded-[2vw] shadow-custom-4 border border-[#e5e9f2] bai-jamjuree flex flex-col">
+                <div ref={popupRef} className="bg-white xl:w-[80vw] w-[90vw] xl:h-[42vw] h-[90%] xl:rounded-[0.5vw] rounded-[2vw] shadow-custom-4 border border-[#e5e9f2] bai-jamjuree flex flex-col">
                     <div className="border-b-[0.2vw] border-[#E2E8F0] w-full">
                         <div className="w-full all-center !justify-between xl:px-[2vw] px-[4vw] xl:py-[0.8vw] py-[4vw]">
                             <TextTitle title={`Chỉnh Sửa Tài Khoản :  ${user.username}`} />
@@ -231,7 +231,7 @@ const EditUser: React.FC<PopupProps> = ({ onClose, user }) => {
                                                         </div>
                                                     ))}
                                                 </div>
-                                                <div className="flex justify-end w-full xl:max-w-[10vw] max-w-[16vw] mt-[1vw] m-auto">
+                                                <div className="flex justify-end w-full xl:max-w-[10vw] max-w-[16vw] m-auto">
                                                     <Button title="CẬP NHẬT" onClick={onUpdate} />
                                                 </div>
                                             </div>
