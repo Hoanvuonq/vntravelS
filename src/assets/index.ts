@@ -90,4 +90,5 @@ export const images: any = {
     fetch: require('./img/reload.png'),
     lockJourney: require('./img/lockJourney.png'),
     unLockJourney: require('./img/unlockJourney.png'),
+    deleteIntervention: require('./img/delete-evaluate.png'),
 };

@@ -26,9 +26,10 @@ const LuckyJourney = lazy(() => import('./components/luckyHistoryUser'));
 interface PopupProps {
     onClose: () => void;
     user: IUserInfo;
+    onUpdateUser: (updatedUser: IUserInfo) => void;
 }
 
-const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
+const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user, onUpdateUser }) => {
     const dispatch = useDispatch<AppDispatch>();
     const { fetchUserInfo } = useUserInfo();
     const [selectVip, setSelectVip] = useState<number>(user.vipLevel || 1);
@@ -100,7 +101,8 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
 
             const response = await updateUserInfo(user._id, updatedData);
             if (response.status) {
-                await fetchUserInfo();
+                user.totalJourneys = totalJourneysValue;
+                user.vipLevel = selectVip;
                 ToastProvider('success', 'Cập Nhật Thành Công');
             } else {
                 ToastProvider('error', response.message || 'Không Thể Cập Nhật Thông Tin');
@@ -142,6 +144,7 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
     const handleToggleJourneyBlock = async (block: boolean) => {
         try {
             const updatedUser = await toggleJourneyBlock(user._id, block);
+            user.journeysTaken = updatedUser.journeysTaken;
             setIsJourneyBlocked(block);
             ToastProvider('success', block ? 'Ngăn chặn hành trình thành công!' : 'Bỏ ngăn chặn hành trình thành công!');
             await fetchUserInfo();
@@ -153,6 +156,7 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
     const handleResetJourneyCount = async () => {
         try {
             const updatedUser = await resetJourneyCount(user._id);
+            user.journeysTaken = updatedUser.journeysTaken;
             ToastProvider('success', 'Đặt lại số lượng hành trình thành công!');
             await fetchUserInfo();
         } catch (error) {
@@ -167,6 +171,7 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user }) => {
                 return;
             }
             const updatedUser = await adjustUserJourneyCount(user._id, journeysTakenValue);
+            user.journeysTaken = updatedUser.journeysTaken;
             ToastProvider('success', 'Điều chỉnh số lượng hành trình thành công!');
             await fetchUserInfo();
         } catch (error) {

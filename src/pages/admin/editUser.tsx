@@ -153,6 +153,30 @@ const EditUser: React.FC<PopupProps> = ({ onClose, user }) => {
         }
     };
 
+    const sections = [
+        {
+            title: 'Thông tin ngân hàng',
+            data: BankInfo,
+            stateData: bankData,
+            onUpdate: handleUpdateBankInfo,
+            onChange: handleBankInputChange,
+        },
+        {
+            title: 'Thông Tin Tài Khoản',
+            data: AccountInfo,
+            stateData: accountData,
+            onUpdate: handleUpdateUserInfo,
+            onChange: handleAccountInputChange,
+        },
+        {
+            title: 'Đổi Mật Khẩu',
+            data: [{ label: 'Mật khẩu mới', type: 'text', placeholder: 'Nhập mật khẩu mới', name: 'newPassword' }],
+            stateData: { newPassword },
+            onUpdate: handleUpdatePassword,
+            onChange: handlePasswordChange,
+        },
+    ];
+
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
@@ -179,7 +203,7 @@ const EditUser: React.FC<PopupProps> = ({ onClose, user }) => {
                     </div>
                     <div className="flex-1 overflow-y-auto custom-scrollbar">
                         <div className="all-center xl:px-0 px-[1vw]">
-                            <div className="w-full h-full py-[2vw] px-[1vw]">
+                            <div className="w-full h-full py-[4vw] px-[1vw]">
                                 <div className="all-center flex-col xl:gap-[2vw] gap-[6vw] lg:px-[5vw] px-[1vw]">
                                     <div className="w-full xl:flex-row flex-col flex items-center xl:gap-[2vw] gap-[5vw]">
                                         <UserAvatar avatarSrc={images.Avatar} vipLevel={userVipLevel} isBlocked={isBlocked} />
@@ -194,50 +218,24 @@ const EditUser: React.FC<PopupProps> = ({ onClose, user }) => {
                                         </div>
                                         <JourneyProgress className="xl:w-[30vw] w-full" journeys={journeysTaken} totalJourneys={totalJourneys} />
                                     </div>
-                                    <div className="flex xl:flex-row flex-col items-center w-full xl:gap-[1.5vw] gap-[6vw]">
-                                        <div className="bg-white shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] w-full">
-                                            <div className="box-total">
-                                                <p className="text-titleLevel">Thông tin ngân hàng</p>
-                                            </div>
-                                            <div className="flex flex-col flex-wrap w-full">
-                                                {BankInfo.map(({ label, type, placeholder, name }, index) => (
-                                                    <div key={index} className="w-full lg:p-[0.4vw] p-[2vw]">
-                                                        <Input Label={label} type={type} placeholder={placeholder} name={name} value={bankData[name as keyof typeof bankData]} onChange={handleBankInputChange} />
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            <div className="flex justify-end w-full max-w-[150px] m-auto">
-                                                <Button title="CẬP NHẬT" onClick={handleUpdateBankInfo} />
-                                            </div>
-                                        </div>
-                                        <div className="bg-white shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] w-full">
-                                            <div className="box-total">
-                                                <p className="text-titleLevel">Thông Tin Tài Khoản</p>
-                                            </div>
-                                            <div className="flex flex-col flex-wrap w-full">
-                                                {AccountInfo.map(({ label, type, placeholder, name }, index) => (
-                                                    <div key={index} className="w-full lg:p-[0.4vw] p-[2vw]">
-                                                        <Input Label={label} type={type} placeholder={placeholder} name={name} value={accountData[name as keyof typeof accountData]} onChange={handleAccountInputChange} />
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            <div className="flex justify-end w-full max-w-[150px] m-auto">
-                                                <Button title="CẬP NHẬT" onClick={handleUpdateUserInfo} />
-                                            </div>
-                                        </div>
-                                        <div className="bg-white shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] w-full">
-                                            <div className="box-total">
-                                                <p className="text-titleLevel">Đổi Mật Khẩu</p>
-                                            </div>
-                                            <div className="flex flex-col flex-wrap w-full">
-                                                <div className="w-full lg:p-[0.4vw] p-[2vw]">
-                                                    <Input Label="Mật khẩu mới" type="text" placeholder="Nhập mật khẩu mới" name="newPassword" value={newPassword} onChange={handlePasswordChange} />
+                                    <div className="flex xl:flex-row flex-col items-center w-full xl:gap-[1.5vw] gap-[6vw] all-start">
+                                        {sections.map(({ title, data, stateData, onUpdate, onChange }, index) => (
+                                            <div key={index} className="bg-white shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] w-full">
+                                                <div className="box-total py-[0.5vw]">
+                                                    <p className="text-titleLevel">{title}</p>
+                                                </div>
+                                                <div className="flex flex-col flex-wrap w-full">
+                                                    {data.map(({ label, type, placeholder, name }, idx) => (
+                                                        <div key={idx} className="w-full lg:p-[0.4vw] p-[2vw]">
+                                                            <Input Label={label} type={type} placeholder={placeholder} name={name} value={stateData[name as keyof typeof stateData]} onChange={onChange} />
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                <div className="flex justify-end w-full xl:max-w-[10vw] max-w-[16vw] mt-[1vw] m-auto">
+                                                    <Button title="CẬP NHẬT" onClick={onUpdate} />
                                                 </div>
                                             </div>
-                                            <div className="flex justify-end w-full max-w-[150px] m-auto">
-                                                <Button title="CẬP NHẬT" onClick={handleUpdatePassword} />
-                                            </div>
-                                        </div>
+                                        ))}
                                     </div>
                                 </div>
                             </div>

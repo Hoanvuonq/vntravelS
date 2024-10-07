@@ -211,14 +211,15 @@ export const getUserTransactionHistory = async (userId: string): Promise<{ depos
 export const interveneJourney = async (userId: string, journeyIndex: number, additionalPoints: number): Promise<ITransaction> => {
     try {
         const response = await Api.post<TransactionResponse>(`${url}/interveneJourney/${userId}`, { journeyIndex, additionalPoints });
+        console.log('API Response:', response);
         if (response.data.status && response.data.data) {
             return response.data.data;
         } else {
-            console.error('Cấu trúc phản hồi không mong đợi:', response.data);
-            throw new Error('Cấu trúc phản hồi không mong đợi');
+            console.error('Unexpected response structure:', response.data);
+            throw new Error('Unexpected response structure');
         }
     } catch (error) {
-        console.error('Lỗi trong interveneJourney:', error);
+        console.error('Error in interveneJourney:', error);
         throw error;
     }
 };
@@ -238,6 +239,16 @@ export const editIntervention = async (interventionId: string, journeyIndex: num
         return response.data;
     } catch (error) {
         console.error('Error in editIntervention:', error);
+        throw error;
+    }
+};
+
+export const deleteIntervention = async (interventionId: string): Promise<any> => {
+    try {
+        const response = await Api.delete(`${url}/deleteIntervention/${interventionId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error in deleteIntervention:', error);
         throw error;
     }
 };

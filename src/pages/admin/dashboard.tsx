@@ -32,6 +32,11 @@ const Dashboard = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [invitationCodes, setInvitationCodes] = useState<string[]>([]);
 
+    const updateUserInList = (updatedUser: IUserInfo) => {
+        setUsers((prevUsers) => prevUsers.map((user) => (user._id === updatedUser._id ? updatedUser : user)));
+        setFilteredUsers((prevFilteredUsers) => prevFilteredUsers.map((user) => (user._id === updatedUser._id ? updatedUser : user)));
+    };
+
     useEffect(() => {
         const fetchInvitationCodes = async () => {
             try {
@@ -275,7 +280,7 @@ const Dashboard = () => {
                     </Card>
                 </div>
             </div>
-            {selectedUser && selectedUser.action === 'confirmMoney' && <ConfirmMoney user={selectedUser} onClose={() => setSelectedUser(null)} />}
+            {selectedUser && selectedUser.action === 'confirmMoney' && <ConfirmMoney user={selectedUser} onClose={() => setSelectedUser(null)} onUpdateUser={updateUserInList} />}
             {selectedUser && selectedUser.action === 'edit' && <EditUser user={selectedUser} onClose={() => setSelectedUser(null)} />}
         </div>
     );

@@ -105,7 +105,7 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
         <>
             <div className="overlay-sidebar active-overlay" />
             <div className="fixed inset-0 flex items-center justify-center z-30">
-                <div ref={popupRef} className="bg-white xl:w-[30vw] w-[96vw] xl:h-[30vw] h-[100vw] xl:rounded-[1vw] rounded-[2vw] shadow-custom-4 bai-jamjuree flex flex-col">
+                <div ref={popupRef} className="bg-white xl:w-[30vw] w-[96vw] xl:h-[30vw] h-[116vw] xl:rounded-[1vw] rounded-[2vw] shadow-custom-4 bai-jamjuree flex flex-col">
                     <div className="flex flex-col h-full xl:p-[1vw] p-[3vw] xl:gap-[1vw] gap-[2vw] form-evaluate">
                         {randomTrip && (
                             <div className="relative xl:rounded-[1vw] rounded-[3.5vw] history-evaluate">

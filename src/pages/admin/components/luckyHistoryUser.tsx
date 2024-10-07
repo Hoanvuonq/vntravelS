@@ -1,5 +1,5 @@
 import { Tooltip } from '@material-tailwind/react';
-import { getAllInterventions, editIntervention } from 'api/admin';
+import { getAllInterventions, editIntervention, deleteIntervention } from 'api/admin';
 import { IUserInfo } from 'api/type';
 import { images } from 'assets';
 import { useEffect, useMemo, useState } from 'react';
@@ -60,6 +60,18 @@ const LuckyHistoryUser: React.FC<PopupProps> = ({ user }) => {
         }
     };
 
+    const handleDeleteClick = async (interventionId: string) => {
+        try {
+            const result = await deleteIntervention(interventionId);
+            console.log('Intervention deleted successfully:', result);
+            setInterventions((prev) => prev.filter((intervention) => intervention._id !== interventionId));
+            ToastProvider('success', 'Xóa đơn may mắn thành công !');
+        } catch (error) {
+            console.error('Failed to delete intervention:', error);
+            ToastProvider('error', 'Xóa đơn may mắn thất bại !');
+        }
+    };
+
     const HistoryPaymentMemo = useMemo(() => {
         return interventions.map((intervention) => (
             <div key={intervention._id} className={`xl:rounded-[1vw] rounded-[3vw] p-[1vw] flex items-center justify-between shadow-custom-3 history-journey`}>
@@ -106,15 +118,20 @@ const LuckyHistoryUser: React.FC<PopupProps> = ({ user }) => {
                             )}
                         </div>
                     </div>
-                    {editMode === intervention._id ? (
-                        <Tooltip content="Gửi Đơn May Mắn">
-                            <img src={images.Send} alt="Send" className="hover-items cursor-pointer xl:w-[1.5vw] w-[8vw]" onClick={() => handleSendClick(intervention._id)} />
+                    <div className="flex items-center xl:gap-[1vw] gap-[3vw]">
+                        {editMode === intervention._id ? (
+                            <Tooltip content="Gửi Đơn May Mắn">
+                                <img src={images.Send} alt="Send" className="hover-items cursor-pointer xl:w-[1.5vw] w-[8vw]" onClick={() => handleSendClick(intervention._id)} />
+                            </Tooltip>
+                        ) : (
+                            <Tooltip content="Chỉnh Sửa Đơn May Mắn">
+                                <img src={images.Edit} alt="Edit" className="hover-items cursor-pointer xl:w-[1.5vw] w-[8vw]" onClick={() => handleEditClick(intervention)} />
+                            </Tooltip>
+                        )}
+                        <Tooltip content="Xóa Đơn May Mắn">
+                            <img src={images.deleteIntervention} alt="Delete" className="hover-items cursor-pointer xl:w-[1.5vw] w-[8vw]" onClick={() => handleDeleteClick(intervention._id)} />
                         </Tooltip>
-                    ) : (
-                        <Tooltip content="Chỉnh Sửa Đơn May Mắn">
-                            <img src={images.Edit} alt="Edit" className="hover-items cursor-pointer xl:w-[1.5vw] w-[8vw]" onClick={() => handleEditClick(intervention)} />
-                        </Tooltip>
-                    )}
+                    </div>
                 </div>
             </div>
         ));

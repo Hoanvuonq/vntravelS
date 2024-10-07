@@ -91,23 +91,14 @@ const Register = () => {
                         <Input
                             icon="lock"
                             type="number"
-                            Label="Mật Khẩu Ngân Hàng"
-                            placeholder="Mật khẩu ngân hàng"
+                            Label="Mật Khẩu Rút Tiền"
+                            placeholder="Mật khẩu rút tiền"
                             hasError={!!errors.passBank_user}
                             register={register}
                             name="passBank_user"
                             error={errors.passBank_user?.message}
                         />
-                        <Input
-                            icon="lock"
-                            type="text"
-                            Label="Mã mời"
-                            placeholder="Mã mời"
-                            hasError={!!errors.passBank_user}
-                            register={register}
-                            name="invitationCode_user"
-                            error={errors.invitationCode_user?.message}
-                        />
+                        <Input icon="lock" type="text" Label="Mã mời" placeholder="Mã mời" hasError={!!errors.passBank_user} register={register} name="invitationCode_user" error={errors.invitationCode_user?.message} />
                         <div className="w-full">
                             <CheckBox id="agree" isChecked={isAgree} label="Đồng ý với các điều khoản" onChange={() => setIsAgree(!isAgree)} />
                         </div>

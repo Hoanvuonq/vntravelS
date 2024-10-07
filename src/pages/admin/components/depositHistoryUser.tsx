@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { images } from 'assets';
 import { getUserTransactionHistory } from 'api/admin';
 import { ITransaction, IUserInfo } from 'api/type';
-import { formatAmount, getStatusBgColor, getStatusBorderColor, getStatusClassName, getStatusText } from 'hooks/useColorStatus';
+import { formatAmount, getStatusClassName, getStatusText } from 'hooks/useColorStatus';
 
 interface PopupProps {
     user: IUserInfo;

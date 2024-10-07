@@ -27,6 +27,11 @@ const WithDrawAllUsuer = () => {
     const [withdraws, setWithdraws] = useState<ITransaction[]>([]);
     const [hasPendingTransactions, setHasPendingTransactions] = useState(false);
 
+    const updateUserInList = (updatedUser: IUserInfo) => {
+        setUsers((prevUsers) => prevUsers.map((user) => (user._id === updatedUser._id ? updatedUser : user)));
+        setFilteredUsers((prevFilteredUsers) => prevFilteredUsers.map((user) => (user._id === updatedUser._id ? updatedUser : user)));
+    };
+
     const handleSearch = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             const trimmedQuery = searchQuery.trim();
@@ -263,7 +268,7 @@ const WithDrawAllUsuer = () => {
                     </Card>
                 </div>
             </div>
-            {selectedUser && selectedUser.action === 'confirmMoney' && <ConfirmMoney user={selectedUser} onClose={() => setSelectedUser(null)} />}
+            {selectedUser && selectedUser.action === 'confirmMoney' && <ConfirmMoney user={selectedUser} onClose={() => setSelectedUser(null)} onUpdateUser={updateUserInList} />}
             {selectedUser && selectedUser.action === 'edit' && <EditUser user={selectedUser} onClose={() => setSelectedUser(null)} />}
         </div>
     );

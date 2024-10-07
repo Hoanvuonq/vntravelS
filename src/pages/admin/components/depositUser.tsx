@@ -29,6 +29,8 @@ const DepositHistory: React.FC<PopupProps> = ({ user }) => {
         setAmount(formatNumber(value));
     };
 
+    // ... existing code ...
+
     const handleDeposit = async () => {
         const numericAmount = parseInt(amount.replace(/\./g, ''));
         if (numericAmount <= 0) {
@@ -40,7 +42,8 @@ const DepositHistory: React.FC<PopupProps> = ({ user }) => {
         try {
             await new Promise((resolve) => setTimeout(resolve, 1000));
             await adminDeposit(user._id, numericAmount);
-            await fetchUserInfo();
+
+            user.balance += numericAmount;
             ToastProvider('success', 'Yêu Cầu Nạp Tiền Thành Công');
         } catch (error) {
             ToastProvider('error', 'Yêu Cầu Nạp Tiền Thất Bại !!');
@@ -48,6 +51,8 @@ const DepositHistory: React.FC<PopupProps> = ({ user }) => {
             setLoading(false);
         }
     };
+
+    // ... existing code ...
 
     return (
         <div className="w-full">
