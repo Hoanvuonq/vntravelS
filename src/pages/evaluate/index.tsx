@@ -42,15 +42,17 @@ const Evaluate = () => {
     const handlePreviewJourney = async () => {
         try {
             const result = await previewJourney();
+            console.log('Preview Journey Result:', result);
             if (result.success && result.data) {
                 if (balance < 100.0) {
                     ToastProvider('warning', 'Số dư của bạn phải ít nhất là 100,00 để gửi một chuyến đi');
                 } else {
                     setPreviewData({ ...result.data, createdAt: new Date().toISOString() });
                     setShowFomEvaluate(true);
-                    const difference = result.data.journeyAmount - balance;
-                    if (balance < result.data.journeyAmount) {
-                        setPopupMessage(`Chúc Mừng Bạn Đã Nhận Được Đơn Hành Trình Kết Nối, Đơn Hành Trình Này Có Thể Nhận Được Nhiều Hoa Hồng Hơn và Cần Phải Bù Phần Chênh Lệch ${formatNumber(difference)}`);
+                    const additionalPoints = result.data.additionalPoints;
+                    if (result.data.isLuckyJourney) {
+                        console.log('Lucky Journey Detected');
+                        setPopupMessage(`Chúc Mừng Bạn Đã Nhận Được Đơn Hành Trình Kết Nối, Đơn Hành Trình Này Có Thể Nhận Được Nhiều Hoa Hồng Hơn và Cần Phải Bù Phần Chênh Lệch ${formatNumber(additionalPoints)} Điểm.`);
                     }
                 }
             } else {

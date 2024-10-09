@@ -90,7 +90,9 @@ export interface IJourneyPreviewResponse {
     journeyAmount: number;
     profit: number;
     place: string;
+    additionalPoints: number;
     rating: number;
+    isLuckyJourney: boolean;
 }
 
 export interface IJourneyHistoryResponse {

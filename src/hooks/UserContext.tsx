@@ -5,7 +5,7 @@ import React, { createContext, useCallback, useContext, useEffect, useState } fr
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserInfo, tokenExpired } from 'redux/slice/authSlice';
 import { RootState } from 'redux/store';
-import { logOutUser } from 'redux/reducer/apiRequest';
+import { checkTokenExpiration, logOutUser } from 'redux/reducer/apiRequest';
 
 interface UserContextType {
     userInfo: IUserInfo | null;
@@ -66,12 +66,22 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, [dispatch]);
 
     useEffect(() => {
+        const checkAndLogoutIfTokenExpired = () => {
+            if (checkTokenExpiration()) {
+                localStorage.removeItem('accessToken');
+                localStorage.removeItem('adminToken');
+                dispatch(tokenExpired());
+                logOutUser(dispatch, (window.location.href = '/login'));
+            }
+        };
+
         if (hasValidToken()) {
             fetchUserInfo();
             fetchAdminUserInfo();
         }
 
         const intervalId = setInterval(() => {
+            checkAndLogoutIfTokenExpired();
             if (hasValidToken()) {
                 fetchUserInfo();
                 fetchAdminUserInfo();
@@ -79,7 +89,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }, 60000);
 
         return () => clearInterval(intervalId);
-    }, [fetchUserInfo, fetchAdminUserInfo]);
+    }, [fetchUserInfo, fetchAdminUserInfo, dispatch]);
 
     return <UserContext.Provider value={{ userInfo: reduxUserInfo, fetchUserInfo, fetchAdminUserInfo, isLoading }}>{children}</UserContext.Provider>;
 };

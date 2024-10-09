@@ -26,10 +26,10 @@ const decryptData = (encryptedData: string): any => {
 
 export const previewJourney = async (): Promise<{ success: boolean; data?: IJourneyPreviewResponse; message?: string }> => {
     try {
-        const res = await Api.get<{ status: boolean; data: { encryptedData: string }; message: string }>(`${url}/previewJourney`);
+        const res = await Api.get<{ status: boolean; data: { encryptedData: string; isLuckyJourney: boolean }; message: string }>(`${url}/previewJourney`);
         if (res.data && res.data.status) {
             const decryptedData = decryptData(res.data.data.encryptedData);
-            return { success: true, data: decryptedData, message: res.data.message };
+            return { success: true, data: { ...decryptedData, isLuckyJourney: res.data.data.isLuckyJourney }, message: res.data.message };
         } else {
             return { success: false, message: res.data.message || 'Failed to preview journey' };
         }
