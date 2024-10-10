@@ -81,12 +81,12 @@ const routes = createBrowserRouter([
             },
         ],
     },
-    { path: '/loginAdmin', element: <ProtectedAdminLogin /> },
+    { path: '/axlsoncccjZkasasasan12lasassasasaxploginAdmin', element: <ProtectedAdminLogin /> },
     {
         element: <ProtectedAdminRoute />,
         children: [
             {
-                path: '/dashboard',
+                path: '/abc-123-akshxiwdo00-nvmdka-dashboard',
                 element: (
                     <AdminLayout>
                         <Dashboard />
@@ -94,7 +94,7 @@ const routes = createBrowserRouter([
                 ),
             },
             {
-                path: '/withdraw-all-user',
+                path: '/abc-123-akshxiwdo00-nvmdka-withdraw-all-user',
                 element: (
                     <AdminLayout>
                         <WithdrawAllUser />

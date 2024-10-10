@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { toggleSidebar } from 'redux/slice/sidebarSlice';
 import { AppDispatch, RootState } from 'redux/store';
 
-const SidebarMenu = [{ title: 'Danh Sách Rút Tiền', icon: images.wallet, link: '/withdraw-all-user' }];
+const SidebarMenu = [{ title: 'Danh Sách Rút Tiền', icon: images.wallet, link: '/abc-123-akshxiwdo00-nvmdka-withdraw-all-user' }];
 const Sidebar: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const [isMobile, setIsMobile] = useState(window.innerWidth < 1025);
@@ -55,7 +55,11 @@ const Sidebar: React.FC = () => {
                     </Link>
                 </div>
                 <div className="p-[0.5vw]">
-                    <Link to={'/dashboard'} className="font-bold flex gap-[0.4vw] items-center item-sidebar xl:p-[0.5vw] p-[1.5vw] xl:rounded-[0.5vw] rounded-[2vw] text-menu active-items" onClick={handleMenuClick}>
+                    <Link
+                        to={'/abc-123-akshxiwdo00-nvmdka-dashboard'}
+                        className="font-bold flex gap-[0.4vw] items-center item-sidebar xl:p-[0.5vw] p-[1.5vw] xl:rounded-[0.5vw] rounded-[2vw] text-menu active-items"
+                        onClick={handleMenuClick}
+                    >
                         <img src={images.DashBoard} alt="Logo DashBoard" className="xl:w-[2.5vw] w-[10vw]" />
                         <p className="text-overview">Tổng quan</p>
                     </Link>

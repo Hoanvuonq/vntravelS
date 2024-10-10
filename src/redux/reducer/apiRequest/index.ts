@@ -104,7 +104,7 @@ export const logOutAdmin = async (dispatch: Dispatch<any>, navigate: any) => {
     try {
         localStorage.removeItem('adminToken');
         dispatch(logoutSuccess());
-        navigate('/loginAdmin');
+        navigate('/axlsoncccjZkasasasan12lasassasasaxploginAdmin');
 
         axios
             .post(
@@ -143,7 +143,7 @@ export const createAxiosJWT = (dispatch: Dispatch<any>): AxiosInstance => {
                     dispatch(tokenExpired());
                     clearTokens();
                     const isAdmin = localStorage.getItem('adminToken') !== null;
-                    window.location.href = isAdmin ? '/loginAdmin' : '/login';
+                    window.location.href = isAdmin ? '/axlsoncccjZkasasasan12lasassasasaxploginAdmin' : '/login';
                     return Promise.reject('Token expired');
                 }
             }
@@ -163,7 +163,7 @@ export const createAxiosJWT = (dispatch: Dispatch<any>): AxiosInstance => {
                 dispatch(tokenExpired());
                 clearTokens();
                 const isAdmin = localStorage.getItem('adminToken') !== null;
-                window.location.href = isAdmin ? '/loginAdmin' : '/login';
+                window.location.href = isAdmin ? '/axlsoncccjZkasasasan12lasassasasaxploginAdmin' : '/login';
             } else if (error.response?.data?.message === 'Tài khoản của bạn đã bị chặn') {
                 // Handle blocked user case
                 alert('Your account has been blocked. Please contact support.');

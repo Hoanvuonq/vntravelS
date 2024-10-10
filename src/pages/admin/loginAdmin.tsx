@@ -32,7 +32,7 @@ const LoginAdmin = () => {
         if (response.success) {
             ToastProvider('success', 'Admin login successful');
             setTimeout(() => {
-                navigate('/dashboard');
+                navigate('/abc-123-akshxiwdo00-nvmdka-dashboard');
             }, 2000);
         } else {
             ToastProvider('error', response.message || 'Admin Login Failed');

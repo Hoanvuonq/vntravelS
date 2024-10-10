@@ -8,7 +8,7 @@ const ProtectedAdminRoute = () => {
     const isAdminExpired = useAdminBearerToken();
 
     if (!isAdminAuthed || isAdminExpired) {
-        return <Navigate to="/loginAdmin" state={{ from: location }} replace />;
+        return <Navigate to="/axlsoncccjZkasasasan12lasassasasaxploginAdmin" state={{ from: location }} replace />;
     }
 
     return <Outlet />;

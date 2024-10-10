@@ -6,7 +6,7 @@ import LoginAdmin from 'pages/admin/loginAdmin';
 const ProtectedAdminLogin = () => {
     const isAdminAuthed = useAdminAuth();
     const isAdminExpired = useAdminBearerToken();
-    return isAdminAuthed && !isAdminExpired ? <Navigate to="/loginAdmin" /> : <LoginAdmin />;
+    return isAdminAuthed && !isAdminExpired ? <Navigate to="/axlsoncccjZkasasasan12lasassasasaxploginAdmin" /> : <LoginAdmin />;
 };
 
 export default ProtectedAdminLogin;
