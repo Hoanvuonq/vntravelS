@@ -69,6 +69,7 @@ export const images: any = {
     withdrawMoney: require('./img/withdraw-money.png'),
     QrRef: require('./img/ref-qr.png'),
     iconChat: require('./img/advise.png'),
+    iconZalo: require('./img/icon-zalo.jpg'),
     bank: require('./img/bank.png'),
     TermsAndConditions: require('./img/terms-and-conditions.png'),
     Request: require('./img/request.png'),

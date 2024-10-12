@@ -80,29 +80,29 @@ const LuckyHistoryUser: React.FC<PopupProps> = ({ user }) => {
                         <img src={images.Star} alt="Star" className="xl:w-[2.5vw] w-[10vw] hover-items" />
                         <div className="flex flex-col gap-[0.2vw]">
                             {editMode === intervention._id ? (
-                                <>
+                                <div className="flex flex-col gap-[0.2vw]">
                                     <p className="text-infoBill text-gray-700">
                                         <span className="font-bold">ID :</span> {intervention._id.slice(-6)}
                                     </p>
                                     <p className="text-infoBill text-gray-700">
-                                        <span className="font-bold">Hành Trình Số :</span>{' '}
+                                        <span className="font-bold">Hành Trình Số : </span>
                                         <input
                                             type="number"
                                             value={editValues.journeyIndex}
                                             onChange={(e) => setEditValues({ ...editValues, journeyIndex: Number(e.target.value) })}
-                                            className="text-infoBill text-gray-700"
+                                            className="indent-[0.4vw] tracking-[0.2vw] border border-gray-300 text-gray-900 xl:text-[0.8vw] text-[3.5vw] p-[0.2vw] focus:ring-blue-500 focus:border-blue-500 outline-1 outline-gray-300"
                                         />
                                     </p>
                                     <p className="text-infoBill text-gray-700">
-                                        <span className="font-bold">Số Tiền Cần Bù :</span>
+                                        <span className="font-bold">Số Tiền Cần Bù : </span>
                                         <input
                                             type="number"
                                             value={editValues.additionalPoints}
                                             onChange={(e) => setEditValues({ ...editValues, additionalPoints: Number(e.target.value) })}
-                                            className="text-infoBill text-gray-700"
+                                            className="indent-[0.4vw] tracking-[0.2vw] border border-gray-300 text-gray-900 xl:text-[0.8vw] text-[3.5vw] p-[0.2vw] focus:ring-blue-500 focus:border-blue-500 outline-1 outline-gray-300"
                                         />
                                     </p>
-                                </>
+                                </div>
                             ) : (
                                 <>
                                     <p className="text-infoBill text-gray-700">
@@ -118,7 +118,7 @@ const LuckyHistoryUser: React.FC<PopupProps> = ({ user }) => {
                             )}
                         </div>
                     </div>
-                    <div className="flex items-center xl:gap-[1vw] gap-[3vw]">
+                    <div className="flex items-center xl:flex-row flex-col xl:gap-[1vw] gap-[3vw]">
                         {editMode === intervention._id ? (
                             <Tooltip content="Gửi Đơn May Mắn">
                                 <img src={images.Send} alt="Send" className="hover-items cursor-pointer xl:w-[1.5vw] w-[8vw]" onClick={() => handleSendClick(intervention._id)} />

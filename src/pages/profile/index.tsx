@@ -8,7 +8,7 @@ import PopupRequest from 'layouts/popup/requets';
 import PopupTerms from 'layouts/popup/terms';
 import { useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AppDispatch } from 'redux/store';
 import { logOutUser } from '../../redux/reducer/apiRequest';
 interface IInfoButton {
@@ -112,11 +112,24 @@ const Profile = () => {
                             <img src={images[`Level${userVipLevel}`]} alt={`Level ${userVipLevel}`} className="xl:w-[4vw] w-[16vw]" />
                             <p className="text-titleLevel">Vip {userVipLevel}</p>
                         </div>
+
                         <div className="flex items-center xl:gap-[0.5vw] gap-[1vw]">
-                            <div className="xl:border-[0.1vw] border-[0.3vw] xl:rounded-[2vw] rounded-[6vw] xl:py-[0.5vw] py-[2vw] xl:px-[0.7vw] px-[3vw] all-center xl:gap-[1vw] gap-[2vw] hover-items box-total">
+                            <Link
+                                to={'https://t.me/VNTravel_cskh'}
+                                target="_blank"
+                                className="xl:border-[0.1vw] border-[0.3vw] xl:rounded-[2vw] rounded-[6vw] xl:py-[0.5vw] py-[2vw] xl:px-[0.7vw] px-[3vw] all-center xl:gap-[1vw] gap-[2vw] hover-items box-total"
+                            >
                                 <span className="text-titleLevel">CSKH</span>
                                 <img src={images.iconChat} alt="iconChat" className="xl:w-[1.2vw] w-[6vw]" />
-                            </div>
+                            </Link>
+                            <Link
+                                to={'#'}
+                                target="_blank"
+                                className="xl:border-[0.1vw] border-[0.3vw] xl:rounded-[2vw] rounded-[6vw] xl:py-[0.5vw] py-[2vw] xl:px-[0.7vw] px-[3vw] all-center xl:gap-[1vw] gap-[2vw] hover-items box-total"
+                            >
+                                <span className="text-titleLevel">Zalo</span>
+                                <img src={images.iconZalo} alt="iconZalo" className="xl:w-[1.2vw] w-[6vw] rounded-[0.5vw]" />
+                            </Link>
                         </div>
                     </div>
                     <JourneyProgress className="w-full" journeys={journeysTaken} totalJourneys={totalJourneys} />
