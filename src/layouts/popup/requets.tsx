@@ -69,7 +69,7 @@ const PopupRequest: React.FC<PopupProps> = ({ onClose }) => {
                                     dùng cấp một trực tiếp.
                                 </li>
                                 <li className="font-bold">4.Thời gian tham gia hành trình</li>
-                                <li>Giờ hoạt động của nền tảng là từ 10:00 đến 22:00 hàng ngày, các thành viên có thể xếp hạng hành trình trong giờ hoạt động của nền tảng.</li>
+                                <li>Giờ hoạt động của nền tảng là từ 10:00 đến 24:00 hàng ngày, các thành viên có thể xếp hạng hành trình trong giờ hoạt động của nền tảng.</li>
                                 <li>Để tránh sai sót trong dữ liệu xếp hạng của bạn, hãy nhớ hoàn thành xếp hạng trong vòng 24 giờ</li>
                                 <li>
                                     <span className="font-bold">LƯU Ý:</span> Để làm rõ thêm, vui lòng liên hệ với dịch vụ chăm sóc khách hàng của nền tảng.

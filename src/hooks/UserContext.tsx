@@ -5,7 +5,7 @@ import React, { createContext, useCallback, useContext, useEffect, useState } fr
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserInfo, tokenExpired } from 'redux/slice/authSlice';
 import { RootState } from 'redux/store';
-import { checkTokenExpiration, logOutUser } from 'redux/reducer/apiRequest';
+import { logOutUser } from 'redux/reducer/apiRequest';
 
 interface UserContextType {
     userInfo: IUserInfo | null;
@@ -16,12 +16,6 @@ interface UserContextType {
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-const hasValidToken = () => {
-    const accessToken = localStorage.getItem('accessToken');
-    const adminToken = localStorage.getItem('adminToken');
-    return accessToken || adminToken;
-};
-
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const dispatch = useDispatch();
     const reduxUserInfo = useSelector((state: RootState) => state.auth.userInfo);
@@ -29,16 +23,19 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const fetchUserInfo = useCallback(async () => {
         const accessToken = localStorage.getItem('accessToken');
-        if (!accessToken) return;
+        const adminToken = localStorage.getItem('adminToken');
+
+        if (!accessToken && !adminToken) return;
 
         setIsLoading(true);
         try {
-            const fetchedUserInfo = await getUserInformationByToken();
+            const fetchedUserInfo = accessToken ? await getUserInformationByToken() : await getAllUsers();
+
             if (fetchedUserInfo && !Array.isArray(fetchedUserInfo) && Object.keys(fetchedUserInfo).length > 0) {
                 if (fetchedUserInfo.isBlocked) {
                     alert('Your account has been blocked. Logging out.');
                     dispatch(tokenExpired());
-                    logOutUser(dispatch, (window.location.href = '/login'));
+                    logOutUser(dispatch, (window.location.href = accessToken ? '/login' : '/loginAdmin'));
                 } else {
                     dispatch(setUserInfo(fetchedUserInfo));
                 }
@@ -51,9 +48,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, [dispatch]);
 
     const fetchAdminUserInfo = useCallback(async () => {
-        const adminToken = localStorage.getItem('adminToken');
-        if (!adminToken) return;
-
         setIsLoading(true);
         try {
             const fetchedUserInfo = await getAllUsers();
@@ -66,30 +60,17 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, [dispatch]);
 
     useEffect(() => {
-        const checkAndLogoutIfTokenExpired = () => {
-            if (checkTokenExpiration()) {
-                localStorage.removeItem('accessToken');
-                localStorage.removeItem('adminToken');
-                dispatch(tokenExpired());
-                logOutUser(dispatch, (window.location.href = '/login'));
-            }
-        };
-
-        if (hasValidToken()) {
-            fetchUserInfo();
-            fetchAdminUserInfo();
-        }
+        const accessToken = localStorage.getItem('accessToken');
+        const adminToken = localStorage.getItem('adminToken');
+        if (accessToken || adminToken) fetchUserInfo();
 
         const intervalId = setInterval(() => {
-            checkAndLogoutIfTokenExpired();
-            if (hasValidToken()) {
-                fetchUserInfo();
-                fetchAdminUserInfo();
-            }
-        }, 60000);
+            fetchUserInfo();
+            fetchAdminUserInfo(); // Ensure this is called to update admin data
+        }, 60000); // Fetch every 60 seconds
 
         return () => clearInterval(intervalId);
-    }, [fetchUserInfo, fetchAdminUserInfo, dispatch]);
+    }, [fetchUserInfo, fetchAdminUserInfo]);
 
     return <UserContext.Provider value={{ userInfo: reduxUserInfo, fetchUserInfo, fetchAdminUserInfo, isLoading }}>{children}</UserContext.Provider>;
 };
