@@ -1,7 +1,7 @@
 import React, { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'redux/store';
-import { interveneJourney, updateUserInfo, deleteAllInterventions, toggleJourneyBlock, resetJourneyCount, adjustUserJourneyCount } from 'api/admin';
+import { interveneJourney, updateUserInfo, deleteAllInterventions, toggleJourneyBlock, resetJourneyCount, adjustUserJourneyCount, adjustUserBalance } from 'api/admin'; // Import the new API function
 import { IUserInfo } from 'api/type';
 import { images } from 'assets';
 import Button from 'components/button';
@@ -40,6 +40,7 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user, onUpdateUser }) => 
     const [isFormValid, setIsFormValid] = useState<boolean>(false);
     const [sliderValue, setSliderValue] = useState<number>(user.journeysTaken || 0);
     const [journeysTakenValue, setJourneysTakenValue] = useState<number>(user.journeysTaken || 0);
+    const [balanceValue, setBalanceValue] = useState<number>(user.balance || 0); // New state for balance
     const [isJourneyBlocked, setIsJourneyBlocked] = useState<boolean>(false);
     const popupRef = useRef<HTMLDivElement>(null);
 
@@ -70,6 +71,10 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user, onUpdateUser }) => 
 
     const handleJourneysTakenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setJourneysTakenValue(Number(e.target.value));
+    };
+
+    const handleBalanceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setBalanceValue(Number(e.target.value));
     };
 
     const handleAdditionalPointsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -179,6 +184,21 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user, onUpdateUser }) => 
         }
     };
 
+    const handleAdjustUserBalance = async () => {
+        try {
+            if (balanceValue < 0) {
+                ToastProvider('error', 'Số dư không hợp lệ');
+                return;
+            }
+            const updatedUser = await adjustUserBalance(user._id, balanceValue);
+            user.balance = updatedUser.balance;
+            ToastProvider('success', 'Điều chỉnh số dư thành công!');
+            await fetchUserInfo();
+        } catch (error) {
+            ToastProvider('error', 'Không thể điều chỉnh số dư');
+        }
+    };
+
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
@@ -217,7 +237,7 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user, onUpdateUser }) => 
         <>
             <div className="overlay-sidebar active-overlay" />
             <div className="fixed inset-0 flex items-center justify-center z-30">
-                <div ref={popupRef} className="bg-white xl:w-[94vw] w-[90vw] xl:h-[40vw] h-[90%] xl:rounded-[0.5vw] rounded-[2vw] shadow-custom-4 border border-[#e5e9f2] bai-jamjuree flex flex-col">
+                <div ref={popupRef} className="bg-white xl:w-[96vw] w-[90vw] xl:h-[44vw] h-[90%] xl:rounded-[0.5vw] rounded-[2vw] shadow-custom-4 border border-[#e5e9f2] bai-jamjuree flex flex-col">
                     <div className="border-b-[0.2vw] border-[#E2E8F0] w-full">
                         <div className="w-full all-center !justify-between xl:px-[2vw] px-[4vw] xl:py-[0.8vw] py-[4vw]">
                             <TextTitle title={`Hành Trình + Nạp Rút Tiền :  ${user.username}`} />
@@ -263,10 +283,20 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user, onUpdateUser }) => 
                                                 buttonText="Send"
                                                 onButtonClick={handleAdjustJourneyCount}
                                             />
+                                            <InputSend
+                                                Label="Điều Chỉnh Số Dư"
+                                                type="number"
+                                                placeholder="20"
+                                                name="balance"
+                                                value={balanceValue}
+                                                onChange={handleBalanceChange}
+                                                buttonText="Send"
+                                                onButtonClick={handleAdjustUserBalance}
+                                            />
                                         </div>
                                     </div>
                                     <div className="flex xl:flex-row justify-center flex-col items-center w-full xl:gap-[1.5vw] gap-[6vw]">
-                                        <div className="bg-white all-center flex-col gap-[1vw] shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:w-[20vw] w-full xl:h-[20vw] h-full">
+                                        <div className="bg-white all-center flex-col gap-[1vw] shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:w-[20vw] w-full xl:h-[22vw] h-full">
                                             <div className="box-total w-full left-0">
                                                 <p className="text-titleLevel">Setup Đơn May Mắn</p>
                                             </div>
@@ -279,9 +309,9 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user, onUpdateUser }) => 
                                                 <Button title="CẬP NHẬT" onClick={handleInterveneJourney} disabled={isLoading || !isFormValid} />
                                             </div>
                                         </div>
-                                        <div className="bg-white all-center flex-col  gap-[1vw] shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:w-[20vw] w-full xl:h-[20vw] h-full">
+                                        <div className="bg-white all-center flex-col  gap-[1vw] shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:w-[20vw] w-full xl:h-[22vw] h-full">
                                             <div className="box-total w-full left-0 flex items-center justify-between">
-                                                <p className="text-titleLevel">Chỉnh Sửa Hành Trình + VIP</p>
+                                                <p className="text-titleLevel">Edit Hành Trình + VIP</p>
                                                 <Tooltip content="Reset Hành Trình Về 0">
                                                     <img src={images.fetch} alt="fetch" className="icon-fetch cursor-pointer xl:w-[1.5vw] w-[6vw]" onClick={handleResetJourneyCount} />
                                                 </Tooltip>
@@ -306,7 +336,7 @@ const ConfirmMoney: React.FC<PopupProps> = ({ onClose, user, onUpdateUser }) => 
                                             </div>
                                         </div>
 
-                                        <div className="bg-white flex flex-col gap-[1vw] shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:w-[36vw] w-full xl:h-[20vw] h-full">
+                                        <div className="bg-white flex flex-col gap-[1vw] shadow-custom-3 xl:rounded-[1vw] rounded-[3vw] xl:p-[1.2vw] p-[3vw] xl:w-[36vw] w-full xl:h-[22vw] h-full">
                                             <div className="payment flex items-center w-full justify-between">
                                                 <div className="flex items-center xl:gap-[1vw] gap-[5vw] xl:h-auto h-[10vw] overflow-x-auto custom-scrollbar scrollbar-hidden whitespace-nowrap">
                                                     {tabItems.map((tab) => (

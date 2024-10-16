@@ -94,7 +94,9 @@ const Login = () => {
                             error={errors.password?.message}
                             value={watch('password')}
                         />
-                        <p className="text-poppins text-noteLogin text-cusLogin w-full text-end hover:text-blue font-medium cursor-pointer hover:text-blue-600">Quên mật khẩu ?</p>
+                        <Link to={'https://t.me/VNTravel_cskh'} target="_blank" className="text-poppins text-noteLogin text-cusLogin w-full text-end hover:text-blue font-medium cursor-pointer hover:text-blue-600">
+                            Liên hệ CSKH nếu quên mật khẩu?
+                        </Link>
 
                         <Button title="Đăng Nhập" onClick={handleSubmit(onSubmit)} />
                         <div className="flex items-center text-cusLogin notes cursor-pointer xl:gap-[0.4vw] gap-[2vw] xl:tracking-[0.1vw] tracking-[0.2vw]">

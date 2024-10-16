@@ -338,3 +338,18 @@ export const adjustUserJourneyCount = async (userId: string, journeyCount: numbe
         throw error;
     }
 };
+
+export const adjustUserBalance = async (userId: string, newBalance: number): Promise<IUserInfo> => {
+    try {
+        const response = await Api.post<UserResponse>(`${url}/adjustUserBalance/${userId}`, { newBalance });
+        if (response.data.status && response.data.data) {
+            return response.data.data;
+        } else {
+            console.error('Unexpected response structure:', response.data);
+            throw new Error('Unexpected response structure');
+        }
+    } catch (error) {
+        console.error('Error in adjustUserBalance:', error);
+        throw error;
+    }
+};
