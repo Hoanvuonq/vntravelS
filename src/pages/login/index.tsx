@@ -95,7 +95,7 @@ const Login = () => {
                             value={watch('password')}
                         />
                         <Link to={'https://t.me/VNTravel_cskh'} target="_blank" className="text-poppins text-noteLogin text-cusLogin w-full text-end hover:text-blue font-medium cursor-pointer hover:text-blue-600">
-                            Liên hệ CSKH nếu quên mật khẩu?
+                            Quên mật khẩu?
                         </Link>
 
                         <Button title="Đăng Nhập" onClick={handleSubmit(onSubmit)} />

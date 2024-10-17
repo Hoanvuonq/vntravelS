@@ -93,6 +93,7 @@ export const updateUserInfo = async (userId: string, userData: any): Promise<any
         throw error;
     }
 };
+
 export const banUser = async (userId: string): Promise<any> => {
     try {
         const response = await Api.post(`${url}/blockUser/${userId}`);
@@ -223,6 +224,7 @@ export const interveneJourney = async (userId: string, journeyIndex: number, add
         throw error;
     }
 };
+
 export const getAllInterventions = async (userId: string): Promise<any> => {
     try {
         const response = await Api.get(`${url}/getAllInterventions/${userId}`);
