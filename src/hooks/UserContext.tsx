@@ -27,6 +27,15 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         if (!accessToken && !adminToken) return;
 
+        const tokenExpiryTime = localStorage.getItem('tokenExpiryTime');
+        if (tokenExpiryTime && Date.now() > parseInt(tokenExpiryTime)) {
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('adminToken');
+            alert('Session expired. Please log in again.');
+            logOutUser(dispatch, (window.location.href = '/login'));
+            return;
+        }
+
         setIsLoading(true);
         try {
             const fetchedUserInfo = accessToken ? await getUserInformationByToken() : await getAllUsers();
@@ -35,6 +44,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 if (fetchedUserInfo.isBlocked) {
                     alert('Your account has been blocked. Logging out.');
                     dispatch(tokenExpired());
+                    localStorage.removeItem('accessToken');
+                    localStorage.removeItem('adminToken');
                     logOutUser(dispatch, (window.location.href = accessToken ? '/login' : '/loginAdmin'));
                 } else {
                     dispatch(setUserInfo(fetchedUserInfo));

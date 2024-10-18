@@ -72,7 +72,11 @@ const Bank = () => {
                     setIsUpdated(true);
                     fetchUserInfo();
                 } else {
-                    ToastProvider('error', result.message || 'Cập nhật thất bại');
+                    if (result.message.includes('Số tài khoản ngân hàng đã tồn tại')) {
+                        ToastProvider('error', 'Số tài khoản ngân hàng đã tồn tại');
+                    } else {
+                        ToastProvider('error', result.message || 'Cập nhật thất bại');
+                    }
                 }
             } catch (error) {
                 console.error('Error updating bank information:', error);

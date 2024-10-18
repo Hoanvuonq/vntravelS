@@ -113,9 +113,6 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
                                 <div className="absolute inset-0 bg-black xl:!rounded-[1vw] !rounded-[2vw] bg-opacity-50 xl:p-[1vw] p-[3vw] flex flex-col justify-between text-white">
                                     <div className="flex justify-between items-start">
                                         <div className="w-full flex flex-col xl:gap-[1vw] gap-[2vw]">
-                                            {/* <div className="flex items-center w-full justify-between">
-                                                <p className="text-time">{new Date(previewData.createdAt).toLocaleString()}</p>
-                                            </div> */}
                                             <p className="text-place">{randomTrip?.place}</p>
                                             <p className="text-title">{formatNumber(previewData.journeyAmount)}</p>
                                         </div>
