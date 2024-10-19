@@ -30,11 +30,13 @@ export const loginUser = async (user: IUser, dispatch: Dispatch<any>): Promise<I
             loginTime: new Date().toISOString(),
         };
         const res = await axios.post(process.env.REACT_APP_API_DEV + 'user/login', loginData);
+        console.log('loginTime', loginData.loginTime);
         console.log('Login API response:', res.data);
         if (res.data && res.data.status) {
             const { encryptedData, accessToken } = res.data.data;
             if (accessToken) {
                 localStorage.setItem('accessToken', accessToken);
+                localStorage.setItem('loginTime', loginData.loginTime);
                 dispatch(loginSuccess({ user: encryptedData, token: accessToken }));
                 return { success: true, data: { accessToken } };
             }
@@ -44,6 +46,7 @@ export const loginUser = async (user: IUser, dispatch: Dispatch<any>): Promise<I
         return { success: false, message: res.data.message || 'Login failed' };
     } catch (error: any) {
         console.error('Login error:', error.response || error);
+
         dispatch(loginFailed());
         return { success: false, message: error.response?.data?.message || error.message };
     }

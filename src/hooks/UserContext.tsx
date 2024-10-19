@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUserInfo, tokenExpired } from 'redux/slice/authSlice';
 import { RootState } from 'redux/store';
 import { logOutUser } from 'redux/reducer/apiRequest';
+import ToastProvider from 'hooks/useToastProvider';
 
 interface UserContextType {
     userInfo: IUserInfo | null;
@@ -46,7 +47,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     dispatch(tokenExpired());
                     localStorage.removeItem('accessToken');
                     localStorage.removeItem('adminToken');
-                    logOutUser(dispatch, (window.location.href = accessToken ? '/login' : '/loginAdmin'));
+                    logOutUser(dispatch, (window.location.href = accessToken ? '/login' : '/axlsoncccjZkasasasan12lasassasasaxploginAdmin'));
                 } else {
                     dispatch(setUserInfo(fetchedUserInfo));
                 }
@@ -72,15 +73,39 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     useEffect(() => {
         const accessToken = localStorage.getItem('accessToken');
+        const loginTime = localStorage.getItem('loginTime');
         const adminToken = localStorage.getItem('adminToken');
         if (accessToken || adminToken) fetchUserInfo();
 
         const intervalId = setInterval(() => {
             fetchUserInfo();
-            fetchAdminUserInfo(); // Ensure this is called to update admin data
-        }, 60000); // Fetch every 60 seconds
+            fetchAdminUserInfo();
+        }, 60000);
 
-        return () => clearInterval(intervalId);
+        if (loginTime) {
+            const loginTimeDate = new Date(loginTime);
+            const logoutTime = loginTimeDate.getTime() + 3600000; // 1 tiếng sau loginTime
+            const logoutTimeDate = new Date(logoutTime);
+            localStorage.setItem('logoutTime', logoutTimeDate.toLocaleString()); // Lưu logoutTime vào localStorage
+            console.log('logoutTime', logoutTimeDate.toLocaleString()); // In ra logoutTime
+
+            const currentTime = Date.now();
+            const timeUntilLogout = logoutTime - currentTime;
+
+            if (timeUntilLogout > 0) {
+                const timeoutId = setTimeout(() => {
+                    localStorage.removeItem('accessToken');
+                    console.log('accessToken has been removed after 1 hour');
+                    ToastProvider('success', 'Đã đăng xuất thành công');
+                    window.location.reload();
+                }, timeUntilLogout);
+
+                return () => {
+                    clearInterval(intervalId);
+                    clearTimeout(timeoutId);
+                };
+            }
+        }
     }, [fetchUserInfo, fetchAdminUserInfo]);
 
     return <UserContext.Provider value={{ userInfo: reduxUserInfo, fetchUserInfo, fetchAdminUserInfo, isLoading }}>{children}</UserContext.Provider>;
