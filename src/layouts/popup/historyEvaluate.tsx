@@ -65,7 +65,7 @@ const HistoryEvaluate: React.FC<PopupProps> = ({ onClose }) => {
     const HistoryEvaluateList = journeyHistory.map((journey, index) => {
         const placeInfo = getPlaceInfo(journey.place.replace('Trip', ''));
         return (
-            <div key={index} className="relative mb-[4vw] xl:rounded-[1vw] rounded-[3.5vw] overflow-hidden  history-evaluate">
+            <div key={index} className="relative mb-[4vw] xl:rounded-[1vw] rounded-[3.5vw] overflow-hidden history-evaluate">
                 <img src={placeInfo?.backgroundImage || images.defaultImage} alt="Trip background" className="w-full xl:h-[14vw] h-[60vw] object-cover" />
                 <div className="absolute inset-0 bg-black bg-opacity-50 xl:p-[1vw] p-[3vw] flex flex-col justify-between text-white">
                     <div className="flex justify-between items-start">
@@ -108,7 +108,7 @@ const HistoryEvaluate: React.FC<PopupProps> = ({ onClose }) => {
                         </div>
                     </div>
                     <div className="w-full h-full bg-white rounded-2xl shadow-custom-5 p-[1.5vw] bai-jamjuree">
-                        <div className="transaction overflow-y-auto max-h-[70vh] custom-scrollbar">
+                        <div className="transaction overflow-y-auto xl:max-h-[65vh] max-h-[74vh] custom-scrollbar">
                             {isLoadingJourneyHistory ? (
                                 <div className="w-full all-center">Loading...</div>
                             ) : hasData ? (
