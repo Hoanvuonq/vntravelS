@@ -64,10 +64,7 @@ const WithDrawAllUser = () => {
             try {
                 setIsLoading(true);
                 const [userData, withdrawData] = await Promise.all([getAllUsers(), getAllWithdrawTransactions()]);
-
-                // Sắp xếp giao dịch theo requestTime giảm dần
                 const sortedWithdraws = withdrawData.sort((a, b) => new Date(b.requestTime).getTime() - new Date(a.requestTime).getTime());
-
                 setWithdraws(sortedWithdraws);
                 setUsers(userData);
                 setHasPendingTransactions(sortedWithdraws.some((transaction) => transaction.status === TransactionStatus.PENDING));

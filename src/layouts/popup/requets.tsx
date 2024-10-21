@@ -1,7 +1,6 @@
-import { useEffect, useRef } from 'react';
-import { images } from 'assets';
-import TextTitle from 'components/textTitle';
 import CloseTabs from 'components/closeTabs';
+import TextTitle from 'components/textTitle';
+import { useEffect, useRef } from 'react';
 
 interface PopupProps {
     onClose: () => void;
