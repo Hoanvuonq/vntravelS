@@ -84,10 +84,10 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         if (loginTime) {
             const loginTimeDate = new Date(loginTime);
-            const logoutTime = loginTimeDate.getTime() + 3600000; // 1 tiếng sau loginTime
+            const logoutTime = loginTimeDate.getTime() + 3600000;
             const logoutTimeDate = new Date(logoutTime);
-            localStorage.setItem('logoutTime', logoutTimeDate.toLocaleString()); // Lưu logoutTime vào localStorage
-            console.log('logoutTime', logoutTimeDate.toLocaleString()); // In ra logoutTime
+            localStorage.setItem('logoutTime', logoutTimeDate.toLocaleString());
+            console.log('logoutTime', logoutTimeDate.toLocaleString());
 
             const currentTime = Date.now();
             const timeUntilLogout = logoutTime - currentTime;
