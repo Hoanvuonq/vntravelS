@@ -67,7 +67,7 @@ const Sidebar: React.FC = () => {
                 <p className="xl:py-[0.4vw] xl:px-[0.8vw] py-[2vw] px-[3vw] text-directory">Danh Mục</p>
                 <div className="py-[0.2vw] px-[1w]">
                     {SidebarMenu.map((item, index) => (
-                        <div key={index} className="font-bold text-menu flex items-center justify-between item-sidebar-dropdown text-itemsMenu xl:p-[0.4vw] p-[1.5vw] xl:rounded-[0.5vw] rounded-[2vw] cursor-pointer">
+                        <div key={index} className="font-bold text-menu flex items-center justify-between hover:bg-[#f4f4f5] text-itemsMenu xl:p-[0.4vw] p-[1.5vw] xl:rounded-[0.5vw] rounded-[2vw] cursor-pointer">
                             <div className="flex gap-[0.4vw] items-center">
                                 <img src={item.icon} alt={`Icon for ${item.title}`} className="xl:w-[2vw] w-[10vw]" />
                                 <Link to={item.link} className="text-item" onClick={handleMenuClick}>

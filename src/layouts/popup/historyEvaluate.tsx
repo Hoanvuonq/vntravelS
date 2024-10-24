@@ -110,12 +110,20 @@ const HistoryEvaluate: React.FC<PopupProps> = ({ onClose }) => {
                     <div className="w-full h-full bg-white rounded-2xl shadow-custom-5 p-[1.5vw] bai-jamjuree">
                         <div className="transaction overflow-y-auto xl:max-h-[65vh] max-h-[74vh] custom-scrollbar">
                             {isLoadingJourneyHistory ? (
-                                <div className="w-full all-center">Loading...</div>
+                                <div className="w-full all-center">
+                                    <div className="loader-ellipsis mt-[1vw]">
+                                        <div className="!bg-black"></div>
+                                        <div className="!bg-black"></div>
+                                        <div className="!bg-black"></div>
+                                        <div className="!bg-black"></div>
+                                    </div>
+                                </div>
                             ) : hasData ? (
                                 HistoryEvaluateList
                             ) : (
-                                <div className="w-full all-center">
-                                    <img src={images.NoData} alt="No Data" className="xl:w-[20vw] w-[50vw] xl:h-[20vw] h-[50vw]" />
+                                <div className="w-full all-center xl:h-auto h-[60vw] flex-col xl:gap-[1vw] gap-[3vw] notes">
+                                    <img src={images.logoTravelS} alt="No Data" className="xl:w-[10vw] w-[50vw] object-cover" />
+                                    <p className="text-titleNote">Bạn chưa có lịch sử đánh giá tour nào</p>
                                 </div>
                             )}
                         </div>

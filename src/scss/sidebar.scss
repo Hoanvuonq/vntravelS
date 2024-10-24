@@ -1,5 +1,4 @@
 
-
 .overlay-sidebar {
     position: fixed;
     top: 0;
@@ -23,9 +22,6 @@
     cursor: pointer;
 }
 
-.item-sidebar-dropdown:hover {
-    background: #f4f4f5;
-}
 
 .menu-dropdown {
     max-height: 0;
@@ -113,12 +109,12 @@
   }
 
   .scrollbar-hidden {
-    -ms-overflow-style: none;  /* Internet Explorer and Edge */
-    scrollbar-width: none;      /* Firefox */
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
 }
 
 .scrollbar-hidden::-webkit-scrollbar {
-    display: none;              /* Safari and Chrome */
+    display: none;   
 }
 
 .header {

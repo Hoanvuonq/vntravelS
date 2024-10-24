@@ -28,7 +28,6 @@ export const registerUser = async (user: IUsers & { invitationCode: string }): P
     const reqUrl = `${url}/register`;
     try {
         const res = await Api.post<IApiResponse>(reqUrl, user);
-        // Assuming the response data is not encrypted for registration
         return res.data;
     } catch (error: any) {
         console.error('Error Registering User:', error.response ? error.response.data : error.message);
