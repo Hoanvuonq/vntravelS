@@ -77,11 +77,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const adminToken = localStorage.getItem('adminToken');
         if (accessToken || adminToken) fetchUserInfo();
 
-        const intervalId = setInterval(() => {
-            fetchUserInfo();
-            fetchAdminUserInfo();
-        }, 60000);
-
         if (loginTime) {
             const loginTimeDate = new Date(loginTime);
             const logoutTime = loginTimeDate.getTime() + 3600000;
@@ -101,7 +96,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 }, timeUntilLogout);
 
                 return () => {
-                    clearInterval(intervalId);
                     clearTimeout(timeoutId);
                 };
             }
