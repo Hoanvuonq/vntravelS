@@ -163,7 +163,7 @@ const Dashboard = () => {
                     </td>
                     <td className={`${classes} xl:!w-[4vw] !w-[10vw]`}>
                         <Typography variant="small" color="blue-gray" className="text-content !font-semibold" {...({} as any)}>
-                            {new Date(user.createdAt).toLocaleDateString()}
+                            {new Date(user.createdAt).toLocaleString()}
                         </Typography>
                     </td>
                     <td className={`${classes} xl:!w-[4vw] !w-[10vw]`}>

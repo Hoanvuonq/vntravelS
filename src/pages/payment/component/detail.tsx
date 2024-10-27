@@ -33,9 +33,9 @@ const PaymentDetail = () => {
             return;
         }
         try {
-            ToastProvider('warning', 'Vui Lòng Liên Hệ Admin Để Nạp Tiền');
+            ToastProvider('warning', 'Vui Lòng Liên Hệ CSKH Để Nạp Tiền');
         } catch (error) {
-            ToastProvider('warning', 'Vui Lòng Liên Hệ Admin Để Nạp Tiền');
+            ToastProvider('warning', 'Vui Lòng Liên Hệ CSKH Để Nạp Tiền');
         }
     };
 
