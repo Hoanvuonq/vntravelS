@@ -16,9 +16,11 @@ const Chart = () => {
         const handleResize = () => setWindowWidth(window.innerWidth);
         window.addEventListener('resize', handleResize);
 
-        const interval = setInterval(() => {
+        const updateData = () => {
             setData(generateRandomData(windowWidth < 768 ? 8 : 16));
-        }, 1000);
+        };
+
+        const interval = setInterval(updateData, 5000);
 
         return () => {
             clearInterval(interval);

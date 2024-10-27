@@ -30,7 +30,6 @@ const Evaluate = () => {
     const totalCommission = userInfo?.totalCommission || 0;
     const totalJourneys = userInfo?.totalJourneys || 0;
     const journeysTaken = userInfo?.journeysTaken || 0;
-    // const journeys = userInfo?.journeys?.length || 0;
 
     const totalSpending = [
         { title: 'TỔNG TÀI SẢN', money: formatNumber(balance) },
@@ -50,7 +49,7 @@ const Evaluate = () => {
                     setPreviewData({ ...result.data, createdAt: new Date().toISOString() });
                     setShowFomEvaluate(true);
                     const additionalPoints = result.data.additionalPoints;
-                    if (result.data.isLuckyJourney) {
+                    if (result.data.isLuckyJourney && balance < result.data.journeyAmount) {
                         console.log('Lucky Journey Detected');
                         setPopupMessage(`Chúc Mừng Bạn Đã Nhận Được Đơn Hành Trình Kết Nối, Đơn Hành Trình Này Có Thể Nhận Được Nhiều Hoa Hồng Hơn và Cần Phải Bù Phần Chênh Lệch ${formatNumber(additionalPoints)} Điểm.`);
                     }
