@@ -87,7 +87,7 @@ const HistoryEvaluate: React.FC<PopupProps> = ({ onClose }) => {
                             <p className="text-title">{formatAmount(journey.journeyAmount)}</p>
                         </div>
                         <div className="flex justify-between items-end">
-                            <p className="text-title">Tỉ Lệ</p>
+                            <p className="text-title">Tỷ Lệ</p>
                             <p className="text-title">{formatAmount(journey.profit)}</p>
                         </div>
                     </div>

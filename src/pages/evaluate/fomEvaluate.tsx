@@ -123,7 +123,7 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
                                             <p className="text-title">{formatNumber(previewData.journeyAmount)}</p>
                                         </div>
                                         <div className="flex justify-between items-end">
-                                            <p className="text-title">Tỉ Lệ</p>
+                                            <p className="text-title">Tỷ Lệ</p>
                                             <p className="text-title">{formatNumber(previewData.profit)}</p>
                                         </div>
                                     </div>
