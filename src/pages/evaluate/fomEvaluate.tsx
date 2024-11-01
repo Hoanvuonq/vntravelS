@@ -48,7 +48,7 @@ const FomEvaluate: React.FC<IPopupProps> = ({ onClose, previewData }) => {
         setLoading(true);
 
         try {
-            await new Promise((resolve) => setTimeout(resolve, 7000));
+            await new Promise((resolve) => setTimeout(resolve, 5000));
             const backgroundImageKey = Object.keys(images).find((key) => images[key] === randomTrip.backgroundImage);
 
             if (!backgroundImageKey) {
