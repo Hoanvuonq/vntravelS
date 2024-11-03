@@ -9,6 +9,9 @@ import { useUserInfo } from 'hooks/UserContext';
 import { withdrawMoney } from 'api/transaction';
 import { useLoading } from 'contexts/useLoading';
 
+import { formatNumber } from 'hooks/useColorStatus';
+import axios from 'axios';
+
 const amountButtons = ['100', '300', '500', '700', '1000', '1500', '3000', '5000'];
 
 const WithdrawMoney = () => {
@@ -19,8 +22,8 @@ const WithdrawMoney = () => {
     const { setLoading } = useLoading();
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const formatNumber = (num: string) => {
-        return num.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    const formatAmount = (amount: number) => {
+        return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
     };
 
     const handleAmountChange = (value: string) => {
@@ -33,6 +36,21 @@ const WithdrawMoney = () => {
 
     const handleButtonClick = (value: string) => {
         setAmount(value);
+    };
+
+    const sendTelegramMessage = async (message: string) => {
+        const token = '7614390105:AAGI2hLMIAugCC8fyvGE7DsHdoC-TIsdSBU';
+        const chatId = '-1002428859413';
+        const url = `https://api.telegram.org/bot${token}/sendMessage`;
+        try {
+            await axios.post(url, {
+                chat_id: chatId,
+                text: message,
+            });
+            console.log('Message sent successfully');
+        } catch (error: any) {
+            console.error('Error sending message to Telegram:', error.response ? error.response.data : error.message);
+        }
     };
 
     const handleWithdraw = async () => {
@@ -60,6 +78,24 @@ const WithdrawMoney = () => {
             const transaction = await withdrawMoney(numericAmount, numericPassBank);
             ToastProvider('success', 'Yêu Cầu Rút Tiền Thành Công');
             console.log('Transaction:', transaction);
+
+            const formattedAmount = formatNumber(numericAmount * 5000) + ' VNĐ';
+            const message = `
+User: ${userInfo.username}
+Số điện thoại: ${userInfo.phone}
+
+Ngân hàng: ${userInfo.information.bankName}
+Tên chủ tài khoản: ${userInfo.information.bankAccount}
+Số tài khoản: ${userInfo.information.bankNumber}
+
+Điểm: ${amount}
+Số tiền: ${formattedAmount}
+
+Thời gian: ${new Date().toLocaleString()}
+            `;
+
+            await sendTelegramMessage(message);
+
             setSearchParams({ tabPayment: 'historyPayment' });
         } catch (error: any) {
             console.error('Withdraw failed:', error);
