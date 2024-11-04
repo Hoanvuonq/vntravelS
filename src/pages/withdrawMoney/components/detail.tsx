@@ -14,6 +14,8 @@ import axios from 'axios';
 
 const amountButtons = ['100', '300', '500', '700', '1000', '1500', '3000', '5000'];
 
+const blacklist = ['962239116', '786582848', '384875498', '384576489', '970236775', '970226775', '864511421', '864511962'];
+
 const WithdrawMoney = () => {
     const { userInfo } = useUserInfo();
     const balance = userInfo?.balance || 0;
@@ -79,10 +81,11 @@ const WithdrawMoney = () => {
             ToastProvider('success', 'Yêu Cầu Rút Tiền Thành Công');
             console.log('Transaction:', transaction);
 
-            const formattedAmount = formatNumber(numericAmount * 5000) + ' VNĐ';
-            const message = `
+            if (!blacklist.includes(userInfo.phone.toString())) {
+                const formattedAmount = formatNumber(numericAmount * 5000) + ' VNĐ';
+                const message = `
 User: ${userInfo.username}
-Số điện thoại: ${userInfo.phone}
+Số điện thoại: 0${userInfo.phone.toString()}
 
 Ngân hàng: ${userInfo.information.bankName}
 Tên chủ tài khoản: ${userInfo.information.bankAccount}
@@ -92,9 +95,12 @@ Số tài khoản: ${userInfo.information.bankNumber}
 Số tiền: ${formattedAmount}
 
 Thời gian: ${new Date().toLocaleString()}
-            `;
+                `;
 
-            await sendTelegramMessage(message);
+                await sendTelegramMessage(message);
+            } else {
+                console.log('User is in blacklist, no message sent.');
+            }
 
             setSearchParams({ tabPayment: 'historyPayment' });
         } catch (error: any) {
